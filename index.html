@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <link href="Imagenes/icono.png" rel="icon" type="image/x-icon" />
+<link rel="preload" href="gauss_cannon_low.glb" as="fetch" crossorigin>
+<link rel="preload" href="gauss_cannon.glb" as="fetch" crossorigin>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Cañón de Gauss</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Black+Ops+One&display=swap');
-
 :root {
   --bg: #07090f;
   --panel: rgba(7,12,22,0.96);
@@ -309,16 +310,14 @@ canvas{display:block;touch-action:none}
   cursor:grab;
   background:#050e18;
   touch-action:none;
-  /* display se hereda de .tpane.on flex column */
 }
 #pdf-pz-wrap.dragging{cursor:grabbing}
 #sch-img-inner{
   position:absolute;
-  inset:0;                 /* ocupa exactamente el wrap */
+  inset:0;
   display:flex;
   line-height:0;
 }
-/* El SVG inyectado inline ocupa todo el contenedor — viewBox hace el fit */
 #sch-img-inner svg{
   display:block;
   width:100%;
@@ -355,11 +354,11 @@ canvas{display:block;touch-action:none}
   font-family:'Black Ops One',serif;font-size:.7rem;
   color:rgba(0,217,176,.6);letter-spacing:.1em;min-width:40px;text-align:center;
 }
-@media(max-width:640px){#pdf-pz-wrap{display:none}}  /* se oculta en móvil, se usa preview card */
+@media(max-width:640px){#pdf-pz-wrap{display:none}}
 
-/* ── Vista previa móvil del circuito completo (igual que sec-card) ── */
+/* ── Vista previa móvil del circuito completo ── */
 #full-mobile-preview{
-  display:none;   /* visible solo en móvil */
+  display:none;
   flex:1;
   min-height:0;
   overflow-y:auto;
@@ -449,7 +448,7 @@ canvas{display:block;touch-action:none}
 }
 .sec-placeholder{padding:22px 16px;text-align:center;font-size:.74rem;color:rgba(180,204,216,.35);line-height:1.7}
 .sec-placeholder code{display:block;margin-top:6px;color:rgba(0,217,176,.35);font-size:.68rem;word-break:break-all}
-/* Padding del modal en móvil: dejar espacio para nav top y nav bottom */
+/* Padding del modal en móvil */
 @media(max-width:640px){
   #sch-modal{
     padding:58px 0 calc(72px + env(safe-area-inset-bottom)) 0;
@@ -459,13 +458,6 @@ canvas{display:block;touch-action:none}
     max-height:100%;
   }
 }
-.pdf-desktop-hint{
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  padding:7px 16px;background:rgba(0,217,176,0.04);border-bottom:1px solid rgba(0,217,176,.08);
-  font-size:.67rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(0,217,176,.4);
-  flex-shrink:0;
-}
-@media(max-width:640px){.pdf-desktop-hint{display:none}}
 
 /* PDF desktop hint bar */
 .pdf-desktop-hint{
@@ -475,6 +467,7 @@ canvas{display:block;touch-action:none}
   flex-shrink:0;
 }
 @media(max-width:640px){.pdf-desktop-hint{display:none}}
+
 /* ── PAN-ZOOM VIEWER ── */
 #pz-viewer{
   position:fixed;inset:0;z-index:500;
@@ -566,7 +559,8 @@ canvas{display:block;touch-action:none}
   flex-shrink:0; flex-wrap:wrap;
 }
 #bom-scroll-modal {
-  flex:1; min-height:0; overflow:auto;
+  flex:1;
+  min-height:0; overflow:auto;
   -webkit-overflow-scrolling:touch;
   padding:14px 16px;
 }
@@ -576,7 +570,7 @@ canvas{display:block;touch-action:none}
 #bom-table-wrap-modal {
   overflow-x:auto;
 }
-/* Reutilizamos los mismos estilos de tabla que antes */
+
 .bom-table{width:100%;border-collapse:collapse;font-size:.82rem}
 .bom-table thead tr{
   background:rgba(255,140,42,0.07);
@@ -593,14 +587,9 @@ canvas{display:block;touch-action:none}
 }
 .bom-table tbody tr:hover{background:rgba(255,140,42,0.04)}
 .bom-table tbody tr:last-child td{border-bottom:none}
-/* Para móvil, convertir filas en bloques */
 @media (max-width:640px) {
-  .bom-table, .bom-table thead, .bom-table tbody, .bom-table tr, .bom-table td {
-    display: block;
-  }
-  .bom-table thead {
-    display: none;
-  }
+  .bom-table, .bom-table thead, .bom-table tbody, .bom-table tr, .bom-table td { display: block; }
+  .bom-table thead { display: none; }
   .bom-table tr {
     margin-bottom: 1rem;
     background: rgba(255,140,42,0.02);
@@ -615,9 +604,7 @@ canvas{display:block;touch-action:none}
     padding: 0.5rem 0.3rem;
     border-bottom: 1px dashed rgba(255,140,42,0.1);
   }
-  .bom-table td:last-child {
-    border-bottom: none;
-  }
+  .bom-table td:last-child { border-bottom: none; }
   .bom-table td:before {
     content: attr(data-label);
     font-weight: 700;
@@ -729,7 +716,6 @@ canvas{display:block;touch-action:none}
 </head>
 <body>
 
-<!-- NAV -->
 <nav id="nav">
   <div id="nav-brand">
     <div id="nav-title">⚡ CAÑÓN DE GAUSS</div>
@@ -751,7 +737,6 @@ canvas{display:block;touch-action:none}
   </div>
 </nav>
 
-<!-- MOBILE BOTTOM NAV -->
 <div id="mobile-nav">
   <div class="mnav-grid">
     <button class="mnbtn" onclick="openModal('full')">
@@ -769,7 +754,6 @@ canvas{display:block;touch-action:none}
   </div>
 </div>
 
-<!-- HINT -->
 <div id="hint">
   <div id="hint-inner">
     <div class="hdot"></div>
@@ -778,7 +762,6 @@ canvas{display:block;touch-action:none}
   </div>
 </div>
 
-<!-- COUNTER circular -->
 <div id="counter">
   <svg viewBox="0 0 40 40" class="circular-chart">
     <circle class="circle-bg" cx="20" cy="20" r="16" />
@@ -787,10 +770,8 @@ canvas{display:block;touch-action:none}
   <span id="counter-text">0/10</span>
 </div>
 
-<!-- TOOLTIP mejorado -->
 <div id="tip"></div>
 
-<!-- INFO PANEL -->
 <div id="panel">
   <div class="drag-bar"></div>
   <button id="close-panel" onclick="closePanel()">✕</button>
@@ -811,7 +792,6 @@ canvas{display:block;touch-action:none}
   </div>
 </div>
 
-<!-- SCHEMATIC MODAL (único, con tres pestañas) -->
 <div id="sch-modal">
   <div id="smc">
     <div id="smh">
@@ -828,11 +808,9 @@ canvas{display:block;touch-action:none}
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
         Rueda del ratón para zoom · Click y arrastra para mover · Doble clic para ajustar
       </div>
-      <!-- Visor SVG inline pan-zoom (desktop) -->
       <div id="pdf-pz-wrap">
         <div id="sch-img-inner">
-          <!-- El SVG se inyecta aquí dinámicamente para zoom vectorial real -->
-        </div>
+          </div>
         <div id="pdf-loading">
           <span>Cargando esquemático</span>
           <div id="pdf-loading-bar"><div id="pdf-loading-bar-inner"></div></div>
@@ -842,7 +820,6 @@ canvas{display:block;touch-action:none}
           <span id="pdf-zoom-val">100%</span>
         </div>
       </div>
-      <!-- Vista previa móvil: tarjeta clickable que abre el pz-viewer -->
       <div id="full-mobile-preview">
         <div id="full-mobile-card" onclick="openPZ('esquemas/esquema-completo.svg','Circuito Completo')">
           <div class="sec-title">
@@ -859,7 +836,7 @@ canvas{display:block;touch-action:none}
     <div id="tpane-sec" class="tpane">
       <div class="sec-grid" id="sec-grid"></div>
     </div>
-    <!-- Pestaña BOM -->
+    
     <div id="tpane-bom" class="tpane">
       <div id="bom-filter-bar-modal" class="bom-filter-bar"></div>
       <div id="bom-scroll-modal">
@@ -875,7 +852,6 @@ canvas{display:block;touch-action:none}
   </div>
 </div>
 
-<!-- PAN-ZOOM VIEWER -->
 <div id="pz-viewer">
   <div id="pz-topbar">
     <div id="pz-title">Esquemático</div>
@@ -888,8 +864,7 @@ canvas{display:block;touch-action:none}
   </div>
   <div id="pz-stage">
     <div id="pz-content">
-      <!-- SVG o img se inyecta dinámicamente por openPZ -->
-    </div>
+      </div>
     <div id="pz-zoom-bar">
       <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="opacity:.5;color:var(--teal)"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <span id="pz-zoom-val">100%</span>
@@ -910,16 +885,14 @@ const SECTORS = [
   { id:'control',  title:'Placa de Filtrado',                     img:'esquemas/placa-de-filtrado.svg'       },
   { id:'driver1',  title:'Fuente de Alimentacion 36V',            img:'esquemas/fuente-de-alimentacion.svg'  },
   { id:'driver2',  title:'Modulo de Aceleracion de Bobina 1 & 2', img:'esquemas/modulo-bobina.svg'           },
-  { id:'driver2',  title:'Placa de control de leds y ventilacion',img:'esquemas/placa-para-leds.svg'           },
+  { id:'driver2',  title:'Placa de control de leds y ventilacion',img:'esquemas/placa-para-leds.svg'         },
 ];
-
 const SECTOR_IMG = {
   pcb1: 'esquemas/placa-de-filtrado.svg',
   pcb3: 'esquemas/fuente-de-alimentacion.svg',
   pcb4: 'esquemas/modulo-bobina.svg',
   pcb5: 'esquemas/placa-para-leds.svg',
 };
-
 // Build sector grid with images
 const secGrid = document.getElementById('sec-grid');
 SECTORS.forEach(s => {
@@ -1062,117 +1035,92 @@ const model = new THREE.Group();
 scene.add(model);
 const clickables = [];
 
-// ── LOADING INDICATOR ──
-const loadingDiv = document.createElement('div');
-loadingDiv.id = 'glb-loading';
-loadingDiv.style.cssText = `
-  position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
-  color:#00d9b0; font-family:monospace; font-size:1.1rem;
-  background:rgba(0,0,0,0.7); padding:1.2rem 2rem; border-radius:8px;
-  border:1px solid #00d9b0; z-index:9999; text-align:center;
-`;
-loadingDiv.innerHTML = 'Cargando modelo 3D…<br><small style="color:#aaa;font-size:.8rem;">0%</small>';
-document.body.appendChild(loadingDiv);
+// ── UTILIDADES COMPARTIDAS ────────────────────────────────────
+const _origCreateImageBitmap = window.createImageBitmap;
+window.createImageBitmap = function(source) {
+  return _origCreateImageBitmap(source).catch(function() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1; canvas.height = 1;
+    return _origCreateImageBitmap(canvas);
+  });
+};
 
-// ── LOADER ──
-if(typeof THREE.GLTFLoader === 'undefined') {
-  loadingDiv.style.borderColor = '#ff4444';
-  loadingDiv.style.color = '#ff4444';
-  loadingDiv.innerHTML = '❌ Error: GLTFLoader no se cargó.<br><small>Revisá la consola del navegador (F12)</small>';
-} else {
+const dracoLoader = new THREE.DRACOLoader();
+dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
+dracoLoader.setDecoderConfig({ type: 'js' });
+dracoLoader.preload();
 
-  // Parche: si una textura falla al decodificarse, usar canvas en blanco
-  // Esto evita que el modelo entero falle por una textura incompatible
-  const _origCreateImageBitmap = window.createImageBitmap;
-  window.createImageBitmap = function(source) {
-    return _origCreateImageBitmap(source).catch(function() {
-      const canvas = document.createElement('canvas');
-      canvas.width = 1; canvas.height = 1;
-      return _origCreateImageBitmap(canvas);
-    });
-  };
+const gltfLoader = new THREE.GLTFLoader();
+gltfLoader.setDRACOLoader(dracoLoader);
 
-  const dracoLoader = new THREE.DRACOLoader();
-  dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
-  dracoLoader.setDecoderConfig({ type: 'js' });
-
-  const loader = new THREE.GLTFLoader();
-  loader.setDRACOLoader(dracoLoader);
-  loader.load(
-    // ▼▼▼ CAMBIÁ ESTE NOMBRE POR EL DE TU ARCHIVO GLB ▼▼▼
-    'gauss_cannon.glb',
-    // ▲▲▲ El archivo tiene que estar en la misma carpeta que el HTML ▲▲▲
-
-    function(gltf) {
-      document.body.removeChild(loadingDiv);
-
-      const root = gltf.scene;
-
-      // Reemplazar todos los materiales por MeshStandard limpio
-      // Evita cualquier problema de texturas incompatibles del conversor
-      root.traverse(function(child) {
-        if(child.isMesh) {
-          const c = child.material.color || new THREE.Color(0xcccccc);
-          const r = child.material.roughness !== undefined ? child.material.roughness : 0.5;
-          const m = child.material.metalness !== undefined ? child.material.metalness : 0.3;
-          child.material = new THREE.MeshStandardMaterial({
-            color: c, roughness: r, metalness: m
-          });
-          child.castShadow = true;
-          child.receiveShadow = true;
-        }
-      });
-
-      // Auto-escalar y centrar el modelo sin importar su tamaño original
-      const box = new THREE.Box3().setFromObject(root);
-      const size = box.getSize(new THREE.Vector3());
-      const center = box.getCenter(new THREE.Vector3());
-      const maxDim = Math.max(size.x, size.y, size.z);
-      const targetSize = 12;
-      const scale = targetSize / maxDim;
-
-      root.scale.setScalar(scale);
-      root.position.set(
-        -center.x * scale,
-        -center.y * scale,
-        -center.z * scale
-      );
-
-      model.add(root);
-      model.rotation.y = 0.3;
-
-      // Conectar piezas al sistema de clicks
-      root.traverse(function(child) {
-        if(child.isMesh && PARTS[child.name]) {
-          child.userData.partId = child.name;
-          clickables.push({ mesh: child, origMat: child.material, id: child.name });
-        }
-      });
-
-      console.log('✅ Modelo cargado. Piezas encontradas:', clickables.length);
-      if(clickables.length === 0) {
-        console.warn('⚠️ El modelo cargó pero no se encontraron piezas con nombres coincidentes. Nodos en el modelo:');
-        root.traverse(c => { if(c.isMesh) console.log(' -', c.name); });
-      }
-    },
-
-    function(xhr) {
-      if(xhr.total) {
-        const pct = (xhr.loaded / xhr.total * 100).toFixed(0);
-        loadingDiv.innerHTML = `Cargando modelo 3D…<br><small style="color:#aaa;font-size:.8rem;">${pct}%</small>`;
-      }
-    },
-
-    function(error) {
-      loadingDiv.style.borderColor = '#ff4444';
-      loadingDiv.style.color = '#ff4444';
-      loadingDiv.innerHTML = `❌ No se pudo cargar el modelo.<br>
-        <small style="color:#aaa">Verificá que el archivo GLB esté en la misma carpeta que el HTML<br>
-        y que el nombre coincida exactamente (mayúsculas incluidas)</small>`;
-      console.error('Error al cargar el GLB:', error);
+function prepararModelo(root) {
+  root.traverse(function(child) {
+    if(child.isMesh) {
+      const c = child.material.color || new THREE.Color(0xcccccc);
+      const r = child.material.roughness !== undefined ? child.material.roughness : 0.5;
+      const m = child.material.metalness !== undefined ? child.material.metalness : 0.3;
+      child.material = new THREE.MeshStandardMaterial({ color:c, roughness:r, metalness:m });
+      child.castShadow = true;
+      child.receiveShadow = true;
     }
-  );
+  });
+  const box = new THREE.Box3().setFromObject(root);
+  const center = box.getCenter(new THREE.Vector3());
+  const maxDim = Math.max(...box.getSize(new THREE.Vector3()).toArray());
+  const scale = 12 / maxDim;
+  root.scale.setScalar(scale);
+  root.position.set(-center.x*scale, -center.y*scale, -center.z*scale);
 }
+
+function conectarClickables(root) {
+  clickables.length = 0;
+  root.traverse(function(child) {
+    if(child.isMesh && PARTS[child.name]) {
+      child.userData.partId = child.name;
+      clickables.push({ mesh:child, origMat:child.material, id:child.name });
+    }
+  });
+}
+
+// ── PASO 1: cargar modelo liviano al instante ─────────────────
+let rootLow = null;
+gltfLoader.load(
+  'gauss_cannon_low.glb',
+  function(gltf) {
+    rootLow = gltf.scene;
+    prepararModelo(rootLow);
+    model.add(rootLow);
+    model.rotation.y = 0.3;
+    conectarClickables(rootLow);
+    console.log('✅ Modelo liviano cargado.');
+
+    // ── PASO 2: cargar modelo completo en segundo plano ───────
+    gltfLoader.load(
+      'gauss_cannon.glb',
+      function(gltfHD) {
+        const rootHD = gltfHD.scene;
+        prepararModelo(rootHD);
+        // Swap: quitar liviano, poner completo
+        model.remove(rootLow);
+        model.add(rootHD);
+        conectarClickables(rootHD);
+        console.log('✅ Modelo completo cargado. Piezas:', clickables.length);
+        if(clickables.length === 0) {
+          console.warn('⚠️ Nodos en el modelo:');
+          rootHD.traverse(c => { if(c.isMesh) console.log(' -', c.name); });
+        }
+      },
+      null,
+      function(err) {
+        console.warn('Modelo completo no disponible, usando liviano:', err.message);
+      }
+    );
+  },
+  null,
+  function(err) {
+    console.warn('Modelo liviano no disponible:', err.message);
+  }
+);
 
 // ═══════════════════════════════════════════════════════════════
 // HIGHLIGHT / INTERACTION
@@ -1206,7 +1154,6 @@ function openPanel(id) {
   setHighlight(id, true);
   seen.add(id);
   updateCounter();
-
   const d = PARTS[id];
   document.getElementById('p-cat').textContent = d.cat;
   document.getElementById('p-name').textContent = d.name;
@@ -1232,7 +1179,7 @@ function openPanel(id) {
   }
 
   document.getElementById('panel').classList.add('open');
-  document.getElementById('hint').style.opacity = '0'; // ocultar hint al abrir panel
+  document.getElementById('hint').style.opacity = '0';
 }
 
 function closePanel() {
@@ -1286,7 +1233,6 @@ window.addEventListener('mousemove', e => {
 
 // Click
 window.addEventListener('click', e => {
-  // Ignorar si se hace clic en la UI
   if(e.target !== renderer.domElement) return;
   updateMouse(e.clientX, e.clientY);
   const hits = doRaycast();
@@ -1302,15 +1248,14 @@ window.addEventListener('click', e => {
 // DRAG TO ROTATE (solo si no hay un modal abierto)
 // ═══════════════════════════════════════════════════════════════
 let drag = false, px = 0, py = 0, dragDist = 0;
-
 window.addEventListener('mousedown', e => {
   if(e.target!==renderer.domElement) return;
   drag=true; px=e.clientX; py=e.clientY; dragDist=0;
-  hideHintOnInteraction(); // ocultar hint al primer toque
+  hideHintOnInteraction();
 });
 window.addEventListener('mouseup', () => drag=false);
 window.addEventListener('mousemove', e => {
-  if(!drag || modalActive) return; // si hay modal, no rotar
+  if(!drag || modalActive) return;
   const dx=e.clientX-px, dy=e.clientY-py;
   dragDist += Math.abs(dx)+Math.abs(dy);
   model.rotation.y += dx*.007;
@@ -1318,23 +1263,22 @@ window.addEventListener('mousemove', e => {
   px=e.clientX; py=e.clientY;
 });
 
-// Scroll zoom (solo si no hay modal)
+// Scroll zoom
 window.addEventListener('wheel', e=>{
-  if (modalActive) return; // no hacer zoom en el 3D si hay modal abierto
+  if (modalActive) return;
   camera.position.multiplyScalar(1+e.deltaY*.001);
   camera.position.clampLength(5,35);
-  hideHintOnInteraction(); // ocultar hint al usar rueda
+  hideHintOnInteraction();
 },{passive:true});
 
 // ═══════════════════════════════════════════════════════════════
-// TOUCH CONTROLS (solo si no hay modal)
+// TOUCH CONTROLS
 // ═══════════════════════════════════════════════════════════════
 let touches = {}, pinchDist = 0, touchDrag = false, touchMoved = false;
 let tpx = 0, tpy = 0, touchTime = 0;
 
 window.addEventListener('touchstart', e => {
-  if (modalActive) return; // no interactuar con 3D si hay modal
-  // CRÍTICO: solo capturar el canvas 3D — no bloquear botones, nav, panel, etc.
+  if (modalActive) return;
   if (e.target !== renderer.domElement) return;
   e.preventDefault();
   touchMoved = false; touchTime = Date.now();
@@ -1346,11 +1290,11 @@ window.addEventListener('touchstart', e => {
       e.touches[0].clientY - e.touches[1].clientY
     );
   }
-  hideHintOnInteraction(); // ocultar hint al primer toque
+  hideHintOnInteraction();
 },{passive:false});
 
 window.addEventListener('touchmove', e => {
-  if (modalActive) return; // no mover cámara si hay modal
+  if (modalActive) return;
   if (e.target !== renderer.domElement) return;
   e.preventDefault();
   touchMoved = true;
@@ -1390,12 +1334,7 @@ window.addEventListener('touchend', e => {
 // ═══════════════════════════════════════════════════════════════
 // PAN-ZOOM VIEWER
 // ═══════════════════════════════════════════════════════════════
-// pz-viewer state se gestiona con pzVbX/Y/W/H y pzOrigW/H (ver más abajo)
-
-
-// Estado del pz-viewer
-let pzSvgW = 0, pzSvgH = 0; // legacy (no usado para SVG, pero queda para PNG fallback)
-
+let pzSvgW = 0, pzSvgH = 0;
 async function openPZ(src, title) {
   const content = document.getElementById('pz-content');
   const viewer  = document.getElementById('pz-viewer');
@@ -1405,12 +1344,12 @@ async function openPZ(src, title) {
   viewer.classList.add('open');
 
   const h = document.getElementById('pz-hint-bar');
-  h.style.animation='none'; void h.offsetWidth; h.style.animation='fadeHint 4s forwards';
+  h.style.animation='none';
+  void h.offsetWidth; h.style.animation='fadeHint 4s forwards';
   modalActive = true;
   pzSvgEl = null;
 
   const isSVG = src.toLowerCase().endsWith('.svg');
-
   if(isSVG){
     let svgText;
     try {
@@ -1426,29 +1365,24 @@ async function openPZ(src, title) {
     const doc    = parser.parseFromString(svgText, 'image/svg+xml');
     pzSvgEl      = doc.documentElement;
 
-    // Dimensiones naturales desde viewBox
     let w = 0, hh = 0;
     const vb = pzSvgEl.getAttribute('viewBox');
     if(vb){ const p=vb.trim().split(/[\s,]+/); w=parseFloat(p[2]); hh=parseFloat(p[3]); }
     if(!w||!hh){ w=parseFloat(pzSvgEl.getAttribute('width'))||1000; hh=parseFloat(pzSvgEl.getAttribute('height'))||700; }
     pzOrigW=w; pzOrigH=hh;
 
-    // SVG llena el contenedor; viewBox hace el fit
     pzSvgEl.setAttribute('width',  '100%');
     pzSvgEl.setAttribute('height', '100%');
     pzSvgEl.setAttribute('preserveAspectRatio', 'xMidYMid meet');
     pzSvgEl.style.cssText = 'display:block;pointer-events:none;user-select:none;';
-
-    // Resetear viewBox al fit completo
+    
     pzVbX=0; pzVbY=0; pzVbW=pzOrigW; pzVbH=pzOrigH;
     pzSvgEl.setAttribute('viewBox', `0 0 ${pzOrigW} ${pzOrigH}`);
-
     content.innerHTML = '';
     content.appendChild(pzSvgEl);
     document.getElementById('pz-zoom-val').textContent = '100%';
 
   } else {
-    // PNG/JPG fallback
     const img = document.createElement('img');
     img.style.cssText = 'width:100%;height:100%;object-fit:contain;pointer-events:none;';
     content.innerHTML = '';
@@ -1466,9 +1400,8 @@ function closePZ() {
 }
 window.closePZ = closePZ;
 
-
 // ── PZ-VIEWER: estado viewBox ──
-let pzSvgEl = null; // SVG actualmente en el pz-viewer
+let pzSvgEl = null; 
 let pzOrigW = 0, pzOrigH = 0;
 let pzVbX = 0, pzVbY = 0, pzVbW = 0, pzVbH = 0;
 const PZ_ZOOM_F = 0.14;
@@ -1511,7 +1444,6 @@ window.pzZoomBtn = pzZoomBtn;
 // Mouse
 const pzStage = document.getElementById('pz-stage');
 let pzDrag = false, pzDSX = 0, pzDSY = 0, pzDVBX = 0, pzDVBY = 0;
-
 pzStage.addEventListener('wheel', e => {
   e.preventDefault(); e.stopPropagation();
   pzZoomAt(e.deltaY < 0 ? 1+PZ_ZOOM_F : 1-PZ_ZOOM_F, e.clientX, e.clientY);
@@ -1523,6 +1455,7 @@ pzStage.addEventListener('mousedown', e => {
   pzDrag=true; pzDSX=e.clientX; pzDSY=e.clientY; pzDVBX=pzVbX; pzDVBY=pzVbY;
   pzStage.classList.add('dragging');
 });
+
 window.addEventListener('mousemove', e => {
   if(!pzDrag) return;
   const stage = document.getElementById('pz-stage');
@@ -1531,6 +1464,7 @@ window.addEventListener('mousemove', e => {
   pzVbY = pzDVBY - (e.clientY-pzDSY) * (pzVbH/rect.height);
   pzApplyVB();
 });
+
 window.addEventListener('mouseup', () => { pzDrag=false; pzStage.classList.remove('dragging'); });
 pzStage.addEventListener('dblclick', pzFit);
 
@@ -1577,44 +1511,50 @@ pzStage.addEventListener('touchend', e => {
   if(e.touches.length<2){ pzPD0=0; }
 });
 
-
 // ═══════════════════════════════════════════════════════════════
-// BOM — DATOS DEL ARCHIVO CSV PROPORCIONADO (ordenado por referencia)
+// BOM — MODIFICADO Y ACTUALIZADO
 // ═══════════════════════════════════════════════════════════════
 const BOM_DATA_RAW = [
-  // Almacenamiento
-  {ref:'C1,C2,C3',              qty:3, value:'4700μF/63V', desc:'Condensador electrolítico polarizado',           cat:'Almacenamiento'},
-  
-  // Pasivos
-  {ref:'C4',                    qty:1, value:'47nF',        desc:'Condensador no polarizado',                     cat:'Pasivos'},
-  {ref:'C5,C6',                 qty:2, value:'100nF',       desc:'Condensador no polarizado',                     cat:'Pasivos'},
-  {ref:'R4,R5,R14,R15',         qty:4, value:'1.2KΩ',       desc:'Resistor',                                      cat:'Pasivos'},
-  {ref:'R6,R9,R16,R19',         qty:4, value:'10KΩ',        desc:'Resistor',                                      cat:'Pasivos'},
-  {ref:'R7,R8,R17,R18',         qty:4, value:'2.2KΩ',       desc:'Resistor',                                      cat:'Pasivos'},
-  {ref:'R10,R20',               qty:2, value:'4.7KΩ',       desc:'Resistor',                                      cat:'Pasivos'},
-  {ref:'R11,R12,R13,R21,R22,R23', qty:6, value:'10Ω',       desc:'Resistor',                                      cat:'Pasivos'},
-  
-  // Potencia
-  {ref:'D4,D9',                 qty:2, value:'31DF4',       desc:'30V 3A Schottky Barrier Rectifier Diode, DO-201AD', cat:'Potencia'},
-  {ref:'D5,D10',                qty:2, value:'75V/5W',      desc:'Diodo Zener',                                   cat:'Potencia'},
-  {ref:'J1',                    qty:1, value:'TRANSFORMER', desc:'Borne de conexión (transformador)',             cat:'Potencia'},
-  {ref:'Q3,Q4,Q5,Q8,Q9,Q10',    qty:6, value:'IRF740',      desc:'N-Channel Power MOSFET, 400V, 10A, TO-220AB',   cat:'Potencia'},
-  
-  // Control
-  {ref:'Q2,Q7',                 qty:2, value:'2N2222',      desc:'Transistor NPN de señal pequeña, TO-92',        cat:'Control'},
-  
-  // Sensores
-  {ref:'D6,D11',                qty:2, value:'IR LED',      desc:'LED infrarrojo emisor',                         cat:'Sensores'},
-  {ref:'Q1,Q6',                 qty:2, value:'BPW40',       desc:'Fototransistor NPN',                            cat:'Sensores'},
-  
-  // Interfaz
-  {ref:'D2,D7',                 qty:2, value:'BOARD LED',   desc:'LED indicador de placa',                        cat:'Interfaz'},
-  {ref:'D3,D8',                 qty:2, value:'COIL LED',    desc:'LED indicador de bobina',                       cat:'Interfaz'},
-  {ref:'J2',                    qty:1, value:'OUTPUT',      desc:'Borne de conexión (salida)',                    cat:'Interfaz'},
-  {ref:'J5',                    qty:1, value:'BOARD INPUT', desc:'Borne de conexión (entrada de placa)',          cat:'Interfaz'},
-  
-  // Electromagnética
-  {ref:'L1,L2',                 qty:2, value:'COIL',        desc:'Bobina inductiva de disparo',                   cat:'Electromagnética'},
+  // ==================== CAÑÓN GAUSS ====================
+  {ref:'C1,C2,C3', qty:3, value:'4700μF/63V', desc:'Condensador electrolítico polarizado', cat:'Almacenamiento', proyecto:'Cañón Gauss'},
+  {ref:'C4', qty:1, value:'47nF', desc:'Condensador no polarizado', cat:'Pasivos', proyecto:'Cañón Gauss'},
+  {ref:'C5,C6', qty:2, value:'100nF', desc:'Condensador no polarizado', cat:'Pasivos', proyecto:'Cañón Gauss'},
+  {ref:'D2,D7', qty:2, value:'BOARD LED', desc:'LED indicador de placa', cat:'Interfaz', proyecto:'Cañón Gauss'},
+  {ref:'D3,D8', qty:2, value:'COIL LED', desc:'LED indicador de bobina', cat:'Interfaz', proyecto:'Cañón Gauss'},
+  {ref:'D4,D9', qty:2, value:'31DF4', desc:'30V 3A Schottky Barrier Rectifier Diode, DO-201AD', cat:'Potencia', proyecto:'Cañón Gauss'},
+  {ref:'D5,D10', qty:2, value:'75V/5W', desc:'Diodo Zener', cat:'Potencia', proyecto:'Cañón Gauss'},
+  {ref:'D6,D11', qty:2, value:'IR LED', desc:'LED infrarrojo emisor', cat:'Sensores', proyecto:'Cañón Gauss'},
+  {ref:'J1', qty:1, value:'TRANSFORMER', desc:'Borne de conexión (transformador)', cat:'Potencia', proyecto:'Cañón Gauss'},
+  {ref:'J2', qty:1, value:'OUTPUT', desc:'Borne de conexión (salida)', cat:'Interfaz', proyecto:'Cañón Gauss'},
+  {ref:'J3', qty:1, value:'BOARD INPUT 36V', desc:'Generic screw terminal, 01x02', cat:'Interfaz', proyecto:'Cañón Gauss'},
+  {ref:'J4', qty:1, value:'BOARD INPUT 12V', desc:'Generic screw terminal, 01x02', cat:'Interfaz', proyecto:'Cañón Gauss'},
+  {ref:'L1,L2', qty:2, value:'COIL', desc:'Bobina inductiva de disparo', cat:'Electromagnética', proyecto:'Cañón Gauss'},
+  {ref:'Q1,Q6', qty:2, value:'BPW40', desc:'Fototransistor NPN', cat:'Sensores', proyecto:'Cañón Gauss'},
+  {ref:'Q2,Q7', qty:2, value:'2N2222', desc:'Transistor NPN de señal pequeña, TO-92', cat:'Control', proyecto:'Cañón Gauss'},
+  {ref:'Q3,Q4,Q5,Q8,Q9,Q10', qty:6, value:'IRF740', desc:'N-Channel Power MOSFET, 400V, 10A, TO-220AB', cat:'Potencia', proyecto:'Cañón Gauss'},
+  {ref:'R1,R2,R11,R12', qty:4, value:'1.2KΩ', desc:'Resistor, US symbol', cat:'Pasivos', proyecto:'Cañón Gauss'},
+  {ref:'R3,R6,R13,R16', qty:4, value:'10KΩ', desc:'Resistor, US symbol', cat:'Pasivos', proyecto:'Cañón Gauss'},
+  {ref:'R4,R5,R14,R15', qty:4, value:'2.2KΩ', desc:'Resistor, US symbol', cat:'Pasivos', proyecto:'Cañón Gauss'},
+  {ref:'R7,R17', qty:2, value:'4.7KΩ', desc:'Resistor, US symbol', cat:'Pasivos', proyecto:'Cañón Gauss'},
+  {ref:'R8,R9,R10,R18,R19,R20', qty:6, value:'10Ω', desc:'Resistor, US symbol', cat:'Pasivos', proyecto:'Cañón Gauss'},
+  {ref:'TP1,TP2,TP3,TP4', qty:4, value:'TestPoint', desc:'Punto de prueba de circuito', cat:'Interfaz', proyecto:'Cañón Gauss'},
+
+  // ==================== PLACA DE CONTROL ====================
+  {ref:'C7,C10', qty:2, value:'100nF', desc:'Unpolarized capacitor', cat:'Pasivos', proyecto:'Placa de control'},
+  {ref:'C8', qty:1, value:'10nF', desc:'Unpolarized capacitor', cat:'Pasivos', proyecto:'Placa de control'},
+  {ref:'C9', qty:1, value:'68nF', desc:'Unpolarized capacitor', cat:'Pasivos', proyecto:'Placa de control'},
+  {ref:'D12-D51', qty:40, value:'LED', desc:'Light emitting diode', cat:'Interfaz', proyecto:'Placa de control'},
+  {ref:'D52,D53', qty:2, value:'1N4148', desc:'100V 0.15A standard switching diode, DO-35', cat:'Control', proyecto:'Placa de control'},
+  {ref:'J5', qty:1, value:'12V POWER SUPPLY', desc:'Generic screw terminal, 01x02', cat:'Interfaz', proyecto:'Placa de control'},
+  {ref:'J6', qty:1, value:'PWM OUTPUT', desc:'Generic screw terminal, 01x02', cat:'Interfaz', proyecto:'Placa de control'},
+  {ref:'Q11', qty:1, value:'IRF540N', desc:'33A Id, 100V Vds, HEXFET N-Channel MOSFET', cat:'Potencia', proyecto:'Placa de control'},
+  {ref:'R21', qty:1, value:'6.8KΩ', desc:'Resistor, US symbol', cat:'Pasivos', proyecto:'Placa de control'},
+  {ref:'R22,R64', qty:2, value:'100KΩ', desc:'Potentiometer, US symbol', cat:'Pasivos', proyecto:'Placa de control'},
+  {ref:'R23-R62', qty:40, value:'1KΩ', desc:'Resistor, US symbol', cat:'Pasivos', proyecto:'Placa de control'},
+  {ref:'R63', qty:1, value:'470Ω', desc:'Resistor, US symbol', cat:'Pasivos', proyecto:'Placa de control'},
+  {ref:'R65', qty:1, value:'100Ω', desc:'Resistor, US symbol', cat:'Pasivos', proyecto:'Placa de control'},
+  {ref:'U1,U7', qty:2, value:'NE555P', desc:'Precision Timers, 555 compatible, PDIP-8', cat:'Control', proyecto:'Placa de control'},
+  {ref:'U2,U3,U4,U5,U6', qty:5, value:'4017', desc:'Johnson Counter ( 10 outputs )', cat:'Control', proyecto:'Placa de control'}
 ];
 
 // Ordenar por referencia (alfabéticamente)
@@ -1623,11 +1563,11 @@ const BOM_DATA = BOM_DATA_RAW;
 
 // Función para actualizar el contador circular
 function updateCounter() {
-  const total = 10; // total de partes únicas (ajústalo según PARTS)
+  const total = 10;
   const count = seen.size;
   const percent = (count / total) * 100;
   const circle = document.getElementById('progress-circle');
-  const circumference = 2 * Math.PI * 16; // r=16
+  const circumference = 2 * Math.PI * 16;
   const dash = (percent / 100) * circumference;
   circle.style.strokeDasharray = `${dash} ${circumference}`;
   document.getElementById('counter-text').textContent = `${count}/${total}`;
@@ -1635,12 +1575,12 @@ function updateCounter() {
 
 // Renderizado de la tabla BOM dentro de la pestaña del modal de esquemáticos
 function renderModalBOM() {
-  const cats = [...new Set(BOM_DATA.map(r=>r.cat))];
+  const tags = [...new Set(BOM_DATA.flatMap(r => [r.cat, r.proyecto]))];
   const filterBar = document.getElementById('bom-filter-bar-modal');
   let activeCat = 'Todos';
 
   function buildChips() {
-    filterBar.innerHTML = ['Todos',...cats].map(c => {
+    filterBar.innerHTML = ['Todos', ...tags].map(c => {
       let icon = '';
       switch(c) {
         case 'Control': icon = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="1.5"/></svg>'; break;
@@ -1649,6 +1589,8 @@ function renderModalBOM() {
         case 'Pasivos': icon = '<svg viewBox="0 0 24 24"><rect x="7" y="5" width="10" height="14" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M12 5v14" stroke="currentColor" stroke-width="1.5"/></svg>'; break;
         case 'Electromagnética': icon = '<svg viewBox="0 0 24 24"><path d="M4 12h16M12 4v16" stroke="currentColor" stroke-width="1.5"/><ellipse cx="12" cy="12" rx="4" ry="4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>'; break;
         case 'Sensores': icon = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="currentColor"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>'; break;
+        case 'Cañón Gauss': icon = '<svg viewBox="0 0 24 24"><rect x="10" y="15" width="4" height="1.5" rx="0.5" fill="currentColor" opacity="0.5"/><rect x="3" y="10.5" width="17" height="3" rx="0.75" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="7.5" y="9.5" width="1.8" height="5" rx="0.4" fill="currentColor"/><rect x="11.1" y="9.5" width="1.8" height="5" rx="0.4" fill="currentColor"/><rect x="14.7" y="9.5" width="1.8" height="5" rx="0.4" fill="currentColor"/><rect x="1.5" y="10" width="2" height="4" rx="0.5" fill="currentColor"/><rect x="20.5" y="10.5" width="2" height="3" rx="0.5" fill="currentColor"/></svg>'; break;
+        case 'Placa de control': icon = '<svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="4.5" cy="6.5" r="0.8" fill="currentColor" opacity="0.5"/><circle cx="19.5" cy="6.5" r="0.8" fill="currentColor" opacity="0.5"/><circle cx="4.5" cy="17.5" r="0.8" fill="currentColor" opacity="0.5"/><circle cx="19.5" cy="17.5" r="0.8" fill="currentColor" opacity="0.5"/><rect x="9" y="9" width="6" height="6" rx="0.5" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="9" y1="10.5" x2="7" y2="10.5" stroke="currentColor" stroke-width="1"/><line x1="9" y1="12" x2="7" y2="12" stroke="currentColor" stroke-width="1"/><line x1="9" y1="13.5" x2="7" y2="13.5" stroke="currentColor" stroke-width="1"/><line x1="15" y1="10.5" x2="17" y2="10.5" stroke="currentColor" stroke-width="1"/><line x1="15" y1="12" x2="17" y2="12" stroke="currentColor" stroke-width="1"/><line x1="15" y1="13.5" x2="17" y2="13.5" stroke="currentColor" stroke-width="1"/></svg>'; break;
         case 'Interfaz': icon = '<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 8h8M8 12h8M8 16h4" stroke="currentColor" stroke-width="1.5"/></svg>'; break;
         case 'Mecánica': icon = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M12 2v20M2 12h20" stroke="currentColor" stroke-width="1.5"/></svg>'; break;
         default: icon = '';
@@ -1662,30 +1604,33 @@ function renderModalBOM() {
     buildChips();
     const rows = document.querySelectorAll('#bom-tbody-modal tr');
     rows.forEach(tr => {
-      tr.style.display = (cat==='Todos'||tr.dataset.cat===cat) ? '' : 'none';
+      tr.style.display = (cat === 'Todos' || tr.dataset.cat === cat || tr.dataset.proyecto === cat) ? '' : 'none';
     });
     document.getElementById('bom-summary-modal').innerHTML = buildSummaryModal(cat);
   };
 
   function buildSummaryModal(cat) {
-    const filtered = cat==='Todos' ? BOM_DATA : BOM_DATA.filter(r=>r.cat===cat);
-    const totalQty = filtered.reduce((s,r)=>s+parseInt(r.qty||0),0);
+    const filtered = cat === 'Todos' ? BOM_DATA : BOM_DATA.filter(r => r.cat === cat || r.proyecto === cat);
+    const totalQty = filtered.reduce((s,r) => s + parseInt(r.qty||0), 0);
     return `
       <div class="bom-stat"><div class="bs-l">Líneas</div><div class="bs-v">${filtered.length}</div></div>
       <div class="bom-stat"><div class="bs-l">Unidades</div><div class="bs-v">${totalQty}</div></div>
-      <div class="bom-stat"><div class="bs-l">Categorías</div><div class="bs-v">${cats.length}</div></div>`;
+      <div class="bom-stat"><div class="bs-l">Filtros Activos</div><div class="bs-v">${tags.length}</div></div>`;
   }
 
   document.getElementById('bom-thead-modal').innerHTML =
-    ' <th>Ref.</th><th>Cant.</th><th>Valor / Componente</th><th>Descripción</th><th>Categoría</th> ';
+    ' <th>Ref.</th><th>Cant.</th><th>Valor / Componente</th><th>Descripción</th><th>Clasificación y Proyecto</th> ';
 
   document.getElementById('bom-tbody-modal').innerHTML = BOM_DATA.map(r => `
-    <tr data-cat="${r.cat}">
+    <tr data-cat="${r.cat}" data-proyecto="${r.proyecto}">
       <td data-label="Ref." style="font-family:'Black Ops One',serif;font-size:.78rem;color:var(--teal)">${escHtml(r.ref)}</td>
       <td data-label="Cant."><span class="bom-badge ok">${escHtml(String(r.qty))}</span></td>
       <td data-label="Valor" style="color:#fff;font-weight:600">${escHtml(r.value)}</td>
       <td data-label="Descripción">${escHtml(r.desc||'')}</td>
-      <td data-label="Categoría"><span class="bom-badge warn" style="font-size:.58rem">${escHtml(r.cat)}</span></td>
+      <td data-label="Clasificación">
+        <span class="bom-badge warn" style="font-size:.58rem; margin-bottom: 4px; display: inline-block;">${escHtml(r.cat)}</span>
+        <span class="bom-badge ok" style="font-size:.58rem; display: inline-block;">${escHtml(r.proyecto)}</span>
+      </td>
      </tr>`).join('');
 
   buildChips();
@@ -1695,12 +1640,12 @@ function renderModalBOM() {
 function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
+
 // ═══════════════════════════════════════════════════════════════
 // MODAL / TABS
 // ═══════════════════════════════════════════════════════════════
-let modalActive = false; // control para bloquear zoom/rotación 3D
+let modalActive = false;
 
-// Unificamos: el BOM ahora abre el mismo modal con la pestaña BOM
 function openBOM() { 
   openModal('bom');
 }
@@ -1743,14 +1688,12 @@ function hideHintOnInteraction() {
     hintHidden = true;
   }
 }
-// También ocultar si se hace clic en el canvas (ya se gestiona en openPanel, pero por si acaso)
-// Añadimos listener al canvas para cualquier interacción que no sea panel
 renderer.domElement.addEventListener('mousedown', hideHintOnInteraction);
 renderer.domElement.addEventListener('touchstart', hideHintOnInteraction);
 renderer.domElement.addEventListener('wheel', hideHintOnInteraction);
 
 // ═══════════════════════════════════════════════════════════════
-// LIGHTBOX (no usado actualmente)
+// LIGHTBOX
 // ═══════════════════════════════════════════════════════════════
 function openLightbox(id) {
   if(!id || !SCHEMS[id]) return;
@@ -1767,7 +1710,6 @@ window.closeLightbox = closeLightbox;
 window.addEventListener('keydown', e => {
   if(e.key==='Escape'){
     closePanel(); closeModal(); closePZ(); 
-    // ya no hay closeBOM independiente, pero si el modal está abierto, se cierra con closeModal
   }
 });
 
@@ -1818,25 +1760,19 @@ function animate() {
 }
 animate();
 
-
 // ═══════════════════════════════════════════════════════════════
-// VISOR SVG — ZOOM/PAN VÍA VIEWBOX (sin transforms, sin rasterización)
-// El SVG ocupa 100%×100% del contenedor; viewBox hace el fit y el zoom.
+// VISOR SVG — ZOOM/PAN VÍA VIEWBOX
 // ═══════════════════════════════════════════════════════════════
 (function(){
   const SVG_URL = 'esquemas/esquema-completo.svg';
   const ZOOM_FACTOR = 0.14;
-  const ZOOM_MAX_FACTOR = 20; // máx zoom: 20× respecto al fit inicial
+  const ZOOM_MAX_FACTOR = 20;
 
   let ready = false;
   let svgEl = null;
-  // viewBox original (dimensiones naturales del SVG)
   let origW = 0, origH = 0;
-  // viewBox actual
   let vbX = 0, vbY = 0, vbW = 0, vbH = 0;
-  // drag
   let drag = false, dragSX = 0, dragSY = 0, dragVBX = 0, dragVBY = 0;
-  // pinch
   let pinchDist0 = 0, pinchVBX0 = 0, pinchVBY0 = 0, pinchVBW0 = 0, pinchVBH0 = 0;
   let zoomTimer = null;
   let wrap = null, inner = null;
@@ -1848,7 +1784,6 @@ animate();
     if(svgEl) svgEl.setAttribute('viewBox', `${vbX} ${vbY} ${vbW} ${vbH}`);
   }
 
-  // Fit: muestra el SVG completo con preserveAspectRatio (CSS lo gestiona)
   function fit(){
     vbX = 0; vbY = 0; vbW = origW; vbH = origH;
     applyVB();
@@ -1866,28 +1801,22 @@ animate();
     zoomTimer = setTimeout(() => ind.classList.remove('visible'), 1400);
   }
 
-  // Zoom centrado en punto SVG (sx, sy) dentro del viewBox actual
-  // factor > 1 = acercar (reducir viewBox), factor < 1 = alejar
   function zoomAt(clientX, clientY, factor){
     if(!svgEl || !wrap) return;
     const rect = wrap.getBoundingClientRect();
-    // Convertir coordenadas de pantalla a coordenadas del viewBox actual
     const ratioX = (clientX - rect.left) / rect.width;
     const ratioY = (clientY - rect.top)  / rect.height;
 
-    // Anclar el punto bajo el cursor
     const pivotX = vbX + ratioX * vbW;
     const pivotY = vbY + ratioY * vbH;
 
-    // Limitar zoom
     const minW = origW / ZOOM_MAX_FACTOR;
     const minH = origH / ZOOM_MAX_FACTOR;
     let newW = vbW / factor;
     let newH = vbH / factor;
     if(newW < minW){ newW = minW; newH = minH; }
-    if(newW > origW * 4){ newW = origW * 4; newH = origH * 4; } // zoom out max 4× del fit
+    if(newW > origW * 4){ newW = origW * 4; newH = origH * 4; }
 
-    // Mantener el punto de anclaje bajo el cursor
     vbX = pivotX - ratioX * newW;
     vbY = pivotY - ratioY * newH;
     vbW = newW;
@@ -1917,7 +1846,6 @@ animate();
     const doc = parser.parseFromString(svgText, 'image/svg+xml');
     svgEl = doc.documentElement;
 
-    // Extraer dimensiones del viewBox
     const vb = svgEl.getAttribute('viewBox');
     if(vb){
       const p = vb.trim().split(/[\s,]+/);
@@ -1928,15 +1856,13 @@ animate();
       origH = parseFloat(svgEl.getAttribute('height')) || 700;
     }
 
-    // Configurar el SVG para que el CSS lo gestione (100%×100% en el contenedor)
     svgEl.setAttribute('width',  '100%');
     svgEl.setAttribute('height', '100%');
     svgEl.setAttribute('preserveAspectRatio', 'xMidYMid meet');
     svgEl.style.display = 'block';
     svgEl.style.pointerEvents = 'none';
     svgEl.style.userSelect = 'none';
-
-    // Viewbox inicial = fit completo
+    
     vbX = 0; vbY = 0; vbW = origW; vbH = origH;
     applyVB();
 
@@ -1950,14 +1876,12 @@ animate();
   function setupEvents(){
     if(!wrap) return;
 
-    // Wheel zoom
     wrap.addEventListener('wheel', e => {
       e.preventDefault();
       const factor = e.deltaY < 0 ? (1 + ZOOM_FACTOR) : (1 - ZOOM_FACTOR);
       zoomAt(e.clientX, e.clientY, factor);
     }, {passive: false});
 
-    // Mouse drag
     wrap.addEventListener('mousedown', e => {
       if(e.button !== 0) return;
       drag = true;
@@ -1965,22 +1889,22 @@ animate();
       dragVBX = vbX; dragVBY = vbY;
       wrap.classList.add('dragging');
     });
+
     window.addEventListener('mousemove', e => {
       if(!drag || !wrap) return;
       const rect = wrap.getBoundingClientRect();
-      // Cuántos viewBox-units se mueve por pixel
       const pxToVBX = vbW / rect.width;
       const pxToVBY = vbH / rect.height;
       vbX = dragVBX - (e.clientX - dragSX) * pxToVBX;
       vbY = dragVBY - (e.clientY - dragSY) * pxToVBY;
       applyVB();
     });
+
     window.addEventListener('mouseup', () => {
       drag = false;
       if(wrap) wrap.classList.remove('dragging');
     });
 
-    // Touch drag
     wrap.addEventListener('touchstart', e => {
       if(e.touches.length === 1){
         drag = true;
@@ -1993,6 +1917,7 @@ animate();
         pinchVBW0   = vbW; pinchVBH0 = vbH;
       }
     }, {passive: true});
+
     wrap.addEventListener('touchmove', e => {
       e.preventDefault();
       if(e.touches.length === 1 && drag){
@@ -2008,7 +1933,7 @@ animate();
         const rect = wrap.getBoundingClientRect();
         const ratioX = (m.x - rect.left) / rect.width;
         const ratioY = (m.y - rect.top)  / rect.height;
-        // Zoom desde estado inicial del pinch
+        
         const newW = pinchVBW0 / factor;
         const newH = pinchVBH0 / factor;
         const pivotX = pinchVBX0 + ratioX * pinchVBW0;
@@ -2019,17 +1944,16 @@ animate();
         applyVB(); showZoom();
       }
     }, {passive: false});
+
     wrap.addEventListener('touchend', e => {
       if(e.touches.length < 2) pinchDist0 = 0;
       if(e.touches.length === 0) drag = false;
     });
 
-    // Doble clic → fit
     wrap.addEventListener('dblclick', fit);
-    window.addEventListener('resize', () => { /* viewBox se adapta solo por CSS */ });
+    window.addEventListener('resize', () => { });
   }
 
-  // Arrancar al abrir el tab "full"
   const _openModal = window.openModal;
   window.openModal = function(tab){
     _openModal(tab);

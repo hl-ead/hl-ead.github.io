@@ -297,27 +297,22 @@ canvas{display:block;touch-action:none}
   cursor:grab;
   background:#050e18;
   touch-action:none;
-  will-change:transform;
 }
 #pdf-pz-wrap.dragging{cursor:grabbing}
 #sch-img-inner{
   position:absolute;
   inset:0;
   display:flex;
-  align-items:center;
-  justify-content:center;
   line-height:0;
-  overflow:hidden;
 }
 #sch-img-inner svg{
   display:block;
-  flex-shrink:0;
+  width:100%;
+  height:100%;
   pointer-events:none;
   user-select:none;
   shape-rendering:geometricPrecision;
   text-rendering:optimizeLegibility;
-  will-change:transform;
-  transform-origin: 0 0;
 }
 #pdf-loading{
   position:absolute;inset:0;
@@ -498,20 +493,16 @@ canvas{display:block;touch-action:none}
   position:absolute;
   inset:0;
   display:flex;
-  align-items:center;
-  justify-content:center;
   line-height:0;
-  overflow:hidden;
 }
 #pz-content svg{
   display:block;
-  flex-shrink:0;
+  width:100%;
+  height:100%;
   pointer-events:none;
   user-select:none;
   shape-rendering:geometricPrecision;
   text-rendering:optimizeLegibility;
-  will-change:transform;
-  transform-origin: 0 0;
 }
 #pz-img{
   display:block;max-width:none;
@@ -544,11 +535,99 @@ canvas{display:block;touch-action:none}
   overflow:hidden;
 }
 #tpane-bom.on { display:flex; }
-#bom-filter-bar-modal {
+
+/* ── FILTROS DE PROYECTO (ahora en color TEAL) ── */
+#bom-project-filter {
   display:flex; align-items:center; gap:10px;
-  padding:10px 16px; border-bottom:1px solid rgba(255,140,42,.1);
+  padding:8px 16px;
+  background:rgba(0,217,176,0.06);
+  border-bottom:1px solid rgba(0,217,176,0.15);
   flex-shrink:0; flex-wrap:wrap;
 }
+.bom-project-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  background: rgba(0,217,176,0.08);
+  border: 1px solid rgba(0,217,176,0.2);
+  border-radius: 30px;
+  color: rgba(0,217,176,0.7);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.bom-project-chip.on {
+  background: rgba(0,217,176,0.15);
+  border-color: var(--teal);
+  color: var(--teal);
+  box-shadow: 0 0 12px rgba(0,217,176,0.2);
+}
+.bom-project-chip:hover {
+  color: var(--teal);
+  border-color: var(--teal);
+  background: rgba(0,217,176,0.1);
+}
+.bom-project-chip svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  filter: drop-shadow(0 0 2px currentColor);
+}
+
+/* ── FILTROS DE CATEGORÍA (ahora en color ÁMBAR) ── */
+#bom-filter-bar-modal {
+  display:flex; align-items:center; gap:10px;
+  padding:8px 16px;
+  border-bottom:1px solid rgba(255,140,42,0.15);
+  flex-shrink:0; flex-wrap:wrap;
+  background:rgba(255,140,42,0.04);
+}
+.bom-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  background: rgba(255,140,42,0.08);
+  border: 1px solid rgba(255,140,42,0.2);
+  border-radius: 30px;
+  color: rgba(255,140,42,0.7);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.bom-filter-chip svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  filter: drop-shadow(0 0 2px currentColor);
+}
+.bom-filter-chip.on {
+  background: rgba(255,140,42,0.2);
+  border-color: var(--amber);
+  color: var(--amber);
+  box-shadow: 0 0 12px rgba(255,140,42,0.25);
+}
+.bom-filter-chip:hover {
+  color: var(--amber);
+  border-color: var(--amber);
+  background: rgba(255,140,42,0.15);
+}
+
 #bom-scroll-modal {
   flex:1;
   min-height:0; overflow:auto;
@@ -623,53 +702,17 @@ canvas{display:block;touch-action:none}
 .bom-stat .bs-l{font-size:.59rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-dim);margin-bottom:3px}
 .bom-stat .bs-v{font-family:'Black Ops One',serif;font-size:.88rem;color:var(--amber)}
 
-.bom-filter-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  background: rgba(255,140,42,0.06);
-  border: 1px solid rgba(255,140,42,0.15);
-  border-radius: 30px;
-  color: rgba(255,140,42,0.7);
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.2s;
-  -webkit-tap-highlight-color: transparent;
-}
-.bom-filter-chip svg {
-  width: 16px;
-  height: 16px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  filter: drop-shadow(0 0 2px currentColor);
-}
-.bom-filter-chip.on {
-  background: rgba(255,140,42,0.2);
-  border-color: var(--amber);
-  color: var(--amber);
-  box-shadow: 0 0 12px rgba(255,140,42,0.3);
-}
-.bom-filter-chip:hover {
-  color: var(--amber);
-  border-color: var(--amber);
-  background: rgba(255,140,42,0.12);
-}
 @media (max-width:640px) {
-  .bom-filter-chip {
+  .bom-project-chip, .bom-filter-chip {
     padding: 4px 10px;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
   }
-  .bom-filter-chip svg {
+  .bom-project-chip svg, .bom-filter-chip svg {
     width: 14px;
     height: 14px;
   }
 }
+
 @media(max-width:640px){
   #hint{
     bottom:calc(78px + env(safe-area-inset-bottom)) !important;
@@ -825,6 +868,9 @@ canvas{display:block;touch-action:none}
       <div class="sec-grid" id="sec-grid"></div>
     </div>
     <div id="tpane-bom" class="tpane">
+      <!-- Filtro por Proyecto (teal, arriba) -->
+      <div id="bom-project-filter" class="bom-project-filter"></div>
+      <!-- Filtro por Categoría (ámbar, debajo) -->
       <div id="bom-filter-bar-modal" class="bom-filter-bar"></div>
       <div id="bom-scroll-modal">
         <div id="bom-summary-modal"></div>
@@ -865,15 +911,20 @@ canvas{display:block;touch-action:none}
 
 <script>
 // ═══════════════════════════════════════════════════════════════
-// SECTORES IMÁGENES
+// SECTOR IMAGES CONFIG
 // ═══════════════════════════════════════════════════════════════
 const SECTORS = [
   { id:'control',  title:'Placa de Filtrado',                     img:'esquemas/placa-de-filtrado.svg'       },
   { id:'driver1',  title:'Fuente de Alimentacion 36V',            img:'esquemas/fuente-de-alimentacion.svg'  },
   { id:'driver2',  title:'Modulo de Aceleracion de Bobina 1 & 2', img:'esquemas/modulo-bobina.svg'           },
-  { id:'control2', title:'Placa de control de leds y ventilacion',img:'esquemas/placa-para-leds.svg'         },
+  { id:'driver2',  title:'Placa de control de leds y ventilacion',img:'esquemas/placa-para-leds.svg'         },
 ];
-
+const SECTOR_IMG = {
+  pcb1: 'esquemas/placa-de-filtrado.svg',
+  pcb3: 'esquemas/fuente-de-alimentacion.svg',
+  pcb4: 'esquemas/modulo-bobina.svg',
+  pcb5: 'esquemas/placa-para-leds.svg',
+};
 const secGrid = document.getElementById('sec-grid');
 SECTORS.forEach(s => {
   const card = document.createElement('div');
@@ -969,9 +1020,6 @@ const isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth 
 if(isMobile){
   renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
   renderer.shadowMap.enabled = false;
-} else {
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-  renderer.shadowMap.enabled = true;
 }
 
 const scene = new THREE.Scene();
@@ -983,28 +1031,24 @@ const CAM_INIT = isMobile ? 24 : 16;
 camera.position.set(5, 6, CAM_INIT);
 camera.lookAt(0, 1, 0);
 
-// Stars
-const STAR_COUNT = isMobile ? 1200 : 2400;
 const starG = new THREE.BufferGeometry();
-const spos = new Float32Array(STAR_COUNT * 3);
-for(let i=0;i<STAR_COUNT*3;i++) spos[i]=(Math.random()-.5)*300;
+const spos = new Float32Array(2400);
+for(let i=0;i<2400;i++) spos[i]=(Math.random()-.5)*300;
 starG.setAttribute('position',new THREE.BufferAttribute(spos,3));
-scene.add(new THREE.Points(starG, new THREE.PointsMaterial({color:0xffffff,size:.12,transparent:true,opacity:.6,sizeAttenuation:true})));
+scene.add(new THREE.Points(starG, new THREE.PointsMaterial({color:0xffffff,size:.12,transparent:true,opacity:.6})));
 
-// Lights
 scene.add(new THREE.AmbientLight(0x1a2240,.7));
 const sun = new THREE.DirectionalLight(0xfff5e8,1.8);
-sun.position.set(12,14,8);
-sun.castShadow = !isMobile;
-if(!isMobile){
-  sun.shadow.mapSize.width = 512;
-  sun.shadow.mapSize.height = 512;
-}
+sun.position.set(12,14,8);sun.castShadow=!isMobile;
+sun.shadow.mapSize.width=isMobile?512:1024;
+sun.shadow.mapSize.height=isMobile?512:1024;
 scene.add(sun);
 const fill = new THREE.DirectionalLight(0x2244ff,.25);
 fill.position.set(-10,-4,-8);scene.add(fill);
 const pt1 = new THREE.PointLight(0xff8c2a,.9,18);
 pt1.position.set(-2,4,2);scene.add(pt1);
+const pt2 = new THREE.PointLight(0x00d9b0,.5,20);
+pt2.position.set(4,3,1);scene.add(pt2);
 
 // ═══════════════════════════════════════════════════════════════
 // MODEL CONSTRUCTION
@@ -1012,6 +1056,15 @@ pt1.position.set(-2,4,2);scene.add(pt1);
 const model = new THREE.Group();
 scene.add(model);
 const clickables = [];
+
+const _origCreateImageBitmap = window.createImageBitmap;
+window.createImageBitmap = function(source) {
+  return _origCreateImageBitmap(source).catch(function() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1; canvas.height = 1;
+    return _origCreateImageBitmap(canvas);
+  });
+};
 
 const dracoLoader = new THREE.DRACOLoader();
 dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
@@ -1061,27 +1114,25 @@ gltfLoader.load(
     conectarClickables(rootLow);
     console.log('✅ Modelo liviano cargado.');
 
-    if(!isMobile){
-      gltfLoader.load(
-        'gauss_cannon.glb',
-        function(gltfHD) {
-          const rootHD = gltfHD.scene;
-          prepararModelo(rootHD);
-          model.remove(rootLow);
-          model.add(rootHD);
-          conectarClickables(rootHD);
-          console.log('✅ Modelo completo cargado. Piezas:', clickables.length);
-          if(clickables.length === 0) {
-            console.warn('⚠️ Nodos en el modelo:');
-            rootHD.traverse(c => { if(c.isMesh) console.log(' -', c.name); });
-          }
-        },
-        null,
-        function(err) {
-          console.warn('Modelo completo no disponible, usando liviano:', err.message);
+    gltfLoader.load(
+      'gauss_cannon.glb',
+      function(gltfHD) {
+        const rootHD = gltfHD.scene;
+        prepararModelo(rootHD);
+        model.remove(rootLow);
+        model.add(rootHD);
+        conectarClickables(rootHD);
+        console.log('✅ Modelo completo cargado. Piezas:', clickables.length);
+        if(clickables.length === 0) {
+          console.warn('⚠️ Nodos en el modelo:');
+          rootHD.traverse(c => { if(c.isMesh) console.log(' -', c.name); });
         }
-      );
-    }
+      },
+      null,
+      function(err) {
+        console.warn('Modelo completo no disponible, usando liviano:', err.message);
+      }
+    );
   },
   null,
   function(err) {
@@ -1092,8 +1143,8 @@ gltfLoader.load(
 // ═══════════════════════════════════════════════════════════════
 // HIGHLIGHT / INTERACTION
 // ═══════════════════════════════════════════════════════════════
-const baseHighlightMat = new THREE.MeshStandardMaterial({
-  roughness:.25, metalness:.5, emissiveIntensity:.3
+const highlightMat = new THREE.MeshStandardMaterial({
+  color:0x00d9b0,roughness:.25,metalness:.5,emissive:0x00d9b0,emissiveIntensity:.35
 });
 
 let selectedId = null, hoveredId = null;
@@ -1103,10 +1154,11 @@ function setHighlight(id, on) {
   clickables.forEach(c => {
     if(c.id === id) {
       if(on){
-        const mat = baseHighlightMat.clone();
-        mat.color.set(c.id.startsWith('pcb') ? 0x00d9b0 : 0xff8c2a);
-        mat.emissive.set(c.id.startsWith('pcb') ? 0x00d9b0 : 0xff8c2a);
-        c.mesh.material = mat;
+        const hm = highlightMat.clone();
+        hm.color.set(c.id.startsWith('pcb') ? 0x00d9b0 : 0xff8c2a);
+        hm.emissive.set(c.id.startsWith('pcb') ? 0x00d9b0 : 0xff8c2a);
+        hm.emissiveIntensity = .3;
+        c.mesh.material = hm;
       } else {
         c.mesh.material = c.origMat;
       }
@@ -1127,7 +1179,7 @@ function openPanel(id) {
   document.getElementById('p-desc').textContent = d.desc;
 
   const statsEl = document.getElementById('p-stats');
-  statsEl.innerHTML = d.stats.map(s =>
+  statsEl.innerHTML = d.stats.map(s=>
     `<div class="sbox"><div class="slbl">${s.l}</div><div class="sval">${s.v}</div></div>`
   ).join('');
 
@@ -1138,8 +1190,10 @@ function openPanel(id) {
     schSec.style.display = 'block';
     schImg.src = d.schemImg;
     schThumb.onclick = () => openPZ(d.schemImg, d.schemTitle || d.name);
+    currentSchemId = d.schemImg;
   } else {
     schSec.style.display = 'none';
+    currentSchemId = null;
   }
 
   document.getElementById('panel').classList.add('open');
@@ -1159,6 +1213,7 @@ window.closePanel = closePanel;
 const ray = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 const tip = document.getElementById('tip');
+let currentSchemId = null;
 
 function updateMouse(x, y) {
   mouse.x = (x/innerWidth)*2-1;
@@ -1245,8 +1300,8 @@ window.addEventListener('wheel', e=>{
 // ═══════════════════════════════════════════════════════════════
 // TOUCH CONTROLS
 // ═══════════════════════════════════════════════════════════════
-let touchMoved = false, tpx = 0, tpy = 0, touchTime = 0;
-let pinchDist = 0, touchDrag = false;
+let touches = {}, pinchDist = 0, touchDrag = false, touchMoved = false;
+let tpx = 0, tpy = 0, touchTime = 0;
 
 window.addEventListener('touchstart', e => {
   if (modalActive) return;
@@ -1303,56 +1358,9 @@ window.addEventListener('touchend', e => {
 });
 
 // ═══════════════════════════════════════════════════════════════
-// PAN-ZOOM VIEWER (optimizado con transform CSS)
+// PAN-ZOOM VIEWER (original con viewBox)
 // ═══════════════════════════════════════════════════════════════
-let pzSvgEl = null; 
-let pzOrigW = 0, pzOrigH = 0;
-let pzVbX = 0, pzVbY = 0, pzVbW = 0, pzVbH = 0;
-const PZ_ZOOM_F = 0.14;
-
-function pzApplyVB(){
-  if(!pzSvgEl) return;
-  const stage = document.getElementById('pz-stage');
-  const rect = stage.getBoundingClientRect();
-  const scale = rect.width / pzVbW;
-  const tx = -pzVbX * scale;
-  const ty = -pzVbY * scale;
-  pzSvgEl.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
-  
-  const lvl = pzOrigW > 0 ? Math.round(pzOrigW / pzVbW * 100) : 100;
-  document.getElementById('pz-zoom-val').textContent = lvl + '%';
-}
-
-function pzFit() {
-  pzVbX = 0; pzVbY = 0; pzVbW = pzOrigW; pzVbH = pzOrigH;
-  pzApplyVB();
-}
-window.pzFit = pzFit;
-
-function pzZoomAt(factor, clientX, clientY) {
-  const stage = document.getElementById('pz-stage');
-  const rect  = stage.getBoundingClientRect();
-  const rx = (clientX - rect.left) / rect.width;
-  const ry = (clientY - rect.top)  / rect.height;
-  const pivotX = pzVbX + rx * pzVbW;
-  const pivotY = pzVbY + ry * pzVbH;
-  const minW = pzOrigW / 10,  minH = pzOrigH / 10;
-  const maxW = pzOrigW, maxH = pzOrigH;
-  let nw = Math.max(minW, Math.min(maxW, pzVbW / factor));
-  let nh = nw * (pzOrigH / pzOrigW);
-  pzVbX = pivotX - rx * nw;
-  pzVbY = pivotY - ry * nh;
-  pzVbW = nw; pzVbH = nh;
-  pzApplyVB();
-}
-
-function pzZoomBtn(f) {
-  const stage = document.getElementById('pz-stage');
-  const r = stage.getBoundingClientRect();
-  pzZoomAt(f, r.left + r.width/2, r.top + r.height/2);
-}
-window.pzZoomBtn = pzZoomBtn;
-
+let pzSvgW = 0, pzSvgH = 0;
 async function openPZ(src, title) {
   const content = document.getElementById('pz-content');
   const viewer  = document.getElementById('pz-viewer');
@@ -1389,22 +1397,16 @@ async function openPZ(src, title) {
     if(!w||!hh){ w=parseFloat(pzSvgEl.getAttribute('width'))||1000; hh=parseFloat(pzSvgEl.getAttribute('height'))||700; }
     pzOrigW=w; pzOrigH=hh;
 
-    // Tamaño fijo para aplicar transform
-    pzSvgEl.setAttribute('width', pzOrigW);
-    pzSvgEl.setAttribute('height', pzOrigH);
-    pzSvgEl.style.width = pzOrigW + 'px';
-    pzSvgEl.style.height = pzOrigH + 'px';
-    pzSvgEl.style.maxWidth = 'none';
-    pzSvgEl.style.display = 'block';
-    pzSvgEl.style.pointerEvents = 'none';
-    pzSvgEl.style.userSelect = 'none';
-    pzSvgEl.style.transformOrigin = '0 0';
-    pzSvgEl.style.willChange = 'transform';
+    pzSvgEl.setAttribute('width',  '100%');
+    pzSvgEl.setAttribute('height', '100%');
+    pzSvgEl.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+    pzSvgEl.style.cssText = 'display:block;pointer-events:none;user-select:none;';
     
     pzVbX=0; pzVbY=0; pzVbW=pzOrigW; pzVbH=pzOrigH;
+    pzSvgEl.setAttribute('viewBox', `0 0 ${pzOrigW} ${pzOrigH}`);
     content.innerHTML = '';
     content.appendChild(pzSvgEl);
-    pzApplyVB();
+    document.getElementById('pz-zoom-val').textContent = '100%';
 
   } else {
     const img = document.createElement('img');
@@ -1425,10 +1427,56 @@ function closePZ() {
 }
 window.closePZ = closePZ;
 
-// PZ events
+let pzSvgEl = null; 
+let pzOrigW = 0, pzOrigH = 0;
+let pzVbX = 0, pzVbY = 0, pzVbW = 0, pzVbH = 0;
+const PZ_ZOOM_F = 0.14;
+
+let _pzVBPending = false;
+function pzApplyVB(){
+  if(!_pzVBPending){
+    _pzVBPending = true;
+    requestAnimationFrame(() => {
+      _pzVBPending = false;
+      if(pzSvgEl) pzSvgEl.setAttribute('viewBox', `${pzVbX} ${pzVbY} ${pzVbW} ${pzVbH}`);
+      const lvl = pzOrigW > 0 ? Math.round(pzOrigW / pzVbW * 100) : 100;
+      document.getElementById('pz-zoom-val').textContent = lvl + '%';
+    });
+  }
+}
+
+function pzFit() {
+  pzVbX = 0; pzVbY = 0; pzVbW = pzOrigW; pzVbH = pzOrigH;
+  pzApplyVB();
+}
+window.pzFit = pzFit;
+
+function pzZoomAt(factor, clientX, clientY) {
+  const stage = document.getElementById('pz-stage');
+  const rect  = stage.getBoundingClientRect();
+  const rx = (clientX - rect.left) / rect.width;
+  const ry = (clientY - rect.top)  / rect.height;
+  const pivotX = pzVbX + rx * pzVbW;
+  const pivotY = pzVbY + ry * pzVbH;
+  const minW = pzOrigW / 10,  minH = pzOrigH / 10;
+  const maxW = pzOrigW * 1, maxH = pzOrigH * 1;
+  let nw = Math.max(minW, Math.min(maxW, pzVbW / factor));
+  let nh = nw * (pzOrigH / pzOrigW);
+  pzVbX = pivotX - rx * nw;
+  pzVbY = pivotY - ry * nh;
+  pzVbW = nw; pzVbH = nh;
+  pzApplyVB();
+}
+
+function pzZoomBtn(f) {
+  const stage = document.getElementById('pz-stage');
+  const r = stage.getBoundingClientRect();
+  pzZoomAt(f, r.left + r.width/2, r.top + r.height/2);
+}
+window.pzZoomBtn = pzZoomBtn;
+
 const pzStage = document.getElementById('pz-stage');
 let pzDrag = false, pzDSX = 0, pzDSY = 0, pzDVBX = 0, pzDVBY = 0;
-
 pzStage.addEventListener('wheel', e => {
   e.preventDefault(); e.stopPropagation();
   pzZoomAt(e.deltaY < 0 ? 1+PZ_ZOOM_F : 1-PZ_ZOOM_F, e.clientX, e.clientY);
@@ -1485,8 +1533,8 @@ pzStage.addEventListener('touchmove', e => {
     const rx=(mx-rect.left)/rect.width, ry=(my-rect.top)/rect.height;
     let nw = pzPVBW0/f, nh = pzPVBH0/f;
     if(pzOrigW > 0){
-      const minW=pzOrigW/10, maxW=pzOrigW;
-      const minH=pzOrigH/10, maxH=pzOrigH;
+      const minW=pzOrigW/10, maxW=pzOrigW*0.9;
+      const minH=pzOrigH/10, maxH=pzOrigH*0.9;
       if(nw < minW){ nw=minW; nh=minH; }
       if(nw > maxW){ nw=maxW; nh=maxH; }
     }
@@ -1502,9 +1550,9 @@ pzStage.addEventListener('touchend', e => {
 });
 
 // ═══════════════════════════════════════════════════════════════
-// BOM
+// BOM — CON FILTROS SEPARADOS (colores invertidos)
 // ═══════════════════════════════════════════════════════════════
-const BOM_DATA = [
+const BOM_DATA_RAW = [
   {ref:'C1,C2,C3', qty:3, value:'4700μF/63V', desc:'Condensador electrolítico polarizado', cat:'Almacenamiento', proyecto:'Cañón Gauss'},
   {ref:'C4', qty:1, value:'47nF', desc:'Condensador no polarizado', cat:'Pasivos', proyecto:'Cañón Gauss'},
   {ref:'C5,C6', qty:2, value:'100nF', desc:'Condensador no polarizado', cat:'Pasivos', proyecto:'Cañón Gauss'},
@@ -1538,55 +1586,102 @@ const BOM_DATA = [
   {ref:'R65', qty:1, value:'100Ω', desc:'Resistor 1/4W', cat:'Pasivos', proyecto:'Placa de control'},
   {ref:'U1,U7', qty:2, value:'NE555P', desc:'Temporizador de precisión, generador de pulsos clock', cat:'Control', proyecto:'Placa de control'},
   {ref:'U2,U3,U4,U5,U6', qty:5, value:'4017', desc:'Contador/Divisor Johnson con 10 salidas decodificadas', cat:'Control', proyecto:'Placa de control'}
-].sort((a,b) => a.ref.localeCompare(b.ref));
+];
+BOM_DATA_RAW.sort((a, b) => a.ref.localeCompare(b.ref));
+const BOM_DATA = BOM_DATA_RAW;
+
+function updateCounter() {
+  const total = 10; 
+  const count = seen ? seen.size : 0;
+  const percent = (count / total) * 100;
+  const circle = document.getElementById('progress-circle');
+  if (circle) {
+    const circumference = 2 * Math.PI * 16;
+    const dash = (percent / 100) * circumference;
+    circle.style.strokeDasharray = `${dash} ${circumference}`;
+  }
+  const txt = document.getElementById('counter-text');
+  if (txt) txt.textContent = `${count}/${total}`;
+}
 
 function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
+let activeProject = 'Todos';
+let activeCategory = 'Todos';
+
+function applyFilters() {
+  const rows = document.querySelectorAll('#bom-tbody-modal tr');
+  let visibleCount = 0;
+  rows.forEach(tr => {
+    const proyecto = tr.dataset.proyecto;
+    const cat = tr.dataset.cat;
+    let show = true;
+    if (activeProject !== 'Todos' && proyecto !== activeProject) show = false;
+    if (activeCategory !== 'Todos' && cat !== activeCategory) show = false;
+    tr.style.display = show ? '' : 'none';
+    if (show) visibleCount++;
+  });
+  const filteredData = BOM_DATA.filter(r => {
+    if (activeProject !== 'Todos' && r.proyecto !== activeProject) return false;
+    if (activeCategory !== 'Todos' && r.cat !== activeCategory) return false;
+    return true;
+  });
+  const totalQty = filteredData.reduce((s, r) => s + parseInt(r.qty || 0), 0);
+  document.getElementById('bom-summary-modal').innerHTML = `
+    <div class="bom-stat"><div class="bs-l">Líneas</div><div class="bs-v">${filteredData.length}</div></div>
+    <div class="bom-stat"><div class="bs-l">Unidades</div><div class="bs-v">${totalQty}</div></div>
+    <div class="bom-stat"><div class="bs-l">Filtros</div><div class="bs-v">${activeProject !== 'Todos' ? 'P:'+activeProject : ''} ${activeCategory !== 'Todos' ? 'C:'+activeCategory : ''}</div></div>
+  `;
+}
+
+function buildProjectChips() {
+  const container = document.getElementById('bom-project-filter');
+  const projects = ['Todos', 'Cañón Gauss', 'Placa de control'];
+  container.innerHTML = projects.map(p => {
+    let icon = '';
+    if (p === 'Cañón Gauss') icon = `<svg viewBox="0 0 24 24"><rect x="10" y="15" width="4" height="1.5" rx="0.5" fill="currentColor" opacity="0.5"/><rect x="3" y="10.5" width="17" height="3" rx="0.75" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="7.5" y="9.5" width="1.8" height="5" rx="0.4" fill="currentColor"/><rect x="11.1" y="9.5" width="1.8" height="5" rx="0.4" fill="currentColor"/><rect x="14.7" y="9.5" width="1.8" height="5" rx="0.4" fill="currentColor"/><rect x="1.5" y="10" width="2" height="4" rx="0.5" fill="currentColor"/><rect x="20.5" y="10.5" width="2" height="3" rx="0.5" fill="currentColor"/></svg>`;
+    else if (p === 'Placa de control') icon = `<svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="4.5" cy="6.5" r="0.8" fill="currentColor" opacity="0.5"/><circle cx="19.5" cy="6.5" r="0.8" fill="currentColor" opacity="0.5"/><circle cx="4.5" cy="17.5" r="0.8" fill="currentColor" opacity="0.5"/><circle cx="19.5" cy="17.5" r="0.8" fill="currentColor" opacity="0.5"/><rect x="9" y="9" width="6" height="6" rx="0.5" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="9" y1="10.5" x2="7" y2="10.5" stroke="currentColor" stroke-width="1"/><line x1="9" y1="12" x2="7" y2="12" stroke="currentColor" stroke-width="1"/><line x1="9" y1="13.5" x2="7" y2="13.5" stroke="currentColor" stroke-width="1"/><line x1="15" y1="10.5" x2="17" y2="10.5" stroke="currentColor" stroke-width="1"/><line x1="15" y1="12" x2="17" y2="12" stroke="currentColor" stroke-width="1"/><line x1="15" y1="13.5" x2="17" y2="13.5" stroke="currentColor" stroke-width="1"/></svg>`;
+    return `<button class="bom-project-chip${p===activeProject?' on':''}" onclick="setProject('${p}')">${icon}${p}</button>`;
+  }).join('');
+}
+
+function setProject(p) {
+  activeProject = p;
+  buildProjectChips();
+  applyFilters();
+}
+window.setProject = setProject;
+
+function buildCategoryChips() {
+  const tags = [...new Set(BOM_DATA.map(r => r.cat))];
+  const container = document.getElementById('bom-filter-bar-modal');
+  container.innerHTML = ['Todos', ...tags].map(c => {
+    let icon = '';
+    switch(c) {
+      case 'Control': icon = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="1.5"/></svg>'; break;
+      case 'Potencia': icon = '<svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>'; break;
+      case 'Almacenamiento': icon = '<svg viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="12" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 8V5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v3" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>'; break;
+      case 'Pasivos': icon = '<svg viewBox="0 0 24 24"><rect x="7" y="5" width="10" height="14" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M12 5v14" stroke="currentColor" stroke-width="1.5"/></svg>'; break;
+      case 'Electromecánicos': icon = '<svg viewBox="0 0 24 24"><path d="M4 12h16M12 4v16" stroke="currentColor" stroke-width="1.5"/><ellipse cx="12" cy="12" rx="4" ry="4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>'; break;
+      case 'Semiconductores': icon = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="currentColor"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>'; break;
+      case 'Interfaz': icon = '<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 8h8M8 12h8M8 16h4" stroke="currentColor" stroke-width="1.5"/></svg>'; break;
+      case 'Conectores': icon = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M7 7l4 4M17 7l-4 4M7 17l4-4M17 17l-4-4" stroke="currentColor" stroke-width="1.5"/></svg>'; break;
+      default: icon = '';
+    }
+    return `<button class="bom-filter-chip${c===activeCategory?' on':''}" onclick="setCategory('${c}')">${icon}${c}</button>`;
+  }).join('');
+}
+
+function setCategory(c) {
+  activeCategory = c;
+  buildCategoryChips();
+  applyFilters();
+}
+window.setCategory = setCategory;
+
 function renderModalBOM() {
-  const tags = [...new Set(BOM_DATA.flatMap(r => [r.cat, r.proyecto]))];
-  const filterBar = document.getElementById('bom-filter-bar-modal');
-  let activeCat = 'Todos';
-
-  function buildChips() {
-    filterBar.innerHTML = ['Todos', ...tags].map(c => {
-      let icon = '';
-      switch(c) {
-        case 'Control': icon = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="1.5"/></svg>'; break;
-        case 'Potencia': icon = '<svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>'; break;
-        case 'Almacenamiento': icon = '<svg viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="12" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 8V5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v3" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>'; break;
-        case 'Pasivos': icon = '<svg viewBox="0 0 24 24"><rect x="7" y="5" width="10" height="14" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M12 5v14" stroke="currentColor" stroke-width="1.5"/></svg>'; break;
-        case 'Electromecánicos': icon = '<svg viewBox="0 0 24 24"><path d="M4 12h16M12 4v16" stroke="currentColor" stroke-width="1.5"/><ellipse cx="12" cy="12" rx="4" ry="4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>'; break;
-        case 'Semiconductores': icon = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="currentColor"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>'; break;
-        case 'Cañón Gauss': icon = '<svg viewBox="0 0 24 24"><rect x="10" y="15" width="4" height="1.5" rx="0.5" fill="currentColor" opacity="0.5"/><rect x="3" y="10.5" width="17" height="3" rx="0.75" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="7.5" y="9.5" width="1.8" height="5" rx="0.4" fill="currentColor"/><rect x="11.1" y="9.5" width="1.8" height="5" rx="0.4" fill="currentColor"/><rect x="14.7" y="9.5" width="1.8" height="5" rx="0.4" fill="currentColor"/><rect x="1.5" y="10" width="2" height="4" rx="0.5" fill="currentColor"/><rect x="20.5" y="10.5" width="2" height="3" rx="0.5" fill="currentColor"/></svg>'; break;
-        case 'Placa de control': icon = '<svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="4.5" cy="6.5" r="0.8" fill="currentColor" opacity="0.5"/><circle cx="19.5" cy="6.5" r="0.8" fill="currentColor" opacity="0.5"/><circle cx="4.5" cy="17.5" r="0.8" fill="currentColor" opacity="0.5"/><circle cx="19.5" cy="17.5" r="0.8" fill="currentColor" opacity="0.5"/><rect x="9" y="9" width="6" height="6" rx="0.5" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="9" y1="10.5" x2="7" y2="10.5" stroke="currentColor" stroke-width="1"/><line x1="9" y1="12" x2="7" y2="12" stroke="currentColor" stroke-width="1"/><line x1="9" y1="13.5" x2="7" y2="13.5" stroke="currentColor" stroke-width="1"/><line x1="15" y1="10.5" x2="17" y2="10.5" stroke="currentColor" stroke-width="1"/><line x1="15" y1="12" x2="17" y2="12" stroke="currentColor" stroke-width="1"/><line x1="15" y1="13.5" x2="17" y2="13.5" stroke="currentColor" stroke-width="1"/></svg>'; break;
-        case 'Interfaz': icon = '<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 8h8M8 12h8M8 16h4" stroke="currentColor" stroke-width="1.5"/></svg>'; break;
-        default: icon = '';
-      }
-      return `<button class="bom-filter-chip${c===activeCat?' on':''}" onclick="bomFilterModal('${c}')">${icon}${c}</button>`;
-    }).join('');
-  }
-
-  window.bomFilterModal = function(cat) {
-    activeCat = cat;
-    buildChips();
-    const rows = document.querySelectorAll('#bom-tbody-modal tr');
-    rows.forEach(tr => {
-      tr.style.display = (cat === 'Todos' || tr.dataset.cat === cat || tr.dataset.proyecto === cat) ? '' : 'none';
-    });
-    document.getElementById('bom-summary-modal').innerHTML = buildSummaryModal(cat);
-  };
-
-  function buildSummaryModal(cat) {
-    const filtered = cat === 'Todos' ? BOM_DATA : BOM_DATA.filter(r => r.cat === cat || r.proyecto === cat);
-    const totalQty = filtered.reduce((s,r) => s + parseInt(r.qty||0), 0);
-    return `
-      <div class="bom-stat"><div class="bs-l">Líneas</div><div class="bs-v">${filtered.length}</div></div>
-      <div class="bom-stat"><div class="bs-l">Unidades</div><div class="bs-v">${totalQty}</div></div>
-      <div class="bom-stat"><div class="bs-l">Filtros</div><div class="bs-v">${tags.length}</div></div>`;
-  }
-
   document.getElementById('bom-thead-modal').innerHTML =
     '<th>Ref.</th><th>Cant.</th><th>Valor / Componente</th><th>Descripción</th><th>Clasificación y Proyecto</th>';
 
@@ -1609,8 +1704,9 @@ function renderModalBOM() {
   });
   document.getElementById('bom-tbody-modal').appendChild(fragment);
 
-  buildChips();
-  document.getElementById('bom-summary-modal').innerHTML = buildSummaryModal('Todos');
+  buildProjectChips();
+  buildCategoryChips();
+  applyFilters();
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1618,7 +1714,9 @@ function renderModalBOM() {
 // ═══════════════════════════════════════════════════════════════
 let modalActive = false;
 
-function openBOM() { openModal('bom'); }
+function openBOM() { 
+  openModal('bom');
+}
 window.openBOM = openBOM;
 
 function openModal(tab) {
@@ -1664,42 +1762,16 @@ renderer.domElement.addEventListener('mousedown', hideHintOnInteraction);
 renderer.domElement.addEventListener('touchstart', hideHintOnInteraction);
 renderer.domElement.addEventListener('wheel', hideHintOnInteraction);
 
-// ═══════════════════════════════════════════════════════════════
-// COUNTER
-// ═══════════════════════════════════════════════════════════════
-function updateCounter() {
-  const total = 10;
-  const count = seen ? seen.size : 0;
-  const percent = (count / total) * 100;
-  const circle = document.getElementById('progress-circle');
-  if (circle) {
-    const circumference = 2 * Math.PI * 16;
-    const dash = (percent / 100) * circumference;
-    circle.style.strokeDasharray = `${dash} ${circumference}`;
-  }
-  const txt = document.getElementById('counter-text');
-  if (txt) txt.textContent = `${count}/${total}`;
-}
-
-// ═══════════════════════════════════════════════════════════════
-// KEYBOARD
-// ═══════════════════════════════════════════════════════════════
 window.addEventListener('keydown', e => {
   if(e.key==='Escape'){
-    closePanel(); closeModal(); closePZ();
+    closePanel(); closeModal(); closePZ(); 
   }
 });
 
-// ═══════════════════════════════════════════════════════════════
-// EVITAR SCROLL EN PANELES AFECTE AL 3D
-// ═══════════════════════════════════════════════════════════════
-document.getElementById('panel').addEventListener('wheel', e => e.stopPropagation(), { passive: false });
-document.getElementById('sch-modal').addEventListener('wheel', e => e.stopPropagation(), { passive: false });
-document.getElementById('pz-viewer').addEventListener('wheel', e => e.stopPropagation(), { passive: false });
+document.getElementById('panel').addEventListener('wheel', (e) => e.stopPropagation(), { passive: false });
+document.getElementById('sch-modal').addEventListener('wheel', (e) => e.stopPropagation(), { passive: false });
+document.getElementById('pz-viewer').addEventListener('wheel', (e) => e.stopPropagation(), { passive: false });
 
-// ═══════════════════════════════════════════════════════════════
-// RESIZE
-// ═══════════════════════════════════════════════════════════════
 window.addEventListener('resize', () => {
   camera.aspect = innerWidth/innerHeight;
   camera.updateProjectionMatrix();
@@ -1710,9 +1782,9 @@ window.addEventListener('resize', () => {
 // ANIMATION LOOP
 // ═══════════════════════════════════════════════════════════════
 const clock = new THREE.Clock();
+let autoRot = true;
 let _animPaused = false;
 const MODEL_COLLIDE = ZOOM_MIN;
-let frameCounter = 0;
 
 function animate() {
   requestAnimationFrame(animate);
@@ -1729,27 +1801,28 @@ function animate() {
     camera.position.normalize().multiplyScalar(MODEL_COLLIDE);
   }
 
-  if(++frameCounter % 3 === 0) {
-    if(selectedId === 'coil1' || selectedId === 'coil2') {
-      const p = (.5+.5*Math.sin(t*8))*.4;
-      clickables.filter(c=>c.id===selectedId).forEach(c=>{
-        if(c.mesh.material.emissiveIntensity!==undefined)
-          c.mesh.material.emissiveIntensity = p;
-      });
-    }
-    pt1.intensity = .9 + .1*Math.sin(t*1.7);
+  if(selectedId === 'coil1' || selectedId === 'coil2') {
+    const p = (.5+.5*Math.sin(t*8))*.4;
+    clickables.filter(c=>c.id===selectedId).forEach(c=>{
+      if(c.mesh.material.emissiveIntensity!==undefined)
+        c.mesh.material.emissiveIntensity = p;
+    });
   }
+
+  pt1.intensity = .9 + .1*Math.sin(t*1.7);
+  pt2.intensity = .5 + .08*Math.sin(t*2.3+1);
 
   renderer.render(scene,camera);
 }
 animate();
 
 // ═══════════════════════════════════════════════════════════════
-// VISOR SVG (esquema completo) - optimizado con transform CSS
+// VISOR SVG — ZOOM/PAN VÍA VIEWBOX (versión original)
 // ═══════════════════════════════════════════════════════════════
 (function(){
   const SVG_URL = 'esquemas/esquema-completo.svg';
   const ZOOM_FACTOR = 0.14;
+  const ZOOM_MAX_FACTOR = 20;
 
   let ready = false;
   let svgEl = null;
@@ -1763,13 +1836,15 @@ animate();
   function pDist(t){ const dx=t[0].clientX-t[1].clientX, dy=t[0].clientY-t[1].clientY; return Math.sqrt(dx*dx+dy*dy); }
   function pMid(t){ return { x:(t[0].clientX+t[1].clientX)/2, y:(t[0].clientY+t[1].clientY)/2 }; }
 
+  let _vbPending = false;
   function applyVB(){
-    if(!svgEl || !wrap) return;
-    const rect = wrap.getBoundingClientRect();
-    const scale = rect.width / vbW;
-    const tx = -vbX * scale;
-    const ty = -vbY * scale;
-    svgEl.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+    if(!_vbPending){
+      _vbPending = true;
+      requestAnimationFrame(() => {
+        _vbPending = false;
+        if(svgEl) svgEl.setAttribute('viewBox', `${vbX} ${vbY} ${vbW} ${vbH}`);
+      });
+    }
   }
 
   function fit(){
@@ -1798,8 +1873,10 @@ animate();
     const pivotX = vbX + ratioX * vbW;
     const pivotY = vbY + ratioY * vbH;
 
-    const minW = origW / 10, minH = origH / 10;
-    const maxW = origW, maxH = origH;
+    const minW = origW / 10;
+    const minH = origH / 10;
+    const maxW = origW * 0.9;
+    const maxH = origH * 0.9;
     let newW = vbW / factor;
     let newH = vbH / factor;
     if(newW < minW){ newW = minW; newH = minH; }
@@ -1844,17 +1921,12 @@ animate();
       origH = parseFloat(svgEl.getAttribute('height')) || 700;
     }
 
-    // Tamaño fijo para aplicar transform
-    svgEl.setAttribute('width', origW);
-    svgEl.setAttribute('height', origH);
-    svgEl.style.width = origW + 'px';
-    svgEl.style.height = origH + 'px';
-    svgEl.style.maxWidth = 'none';
+    svgEl.setAttribute('width',  '100%');
+    svgEl.setAttribute('height', '100%');
+    svgEl.setAttribute('preserveAspectRatio', 'xMidYMid meet');
     svgEl.style.display = 'block';
     svgEl.style.pointerEvents = 'none';
     svgEl.style.userSelect = 'none';
-    svgEl.style.transformOrigin = '0 0';
-    svgEl.style.willChange = 'transform';
     
     vbX = 0; vbY = 0; vbW = origW; vbH = origH;
     applyVB();
@@ -1929,8 +2001,8 @@ animate();
         
         let newW = pinchVBW0 / factor;
         let newH = pinchVBH0 / factor;
-        const minW = origW / 10, maxW = origW;
-        const minH = origH / 10, maxH = origH;
+        const minW = origW / 10, maxW = origW * 0.9;
+        const minH = origH / 10, maxH = origH * 0.9;
         if(newW < minW){ newW = minW; newH = minH; }
         if(newW > maxW){ newW = maxW; newH = maxH; }
         const pivotX = pinchVBX0 + ratioX * pinchVBW0;
@@ -1948,6 +2020,7 @@ animate();
     });
 
     wrap.addEventListener('dblclick', fit);
+    window.addEventListener('resize', () => { });
   }
 
   const _openModal = window.openModal;
@@ -1966,7 +2039,6 @@ animate();
   });
 })();
 
-// Inicializar BOM y contador
 renderModalBOM();
 updateCounter();
 </script>

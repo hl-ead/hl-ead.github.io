@@ -30,7 +30,6 @@ html,body{height:100%;overflow:hidden;background:var(--bg)}
 body{font-family:'Rajdhani',sans-serif;color:var(--text);touch-action:none;user-select:none}
 canvas{display:block;touch-action:none}
 
-/* ── CUSTOM SCROLLBARS ── */
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-track{background:rgba(0,217,176,0.04);border-radius:3px}
 ::-webkit-scrollbar-thumb{background:rgba(0,217,176,0.28);border-radius:3px;transition:background .2s}
@@ -38,7 +37,6 @@ canvas{display:block;touch-action:none}
 ::-webkit-scrollbar-corner{background:transparent}
 * { scrollbar-width:thin; scrollbar-color:rgba(0,217,176,0.28) rgba(0,217,176,0.04); }
 
-/* ── NAV ── */
 #nav{
   position:fixed;top:0;left:0;right:0;height:54px;
   display:flex;align-items:center;justify-content:space-between;
@@ -55,7 +53,6 @@ canvas{display:block;touch-action:none}
 }
 #nav-sub{font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-dim);margin-top:1px}
 
-/* Desktop nav buttons */
 #nav-btns{display:flex;gap:8px}
 .nbtn{
   display:flex;align-items:center;gap:7px;
@@ -70,18 +67,15 @@ canvas{display:block;touch-action:none}
 .nbtn.nbtn-amber:hover{background:rgba(255,140,42,0.22);border-color:var(--amber);box-shadow:var(--glow-a)}
 .nbtn svg{flex-shrink:0}
 
-/* Hide desktop nav on mobile, show bottom bar */
 @media(max-width:640px){
   #nav-btns{display:none}
 }
 
-/* ── MOBILE BOTTOM NAV ── */
 #mobile-nav{
   display:none;
   position:fixed;bottom:0;left:0;right:0;z-index:100;
   background:rgba(7,9,15,0.98);
   border-top:1px solid rgba(0,217,176,0.14);
-  /* backdrop-filter reducido en móvil para no saturar GPU compositor */
   backdrop-filter:blur(8px);
   -webkit-backdrop-filter:blur(8px);
   padding:6px 0 calc(6px + env(safe-area-inset-bottom));
@@ -104,8 +98,6 @@ canvas{display:block;touch-action:none}
 .mnbtn.amber:active,.mnbtn.amber:hover{color:var(--amber)}
 .mnbtn svg{width:18px;height:18px}
 
-
-/* ── HINT ── */
 #hint{
   position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
   z-index:10;pointer-events:none;text-align:center;
@@ -121,7 +113,6 @@ canvas{display:block;touch-action:none}
 .hdot{width:5px;height:5px;border-radius:50%;background:var(--amber);opacity:.5;animation:dp 2.2s infinite}
 @keyframes dp{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.9;transform:scale(1.4)}}
 
-/* ── COUNTER (barra circular) ── */
 #counter{
   position:fixed;bottom:20px;right:18px;
   width:60px;height:60px;
@@ -154,7 +145,6 @@ canvas{display:block;touch-action:none}
   text-shadow:0 0 10px var(--teal);
 }
 
-/* ── TOOLTIP mejorado ── */
 #tip{
   position:fixed;pointer-events:none;z-index:200;
   background:rgba(7,12,22,0.95);border:1px solid var(--border-a);border-radius:6px;
@@ -173,11 +163,9 @@ canvas{display:block;touch-action:none}
   margin-top:2px;
 }
 
-/* ── INFO PANEL ── */
 #panel{
   position:fixed;z-index:50;
   background:var(--panel);border:1px solid var(--border);
-  /* blur reducido en móvil via media query — ver más abajo */
   backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
   transition:transform .44s cubic-bezier(.16,1,.3,1),opacity .32s;
   overflow:hidden;
@@ -227,7 +215,6 @@ canvas{display:block;touch-action:none}
 .sch-thumb:hover{border-color:var(--teal);box-shadow:var(--glow-t)}
 .sch-thumb img{width:100%;height:auto;display:block;pointer-events:none}
 .sch-zh{position:absolute;bottom:6px;right:8px;font-size:0.58rem;letter-spacing:.1em;color:rgba(0,217,176,0.6);text-transform:uppercase;background:rgba(3,5,8,.7);padding:2px 6px;border-radius:2px}
-/* Info panel custom scrollbar */
 #panel{overflow-y:auto;-webkit-overflow-scrolling:touch}
 #panel::-webkit-scrollbar{width:3px}
 #panel::-webkit-scrollbar-thumb{background:rgba(0,217,176,0.2)}
@@ -238,7 +225,6 @@ canvas{display:block;touch-action:none}
 }
 #close-panel:hover{color:var(--amber)}
 
-/* ── SCHEMATIC MODAL (centered con transición) ── */
 #sch-modal{
   position:fixed;inset:0;z-index:300;
   display:flex;
@@ -299,11 +285,10 @@ canvas{display:block;touch-action:none}
 }
 .tab.on{color:var(--teal);border-bottom-color:var(--teal)}
 .tab:hover:not(.on){color:var(--text)}
-/* Flex column panes with scrollable content */
 .tpane{display:none;flex:1;min-height:0;flex-direction:column;overflow:hidden}
 .tpane.on{display:flex}
 #tpane-full{flex:1;min-height:0;overflow:hidden;flex-direction:column}
-/* ── SCHEMATIC SVG VIEWBOX VIEWER — sin transforms, sin rasterización ── */
+
 #pdf-pz-wrap{
   flex:1;
   min-height:0;
@@ -312,22 +297,27 @@ canvas{display:block;touch-action:none}
   cursor:grab;
   background:#050e18;
   touch-action:none;
+  will-change:transform;
 }
 #pdf-pz-wrap.dragging{cursor:grabbing}
 #sch-img-inner{
   position:absolute;
   inset:0;
   display:flex;
+  align-items:center;
+  justify-content:center;
   line-height:0;
+  overflow:hidden;
 }
 #sch-img-inner svg{
   display:block;
-  width:100%;
-  height:100%;
+  flex-shrink:0;
   pointer-events:none;
   user-select:none;
   shape-rendering:geometricPrecision;
   text-rendering:optimizeLegibility;
+  will-change:transform;
+  transform-origin: 0 0;
 }
 #pdf-loading{
   position:absolute;inset:0;
@@ -358,7 +348,6 @@ canvas{display:block;touch-action:none}
 }
 @media(max-width:640px){#pdf-pz-wrap{display:none}}
 
-/* ── Vista previa móvil del circuito completo ── */
 #full-mobile-preview{
   display:none;
   flex:1;
@@ -397,19 +386,12 @@ canvas{display:block;touch-action:none}
 #full-mobile-card .sec-img-wrap img{
   width:100%;height:auto;display:block;pointer-events:none;
 }
-.pdf-link{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:11px 22px;background:var(--teal-dim);border:1px solid var(--border);border-radius:3px;
-  color:var(--teal);font-family:'Rajdhani',sans-serif;font-size:.82rem;font-weight:600;
-  letter-spacing:.12em;text-transform:uppercase;text-decoration:none;transition:all .2s;
-}
-.pdf-link:hover{background:rgba(0,217,176,0.2);border-color:var(--teal);box-shadow:var(--glow-t)}
+
 #tpane-sec{
   flex:1;min-height:0;
   overflow-y:auto;overflow-x:hidden;
   -webkit-overflow-scrolling:touch;
   padding:16px;
-  /* Aísla el árbol de compositing del scroll de sectores */
   contain: layout;
 }
 .sec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
@@ -423,7 +405,6 @@ canvas{display:block;touch-action:none}
 .sec-card:hover,.sec-card:active{
   border-color:var(--teal);
   box-shadow:var(--glow-t), 0 4px 12px rgba(0,217,176,0.2);
-  /* transform:scale() eliminado — causa glitch GPU al componer SVGs en móvil */
 }
 .sec-title{
   padding:9px 13px;font-size:.7rem;font-weight:600;letter-spacing:.15em;
@@ -438,7 +419,6 @@ canvas{display:block;touch-action:none}
   display:flex;
   align-items:center;
   justify-content:center;
-  /* Aísla el layer de pintura de cada tarjeta — evita contaminación entre sectores */
   contain: layout paint;
   will-change: auto;
 }
@@ -448,19 +428,13 @@ canvas{display:block;touch-action:none}
   display:block;
   object-fit:cover;
   pointer-events:none;
-  /* Sin transition de transform — ver fix anterior */
-}
-.sec-card:hover .sec-img-wrap img{
-  /* transform:scale(1.05) eliminado — comparte el mismo bug de compositing GPU */
-  opacity: 0.9;
 }
 .sec-placeholder{padding:22px 16px;text-align:center;font-size:.74rem;color:rgba(180,204,216,.35);line-height:1.7}
 .sec-placeholder code{display:block;margin-top:6px;color:rgba(0,217,176,.35);font-size:.68rem;word-break:break-all}
-/* Padding del modal en móvil */
+
 @media(max-width:640px){
   #sch-modal{
     padding:58px 0 calc(72px + env(safe-area-inset-bottom)) 0;
-    /* blur reducido en móvil para no acumular capas GPU */
     backdrop-filter:blur(6px);
     -webkit-backdrop-filter:blur(6px);
   }
@@ -474,7 +448,6 @@ canvas{display:block;touch-action:none}
   }
 }
 
-/* PDF desktop hint bar */
 .pdf-desktop-hint{
   display:flex;align-items:center;justify-content:center;gap:8px;
   padding:7px 16px;background:rgba(0,217,176,0.04);border-bottom:1px solid rgba(0,217,176,.08);
@@ -483,7 +456,6 @@ canvas{display:block;touch-action:none}
 }
 @media(max-width:640px){.pdf-desktop-hint{display:none}}
 
-/* ── PAN-ZOOM VIEWER ── */
 #pz-viewer{
   position:fixed;inset:0;z-index:500;
   display:none;flex-direction:column;
@@ -526,15 +498,20 @@ canvas{display:block;touch-action:none}
   position:absolute;
   inset:0;
   display:flex;
+  align-items:center;
+  justify-content:center;
   line-height:0;
+  overflow:hidden;
 }
 #pz-content svg{
   display:block;
-  width:100%;height:100%;
+  flex-shrink:0;
   pointer-events:none;
   user-select:none;
   shape-rendering:geometricPrecision;
   text-rendering:optimizeLegibility;
+  will-change:transform;
+  transform-origin: 0 0;
 }
 #pz-img{
   display:block;max-width:none;
@@ -559,7 +536,6 @@ canvas{display:block;touch-action:none}
 @keyframes fadeHint{0%,60%{opacity:1}100%{opacity:0}}
 @media(max-width:640px){#pz-hint-bar{display:none}}
 
-/* Estilos para la pestaña BOM dentro del modal de esquemáticos */
 #tpane-bom {
   flex:1;
   min-height:0;
@@ -647,7 +623,6 @@ canvas{display:block;touch-action:none}
 .bom-stat .bs-l{font-size:.59rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-dim);margin-bottom:3px}
 .bom-stat .bs-v{font-family:'Black Ops One',serif;font-size:.88rem;color:var(--amber)}
 
-/* Estilos para los chips de filtro BOM con iconos mejorados */
 .bom-filter-chip {
   display: inline-flex;
   align-items: center;
@@ -695,7 +670,6 @@ canvas{display:block;touch-action:none}
     height: 14px;
   }
 }
-/* ── MOBILE: hint + counter ── */
 @media(max-width:640px){
   #hint{
     bottom:calc(78px + env(safe-area-inset-bottom)) !important;
@@ -780,7 +754,7 @@ canvas{display:block;touch-action:none}
 <div id="counter">
   <svg viewBox="0 0 40 40" class="circular-chart">
     <circle class="circle-bg" cx="20" cy="20" r="16" />
-    <circle class="circle" cx="20" cy="20" r="16" stroke-dasharray="0, 100" style="stroke-dasharray: 0, 100;" id="progress-circle" />
+    <circle class="circle" cx="20" cy="20" r="16" stroke-dasharray="0, 100" id="progress-circle" />
   </svg>
   <span id="counter-text">0/10</span>
 </div>
@@ -824,8 +798,7 @@ canvas{display:block;touch-action:none}
         Rueda del ratón para zoom · Click y arrastra para mover · Doble clic para ajustar
       </div>
       <div id="pdf-pz-wrap">
-        <div id="sch-img-inner">
-          </div>
+        <div id="sch-img-inner"></div>
         <div id="pdf-loading">
           <span>Cargando esquemático</span>
           <div id="pdf-loading-bar"><div id="pdf-loading-bar-inner"></div></div>
@@ -851,7 +824,6 @@ canvas{display:block;touch-action:none}
     <div id="tpane-sec" class="tpane">
       <div class="sec-grid" id="sec-grid"></div>
     </div>
-    
     <div id="tpane-bom" class="tpane">
       <div id="bom-filter-bar-modal" class="bom-filter-bar"></div>
       <div id="bom-scroll-modal">
@@ -878,8 +850,7 @@ canvas{display:block;touch-action:none}
     </div>
   </div>
   <div id="pz-stage">
-    <div id="pz-content">
-      </div>
+    <div id="pz-content"></div>
     <div id="pz-zoom-bar">
       <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="opacity:.5;color:var(--teal)"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <span id="pz-zoom-val">100%</span>
@@ -894,21 +865,15 @@ canvas{display:block;touch-action:none}
 
 <script>
 // ═══════════════════════════════════════════════════════════════
-// SECTOR IMAGES CONFIG
+// SECTORES IMÁGENES
 // ═══════════════════════════════════════════════════════════════
 const SECTORS = [
   { id:'control',  title:'Placa de Filtrado',                     img:'esquemas/placa-de-filtrado.svg'       },
   { id:'driver1',  title:'Fuente de Alimentacion 36V',            img:'esquemas/fuente-de-alimentacion.svg'  },
   { id:'driver2',  title:'Modulo de Aceleracion de Bobina 1 & 2', img:'esquemas/modulo-bobina.svg'           },
-  { id:'driver2',  title:'Placa de control de leds y ventilacion',img:'esquemas/placa-para-leds.svg'         },
+  { id:'control2', title:'Placa de control de leds y ventilacion',img:'esquemas/placa-para-leds.svg'         },
 ];
-const SECTOR_IMG = {
-  pcb1: 'esquemas/placa-de-filtrado.svg',
-  pcb3: 'esquemas/fuente-de-alimentacion.svg',
-  pcb4: 'esquemas/modulo-bobina.svg',
-  pcb5: 'esquemas/placa-para-leds.svg',
-};
-// Build sector grid with images
+
 const secGrid = document.getElementById('sec-grid');
 SECTORS.forEach(s => {
   const card = document.createElement('div');
@@ -934,7 +899,7 @@ const PARTS = {
     stats:[{l:'Material',v:'Acero inox'},{l:'Calibre',v:'8 mm'},{l:'Longitud',v:'~22 cm'},{l:'Tolerancia',v:'±0.05 mm'}]
   },
   coil1:{
-    cat:'Electromagnética',name:'Bobina de Etapa 1',id:'COIL-A',
+    cat:'Electromagnética',name:'Modulo de Sensores',id:'Modulo de Sensores',
     desc:'Primera bobina de disparo, fabricada con alambre de cobre esmaltado de 1.2mm enrollado en 4 capas de 35 vueltas cada una. Es la primera en activarse al detectar el proyectil en posición de carga. Su campo magnético acelera el proyectil hacia el centro de la bobina.',
     stats:[{l:'Alambre',v:'CuEsm 1.2mm'},{l:'Vueltas',v:'140 total'},{l:'Inductancia',v:'~2.8 mH'},{l:'Resistencia',v:'0.6 Ω'}]
   },
@@ -1000,49 +965,46 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.outputEncoding = THREE.sRGBEncoding;
 document.body.appendChild(renderer.domElement);
 
+const isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+if(isMobile){
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
+  renderer.shadowMap.enabled = false;
+} else {
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.enabled = true;
+}
+
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(42, innerWidth/innerHeight, 0.1, 500);
-camera.position.set(5, 6, 16);
+
+const ZOOM_MIN = isMobile ? 14 : 10;
+const ZOOM_MAX = isMobile ? 38 : 32;
+const CAM_INIT = isMobile ? 24 : 16;
+camera.position.set(5, 6, CAM_INIT);
 camera.lookAt(0, 1, 0);
 
 // Stars
+const STAR_COUNT = isMobile ? 1200 : 2400;
 const starG = new THREE.BufferGeometry();
-const spos = new Float32Array(2400);
-for(let i=0;i<2400;i++) spos[i]=(Math.random()-.5)*300;
+const spos = new Float32Array(STAR_COUNT * 3);
+for(let i=0;i<STAR_COUNT*3;i++) spos[i]=(Math.random()-.5)*300;
 starG.setAttribute('position',new THREE.BufferAttribute(spos,3));
-scene.add(new THREE.Points(starG, new THREE.PointsMaterial({color:0xffffff,size:.12,transparent:true,opacity:.6})));
+scene.add(new THREE.Points(starG, new THREE.PointsMaterial({color:0xffffff,size:.12,transparent:true,opacity:.6,sizeAttenuation:true})));
 
 // Lights
 scene.add(new THREE.AmbientLight(0x1a2240,.7));
 const sun = new THREE.DirectionalLight(0xfff5e8,1.8);
-sun.position.set(12,14,8);sun.castShadow=true;
-sun.shadow.mapSize.width=2048;sun.shadow.mapSize.height=2048;
+sun.position.set(12,14,8);
+sun.castShadow = !isMobile;
+if(!isMobile){
+  sun.shadow.mapSize.width = 512;
+  sun.shadow.mapSize.height = 512;
+}
 scene.add(sun);
 const fill = new THREE.DirectionalLight(0x2244ff,.25);
 fill.position.set(-10,-4,-8);scene.add(fill);
 const pt1 = new THREE.PointLight(0xff8c2a,.9,18);
 pt1.position.set(-2,4,2);scene.add(pt1);
-const pt2 = new THREE.PointLight(0x00d9b0,.5,20);
-pt2.position.set(4,3,1);scene.add(pt2);
-
-// ═══════════════════════════════════════════════════════════════
-// MATERIALS
-// ═══════════════════════════════════════════════════════════════
-const M = {
-  wood: new THREE.MeshStandardMaterial({color:0x7a4520,roughness:.92,metalness:.02}),
-  woodDark: new THREE.MeshStandardMaterial({color:0x5c3318,roughness:.95,metalness:.02}),
-  steel: new THREE.MeshStandardMaterial({color:0xd0dde8,roughness:.25,metalness:.92}),
-  copper: new THREE.MeshStandardMaterial({color:0xb87333,roughness:.18,metalness:.88,emissive:0x3a1800,emissiveIntensity:.15}),
-  plastic: new THREE.MeshStandardMaterial({color:0x8c9aaa,roughness:.72,metalness:.08}),
-  pcbGreen: new THREE.MeshStandardMaterial({color:0x1b4a20,roughness:.58,metalness:.18}),
-  pcbComp: new THREE.MeshStandardMaterial({color:0x1a1a2a,roughness:.6,metalness:.3}),
-  lcd: new THREE.MeshStandardMaterial({color:0x0a1824,roughness:.4,metalness:.6,emissive:0x0066cc,emissiveIntensity:.6}),
-  lcdFrame: new THREE.MeshStandardMaterial({color:0x1a1a1a,roughness:.7,metalness:.4}),
-  yellow: new THREE.MeshStandardMaterial({color:0xe8a000,roughness:.45,metalness:.25}),
-  redWire: new THREE.MeshStandardMaterial({color:0xcc2200,roughness:.82,metalness:.1}),
-  blueWire: new THREE.MeshStandardMaterial({color:0x1144cc,roughness:.82,metalness:.1}),
-  blackWire: new THREE.MeshStandardMaterial({color:0x111111,roughness:.85,metalness:.05}),
-};
 
 // ═══════════════════════════════════════════════════════════════
 // MODEL CONSTRUCTION
@@ -1050,16 +1012,6 @@ const M = {
 const model = new THREE.Group();
 scene.add(model);
 const clickables = [];
-
-// ── UTILIDADES COMPARTIDAS ────────────────────────────────────
-const _origCreateImageBitmap = window.createImageBitmap;
-window.createImageBitmap = function(source) {
-  return _origCreateImageBitmap(source).catch(function() {
-    const canvas = document.createElement('canvas');
-    canvas.width = 1; canvas.height = 1;
-    return _origCreateImageBitmap(canvas);
-  });
-};
 
 const dracoLoader = new THREE.DRACOLoader();
 dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
@@ -1076,8 +1028,8 @@ function prepararModelo(root) {
       const r = child.material.roughness !== undefined ? child.material.roughness : 0.5;
       const m = child.material.metalness !== undefined ? child.material.metalness : 0.3;
       child.material = new THREE.MeshStandardMaterial({ color:c, roughness:r, metalness:m });
-      child.castShadow = true;
-      child.receiveShadow = true;
+      child.castShadow = !isMobile;
+      child.receiveShadow = !isMobile;
     }
   });
   const box = new THREE.Box3().setFromObject(root);
@@ -1098,7 +1050,6 @@ function conectarClickables(root) {
   });
 }
 
-// ── PASO 1: cargar modelo liviano al instante ─────────────────
 let rootLow = null;
 gltfLoader.load(
   'gauss_cannon_low.glb',
@@ -1110,27 +1061,27 @@ gltfLoader.load(
     conectarClickables(rootLow);
     console.log('✅ Modelo liviano cargado.');
 
-    // ── PASO 2: cargar modelo completo en segundo plano ───────
-    gltfLoader.load(
-      'gauss_cannon.glb',
-      function(gltfHD) {
-        const rootHD = gltfHD.scene;
-        prepararModelo(rootHD);
-        // Swap: quitar liviano, poner completo
-        model.remove(rootLow);
-        model.add(rootHD);
-        conectarClickables(rootHD);
-        console.log('✅ Modelo completo cargado. Piezas:', clickables.length);
-        if(clickables.length === 0) {
-          console.warn('⚠️ Nodos en el modelo:');
-          rootHD.traverse(c => { if(c.isMesh) console.log(' -', c.name); });
+    if(!isMobile){
+      gltfLoader.load(
+        'gauss_cannon.glb',
+        function(gltfHD) {
+          const rootHD = gltfHD.scene;
+          prepararModelo(rootHD);
+          model.remove(rootLow);
+          model.add(rootHD);
+          conectarClickables(rootHD);
+          console.log('✅ Modelo completo cargado. Piezas:', clickables.length);
+          if(clickables.length === 0) {
+            console.warn('⚠️ Nodos en el modelo:');
+            rootHD.traverse(c => { if(c.isMesh) console.log(' -', c.name); });
+          }
+        },
+        null,
+        function(err) {
+          console.warn('Modelo completo no disponible, usando liviano:', err.message);
         }
-      },
-      null,
-      function(err) {
-        console.warn('Modelo completo no disponible, usando liviano:', err.message);
-      }
-    );
+      );
+    }
   },
   null,
   function(err) {
@@ -1141,8 +1092,8 @@ gltfLoader.load(
 // ═══════════════════════════════════════════════════════════════
 // HIGHLIGHT / INTERACTION
 // ═══════════════════════════════════════════════════════════════
-const highlightMat = new THREE.MeshStandardMaterial({
-  color:0x00d9b0,roughness:.25,metalness:.5,emissive:0x00d9b0,emissiveIntensity:.35
+const baseHighlightMat = new THREE.MeshStandardMaterial({
+  roughness:.25, metalness:.5, emissiveIntensity:.3
 });
 
 let selectedId = null, hoveredId = null;
@@ -1152,11 +1103,10 @@ function setHighlight(id, on) {
   clickables.forEach(c => {
     if(c.id === id) {
       if(on){
-        const hm = highlightMat.clone();
-        hm.color.set(c.id.startsWith('pcb') ? 0x00d9b0 : 0xff8c2a);
-        hm.emissive.set(c.id.startsWith('pcb') ? 0x00d9b0 : 0xff8c2a);
-        hm.emissiveIntensity = .3;
-        c.mesh.material = hm;
+        const mat = baseHighlightMat.clone();
+        mat.color.set(c.id.startsWith('pcb') ? 0x00d9b0 : 0xff8c2a);
+        mat.emissive.set(c.id.startsWith('pcb') ? 0x00d9b0 : 0xff8c2a);
+        c.mesh.material = mat;
       } else {
         c.mesh.material = c.origMat;
       }
@@ -1177,7 +1127,7 @@ function openPanel(id) {
   document.getElementById('p-desc').textContent = d.desc;
 
   const statsEl = document.getElementById('p-stats');
-  statsEl.innerHTML = d.stats.map(s=>
+  statsEl.innerHTML = d.stats.map(s =>
     `<div class="sbox"><div class="slbl">${s.l}</div><div class="sval">${s.v}</div></div>`
   ).join('');
 
@@ -1188,10 +1138,8 @@ function openPanel(id) {
     schSec.style.display = 'block';
     schImg.src = d.schemImg;
     schThumb.onclick = () => openPZ(d.schemImg, d.schemTitle || d.name);
-    currentSchemId = d.schemImg;
   } else {
     schSec.style.display = 'none';
-    currentSchemId = null;
   }
 
   document.getElementById('panel').classList.add('open');
@@ -1211,7 +1159,6 @@ window.closePanel = closePanel;
 const ray = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 const tip = document.getElementById('tip');
-let currentSchemId = null;
 
 function updateMouse(x, y) {
   mouse.x = (x/innerWidth)*2-1;
@@ -1223,31 +1170,40 @@ function doRaycast() {
   return ray.intersectObjects(clickables.map(c=>c.mesh));
 }
 
-// Mouse move
+let _mouseMoveQueued = false;
+let _lastMouseX = 0, _lastMouseY = 0;
 window.addEventListener('mousemove', e => {
+  _lastMouseX = e.clientX; _lastMouseY = e.clientY;
   updateMouse(e.clientX, e.clientY);
-  const hits = doRaycast();
-  const hid = hits.length ? hits[0].object.userData.partId : null;
 
-  if(hid !== hoveredId) {
-    if(hoveredId && hoveredId !== selectedId) setHighlight(hoveredId, false);
-    hoveredId = hid;
-    if(hoveredId && hoveredId !== selectedId) setHighlight(hoveredId, true);
-    document.body.classList.toggle('hov', !!hoveredId);
-  }
+  if(!_mouseMoveQueued){
+    _mouseMoveQueued = true;
+    requestAnimationFrame(() => {
+      _mouseMoveQueued = false;
+      if(modalActive) return;
+      const hits = doRaycast();
+      const hid = hits.length ? hits[0].object.userData.partId : null;
 
-  if(hid) {
-    const part = PARTS[hid];
-    tip.style.left = (e.clientX+16)+'px';
-    tip.style.top = (e.clientY-8)+'px';
-    tip.innerHTML = part ? `${part.name} <small>${part.cat}</small>` : hid;
-    tip.style.opacity = '1';
-  } else {
-    tip.style.opacity = '0';
+      if(hid !== hoveredId) {
+        if(hoveredId && hoveredId !== selectedId) setHighlight(hoveredId, false);
+        hoveredId = hid;
+        if(hoveredId && hoveredId !== selectedId) setHighlight(hoveredId, true);
+        document.body.classList.toggle('hov', !!hoveredId);
+      }
+
+      if(hid) {
+        const part = PARTS[hid];
+        tip.style.left = (_lastMouseX+16)+'px';
+        tip.style.top  = (_lastMouseY-8)+'px';
+        tip.innerHTML = part ? `${part.name} <small>${part.cat}</small>` : hid;
+        tip.style.opacity = '1';
+      } else {
+        tip.style.opacity = '0';
+      }
+    });
   }
 });
 
-// Click
 window.addEventListener('click', e => {
   if(e.target !== renderer.domElement) return;
   updateMouse(e.clientX, e.clientY);
@@ -1261,7 +1217,7 @@ window.addEventListener('click', e => {
 });
 
 // ═══════════════════════════════════════════════════════════════
-// DRAG TO ROTATE (solo si no hay un modal abierto)
+// DRAG TO ROTATE
 // ═══════════════════════════════════════════════════════════════
 let drag = false, px = 0, py = 0, dragDist = 0;
 window.addEventListener('mousedown', e => {
@@ -1279,19 +1235,18 @@ window.addEventListener('mousemove', e => {
   px=e.clientX; py=e.clientY;
 });
 
-// Scroll zoom
 window.addEventListener('wheel', e=>{
   if (modalActive) return;
   camera.position.multiplyScalar(1+e.deltaY*.001);
-  camera.position.clampLength(5,35);
+  camera.position.clampLength(ZOOM_MIN, ZOOM_MAX);
   hideHintOnInteraction();
 },{passive:true});
 
 // ═══════════════════════════════════════════════════════════════
 // TOUCH CONTROLS
 // ═══════════════════════════════════════════════════════════════
-let touches = {}, pinchDist = 0, touchDrag = false, touchMoved = false;
-let tpx = 0, tpy = 0, touchTime = 0;
+let touchMoved = false, tpx = 0, tpy = 0, touchTime = 0;
+let pinchDist = 0, touchDrag = false;
 
 window.addEventListener('touchstart', e => {
   if (modalActive) return;
@@ -1325,7 +1280,7 @@ window.addEventListener('touchmove', e => {
       e.touches[0].clientY-e.touches[1].clientY
     );
     camera.position.multiplyScalar(pinchDist/d);
-    camera.position.clampLength(5,35);
+    camera.position.clampLength(ZOOM_MIN, ZOOM_MAX);
     pinchDist=d;
   }
 },{passive:false});
@@ -1348,9 +1303,56 @@ window.addEventListener('touchend', e => {
 });
 
 // ═══════════════════════════════════════════════════════════════
-// PAN-ZOOM VIEWER
+// PAN-ZOOM VIEWER (optimizado con transform CSS)
 // ═══════════════════════════════════════════════════════════════
-let pzSvgW = 0, pzSvgH = 0;
+let pzSvgEl = null; 
+let pzOrigW = 0, pzOrigH = 0;
+let pzVbX = 0, pzVbY = 0, pzVbW = 0, pzVbH = 0;
+const PZ_ZOOM_F = 0.14;
+
+function pzApplyVB(){
+  if(!pzSvgEl) return;
+  const stage = document.getElementById('pz-stage');
+  const rect = stage.getBoundingClientRect();
+  const scale = rect.width / pzVbW;
+  const tx = -pzVbX * scale;
+  const ty = -pzVbY * scale;
+  pzSvgEl.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+  
+  const lvl = pzOrigW > 0 ? Math.round(pzOrigW / pzVbW * 100) : 100;
+  document.getElementById('pz-zoom-val').textContent = lvl + '%';
+}
+
+function pzFit() {
+  pzVbX = 0; pzVbY = 0; pzVbW = pzOrigW; pzVbH = pzOrigH;
+  pzApplyVB();
+}
+window.pzFit = pzFit;
+
+function pzZoomAt(factor, clientX, clientY) {
+  const stage = document.getElementById('pz-stage');
+  const rect  = stage.getBoundingClientRect();
+  const rx = (clientX - rect.left) / rect.width;
+  const ry = (clientY - rect.top)  / rect.height;
+  const pivotX = pzVbX + rx * pzVbW;
+  const pivotY = pzVbY + ry * pzVbH;
+  const minW = pzOrigW / 10,  minH = pzOrigH / 10;
+  const maxW = pzOrigW, maxH = pzOrigH;
+  let nw = Math.max(minW, Math.min(maxW, pzVbW / factor));
+  let nh = nw * (pzOrigH / pzOrigW);
+  pzVbX = pivotX - rx * nw;
+  pzVbY = pivotY - ry * nh;
+  pzVbW = nw; pzVbH = nh;
+  pzApplyVB();
+}
+
+function pzZoomBtn(f) {
+  const stage = document.getElementById('pz-stage');
+  const r = stage.getBoundingClientRect();
+  pzZoomAt(f, r.left + r.width/2, r.top + r.height/2);
+}
+window.pzZoomBtn = pzZoomBtn;
+
 async function openPZ(src, title) {
   const content = document.getElementById('pz-content');
   const viewer  = document.getElementById('pz-viewer');
@@ -1363,7 +1365,7 @@ async function openPZ(src, title) {
   h.style.animation='none';
   void h.offsetWidth; h.style.animation='fadeHint 4s forwards';
   modalActive = true;
-  pzSvgEl = null;
+  _animPaused = true;
 
   const isSVG = src.toLowerCase().endsWith('.svg');
   if(isSVG){
@@ -1387,16 +1389,22 @@ async function openPZ(src, title) {
     if(!w||!hh){ w=parseFloat(pzSvgEl.getAttribute('width'))||1000; hh=parseFloat(pzSvgEl.getAttribute('height'))||700; }
     pzOrigW=w; pzOrigH=hh;
 
-    pzSvgEl.setAttribute('width',  '100%');
-    pzSvgEl.setAttribute('height', '100%');
-    pzSvgEl.setAttribute('preserveAspectRatio', 'xMidYMid meet');
-    pzSvgEl.style.cssText = 'display:block;pointer-events:none;user-select:none;';
+    // Tamaño fijo para aplicar transform
+    pzSvgEl.setAttribute('width', pzOrigW);
+    pzSvgEl.setAttribute('height', pzOrigH);
+    pzSvgEl.style.width = pzOrigW + 'px';
+    pzSvgEl.style.height = pzOrigH + 'px';
+    pzSvgEl.style.maxWidth = 'none';
+    pzSvgEl.style.display = 'block';
+    pzSvgEl.style.pointerEvents = 'none';
+    pzSvgEl.style.userSelect = 'none';
+    pzSvgEl.style.transformOrigin = '0 0';
+    pzSvgEl.style.willChange = 'transform';
     
     pzVbX=0; pzVbY=0; pzVbW=pzOrigW; pzVbH=pzOrigH;
-    pzSvgEl.setAttribute('viewBox', `0 0 ${pzOrigW} ${pzOrigH}`);
     content.innerHTML = '';
     content.appendChild(pzSvgEl);
-    document.getElementById('pz-zoom-val').textContent = '100%';
+    pzApplyVB();
 
   } else {
     const img = document.createElement('img');
@@ -1413,53 +1421,14 @@ function closePZ() {
   document.getElementById('pz-content').innerHTML = '';
   pzSvgEl = null; pzOrigW = 0; pzOrigH = 0;
   modalActive = false;
+  _animPaused = false;
 }
 window.closePZ = closePZ;
 
-// ── PZ-VIEWER: estado viewBox ──
-let pzSvgEl = null; 
-let pzOrigW = 0, pzOrigH = 0;
-let pzVbX = 0, pzVbY = 0, pzVbW = 0, pzVbH = 0;
-const PZ_ZOOM_F = 0.14;
-
-function pzApplyVB(){
-  if(pzSvgEl) pzSvgEl.setAttribute('viewBox', `${pzVbX} ${pzVbY} ${pzVbW} ${pzVbH}`);
-  const lvl = Math.round(pzOrigW / pzVbW * 100);
-  document.getElementById('pz-zoom-val').textContent = lvl + '%';
-}
-
-function pzFit() {
-  pzVbX = 0; pzVbY = 0; pzVbW = pzOrigW; pzVbH = pzOrigH;
-  pzApplyVB();
-}
-window.pzFit = pzFit;
-
-function pzZoomAt(factor, clientX, clientY) {
-  const stage = document.getElementById('pz-stage');
-  const rect  = stage.getBoundingClientRect();
-  const rx = (clientX - rect.left) / rect.width;
-  const ry = (clientY - rect.top)  / rect.height;
-  const pivotX = pzVbX + rx * pzVbW;
-  const pivotY = pzVbY + ry * pzVbH;
-  const minW = pzOrigW / 20, minH = pzOrigH / 20;
-  let nw = Math.max(minW, Math.min(pzOrigW * 4, pzVbW / factor));
-  let nh = nw * (pzOrigH / pzOrigW);
-  pzVbX = pivotX - rx * nw;
-  pzVbY = pivotY - ry * nh;
-  pzVbW = nw; pzVbH = nh;
-  pzApplyVB();
-}
-
-function pzZoomBtn(f) {
-  const stage = document.getElementById('pz-stage');
-  const r = stage.getBoundingClientRect();
-  pzZoomAt(f, r.left + r.width/2, r.top + r.height/2);
-}
-window.pzZoomBtn = pzZoomBtn;
-
-// Mouse
+// PZ events
 const pzStage = document.getElementById('pz-stage');
 let pzDrag = false, pzDSX = 0, pzDSY = 0, pzDVBX = 0, pzDVBY = 0;
+
 pzStage.addEventListener('wheel', e => {
   e.preventDefault(); e.stopPropagation();
   pzZoomAt(e.deltaY < 0 ? 1+PZ_ZOOM_F : 1-PZ_ZOOM_F, e.clientX, e.clientY);
@@ -1484,7 +1453,6 @@ window.addEventListener('mousemove', e => {
 window.addEventListener('mouseup', () => { pzDrag=false; pzStage.classList.remove('dragging'); });
 pzStage.addEventListener('dblclick', pzFit);
 
-// Touch
 let pzLastTap = 0, pzTDrag = false, pzTSX = 0, pzTSY = 0, pzTVBX = 0, pzTVBY = 0;
 let pzPD0 = 0, pzPVBX0 = 0, pzPVBY0 = 0, pzPVBW0 = 0, pzPVBH0 = 0;
 
@@ -1515,7 +1483,13 @@ pzStage.addEventListener('touchmove', e => {
     const my = (e.touches[0].clientY+e.touches[1].clientY)/2;
     const stage=document.getElementById('pz-stage'), rect=stage.getBoundingClientRect();
     const rx=(mx-rect.left)/rect.width, ry=(my-rect.top)/rect.height;
-    const nw = pzPVBW0/f, nh = pzPVBH0/f;
+    let nw = pzPVBW0/f, nh = pzPVBH0/f;
+    if(pzOrigW > 0){
+      const minW=pzOrigW/10, maxW=pzOrigW;
+      const minH=pzOrigH/10, maxH=pzOrigH;
+      if(nw < minW){ nw=minW; nh=minH; }
+      if(nw > maxW){ nw=maxW; nh=maxH; }
+    }
     const pivX = pzPVBX0+rx*pzPVBW0, pivY = pzPVBY0+ry*pzPVBH0;
     pzVbX=pivX-rx*nw; pzVbY=pivY-ry*nh; pzVbW=nw; pzVbH=nh;
     pzApplyVB();
@@ -1528,10 +1502,9 @@ pzStage.addEventListener('touchend', e => {
 });
 
 // ═══════════════════════════════════════════════════════════════
-// BOM — MODIFICADO Y ACTUALIZADO
+// BOM
 // ═══════════════════════════════════════════════════════════════
-const BOM_DATA_RAW = [
-  // ==================== CAÑÓN GAUSS ====================
+const BOM_DATA = [
   {ref:'C1,C2,C3', qty:3, value:'4700μF/63V', desc:'Condensador electrolítico polarizado', cat:'Almacenamiento', proyecto:'Cañón Gauss'},
   {ref:'C4', qty:1, value:'47nF', desc:'Condensador no polarizado', cat:'Pasivos', proyecto:'Cañón Gauss'},
   {ref:'C5,C6', qty:2, value:'100nF', desc:'Condensador no polarizado', cat:'Pasivos', proyecto:'Cañón Gauss'},
@@ -1539,57 +1512,38 @@ const BOM_DATA_RAW = [
   {ref:'D3,D8', qty:2, value:'COIL LED', desc:'LED indicador de bobina', cat:'Interfaz', proyecto:'Cañón Gauss'},
   {ref:'D4,D9', qty:2, value:'31DF4', desc:'30V 3A Schottky Barrier Rectifier Diode, DO-201AD', cat:'Potencia', proyecto:'Cañón Gauss'},
   {ref:'D5,D10', qty:2, value:'75V/5W', desc:'Diodo Zener', cat:'Potencia', proyecto:'Cañón Gauss'},
-  {ref:'D6,D11', qty:2, value:'IR LED', desc:'LED infrarrojo emisor', cat:'Sensores', proyecto:'Cañón Gauss'},
-  {ref:'J1', qty:1, value:'TRANSFORMER', desc:'Borne de conexión (transformador)', cat:'Potencia', proyecto:'Cañón Gauss'},
-  {ref:'J2', qty:1, value:'OUTPUT', desc:'Borne de conexión (salida)', cat:'Interfaz', proyecto:'Cañón Gauss'},
-  {ref:'J3', qty:1, value:'BOARD INPUT 36V', desc:'Generic screw terminal, 01x02', cat:'Interfaz', proyecto:'Cañón Gauss'},
-  {ref:'J4', qty:1, value:'BOARD INPUT 12V', desc:'Generic screw terminal, 01x02', cat:'Interfaz', proyecto:'Cañón Gauss'},
-  {ref:'L1,L2', qty:2, value:'COIL', desc:'Bobina inductiva de disparo', cat:'Electromagnética', proyecto:'Cañón Gauss'},
-  {ref:'Q1,Q6', qty:2, value:'BPW40', desc:'Fototransistor NPN', cat:'Sensores', proyecto:'Cañón Gauss'},
-  {ref:'Q2,Q7', qty:2, value:'2N2222', desc:'Transistor NPN de señal pequeña, TO-92', cat:'Control', proyecto:'Cañón Gauss'},
-  {ref:'Q3,Q4,Q5,Q8,Q9,Q10', qty:6, value:'IRF740', desc:'N-Channel Power MOSFET, 400V, 10A, TO-220AB', cat:'Potencia', proyecto:'Cañón Gauss'},
-  {ref:'R1,R2,R11,R12', qty:4, value:'1.2KΩ', desc:'Resistor, US symbol', cat:'Pasivos', proyecto:'Cañón Gauss'},
-  {ref:'R3,R6,R13,R16', qty:4, value:'10KΩ', desc:'Resistor, US symbol', cat:'Pasivos', proyecto:'Cañón Gauss'},
-  {ref:'R4,R5,R14,R15', qty:4, value:'2.2KΩ', desc:'Resistor, US symbol', cat:'Pasivos', proyecto:'Cañón Gauss'},
-  {ref:'R7,R17', qty:2, value:'4.7KΩ', desc:'Resistor, US symbol', cat:'Pasivos', proyecto:'Cañón Gauss'},
-  {ref:'R8,R9,R10,R18,R19,R20', qty:6, value:'10Ω', desc:'Resistor, US symbol', cat:'Pasivos', proyecto:'Cañón Gauss'},
-  {ref:'TP1,TP2,TP3,TP4', qty:4, value:'TestPoint', desc:'Punto de prueba de circuito', cat:'Interfaz', proyecto:'Cañón Gauss'},
+  {ref:'D6,D11', qty:2, value:'IR LED', desc:'Diodo emisor infrarrojo (Sensor de barrera)', cat:'Interfaz', proyecto:'Cañón Gauss'},
+  {ref:'J1', qty:1, value:'TRANSFORMER', desc:'Terminal a tornillo genérica, 2 pines', cat:'Conectores', proyecto:'Cañón Gauss'},
+  {ref:'J2', qty:1, value:'OUTPUT', desc:'Terminal a tornillo genérica, 2 pines', cat:'Conectores', proyecto:'Cañón Gauss'},
+  {ref:'J3', qty:1, value:'BOARD INPUT 36V', desc:'Terminal a tornillo genérica, 2 pines', cat:'Conectores', proyecto:'Cañón Gauss'},
+  {ref:'L1,L2', qty:2, value:'COIL', desc:'Bobina / Inductor de etapa', cat:'Electromecánicos', proyecto:'Cañón Gauss'},
+  {ref:'Q1,Q6', qty:2, value:'BPW40', desc:'Fototransistor NPN de alta sensibilidad', cat:'Semiconductores', proyecto:'Cañón Gauss'},
+  {ref:'Q2,Q7', qty:2, value:'2N2222', desc:'Transistor bipolar NPN de uso general, TO-92', cat:'Semiconductores', proyecto:'Cañón Gauss'},
+  {ref:'Q3,Q4,Q5,Q8,Q9,Q10', qty:6, value:'IRF740', desc:'Power MOSFET N-Channel 10A 400V, TO-220AB', cat:'Potencia', proyecto:'Cañón Gauss'},
+  {ref:'R1,R12', qty:2, value:'10MΩ', desc:'Resistor 1/4W', cat:'Pasivos', proyecto:'Cañón Gauss'},
+  {ref:'R2,R13', qty:2, value:'10KΩ', desc:'Resistor 1/4W', cat:'Pasivos', proyecto:'Cañón Gauss'},
+  {ref:'R3,R14', qty:2, value:'1.2KΩ', desc:'Resistor 1/4W', cat:'Pasivos', proyecto:'Cañón Gauss'},
+  {ref:'R4,R15', qty:2, value:'510Ω', desc:'Resistor 1/4W', cat:'Pasivos', proyecto:'Cañón Gauss'},
+  {ref:'R5,R16', qty:2, value:'470Ω', desc:'Resistor 1/4W', cat:'Pasivos', proyecto:'Cañón Gauss'},
+  {ref:'R6,R7,R8,R17,R18,R19', qty:6, value:'100Ω', desc:'Resistor 1/4W', cat:'Pasivos', proyecto:'Cañón Gauss'},
+  {ref:'R9,R20', qty:2, value:'220Ω', desc:'Resistor 1/4W', cat:'Pasivos', proyecto:'Cañón Gauss'},
+  {ref:'R10,R21', qty:2, value:'27Ω', desc:'Resistor 1/4W', cat:'Pasivos', proyecto:'Cañón Gauss'},
+  {ref:'R11,R22', qty:2, value:'2.7KΩ', desc:'Resistor 1/4W', cat:'Pasivos', proyecto:'Cañón Gauss'},
+  {ref:'C7,C10', qty:2, value:'100nF', desc:'Condensador no polarizado', cat:'Pasivos', proyecto:'Placa de control'},
+  {ref:'C8', qty:1, value:'10nF', desc:'Condensador no polarizado', cat:'Pasivos', proyecto:'Placa de control'},
+  {ref:'C9', qty:1, value:'68nF', desc:'Condensador no polarizado', cat:'Pasivos', proyecto:'Placa de control'},
+  {ref:'D12-D36', qty:25, value:'LED', desc:'Diodo emisor de luz indicador de secuencia', cat:'Interfaz', proyecto:'Placa de control'},
+  {ref:'R23-R62', qty:40, value:'1KΩ', desc:'Resistor de acoplamiento de señal', cat:'Pasivos', proyecto:'Placa de control'},
+  {ref:'R63', qty:1, value:'470Ω', desc:'Resistor 1/4W', cat:'Pasivos', proyecto:'Placa de control'},
+  {ref:'R65', qty:1, value:'100Ω', desc:'Resistor 1/4W', cat:'Pasivos', proyecto:'Placa de control'},
+  {ref:'U1,U7', qty:2, value:'NE555P', desc:'Temporizador de precisión, generador de pulsos clock', cat:'Control', proyecto:'Placa de control'},
+  {ref:'U2,U3,U4,U5,U6', qty:5, value:'4017', desc:'Contador/Divisor Johnson con 10 salidas decodificadas', cat:'Control', proyecto:'Placa de control'}
+].sort((a,b) => a.ref.localeCompare(b.ref));
 
-  // ==================== PLACA DE CONTROL ====================
-  {ref:'C7,C10', qty:2, value:'100nF', desc:'Unpolarized capacitor', cat:'Pasivos', proyecto:'Placa de control'},
-  {ref:'C8', qty:1, value:'10nF', desc:'Unpolarized capacitor', cat:'Pasivos', proyecto:'Placa de control'},
-  {ref:'C9', qty:1, value:'68nF', desc:'Unpolarized capacitor', cat:'Pasivos', proyecto:'Placa de control'},
-  {ref:'D12-D51', qty:40, value:'LED', desc:'Light emitting diode', cat:'Interfaz', proyecto:'Placa de control'},
-  {ref:'D52,D53', qty:2, value:'1N4148', desc:'100V 0.15A standard switching diode, DO-35', cat:'Control', proyecto:'Placa de control'},
-  {ref:'J5', qty:1, value:'12V POWER SUPPLY', desc:'Generic screw terminal, 01x02', cat:'Interfaz', proyecto:'Placa de control'},
-  {ref:'J6', qty:1, value:'PWM OUTPUT', desc:'Generic screw terminal, 01x02', cat:'Interfaz', proyecto:'Placa de control'},
-  {ref:'Q11', qty:1, value:'IRF540N', desc:'33A Id, 100V Vds, HEXFET N-Channel MOSFET', cat:'Potencia', proyecto:'Placa de control'},
-  {ref:'R21', qty:1, value:'6.8KΩ', desc:'Resistor, US symbol', cat:'Pasivos', proyecto:'Placa de control'},
-  {ref:'R22,R64', qty:2, value:'100KΩ', desc:'Potentiometer, US symbol', cat:'Pasivos', proyecto:'Placa de control'},
-  {ref:'R23-R62', qty:40, value:'1KΩ', desc:'Resistor, US symbol', cat:'Pasivos', proyecto:'Placa de control'},
-  {ref:'R63', qty:1, value:'470Ω', desc:'Resistor, US symbol', cat:'Pasivos', proyecto:'Placa de control'},
-  {ref:'R65', qty:1, value:'100Ω', desc:'Resistor, US symbol', cat:'Pasivos', proyecto:'Placa de control'},
-  {ref:'U1,U7', qty:2, value:'NE555P', desc:'Precision Timers, 555 compatible, PDIP-8', cat:'Control', proyecto:'Placa de control'},
-  {ref:'U2,U3,U4,U5,U6', qty:5, value:'4017', desc:'Johnson Counter ( 10 outputs )', cat:'Control', proyecto:'Placa de control'}
-];
-
-// Ordenar por referencia (alfabéticamente)
-BOM_DATA_RAW.sort((a, b) => a.ref.localeCompare(b.ref));
-const BOM_DATA = BOM_DATA_RAW;
-
-// Función para actualizar el contador circular
-function updateCounter() {
-  const total = 10;
-  const count = seen.size;
-  const percent = (count / total) * 100;
-  const circle = document.getElementById('progress-circle');
-  const circumference = 2 * Math.PI * 16;
-  const dash = (percent / 100) * circumference;
-  circle.style.strokeDasharray = `${dash} ${circumference}`;
-  document.getElementById('counter-text').textContent = `${count}/${total}`;
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-// Renderizado de la tabla BOM dentro de la pestaña del modal de esquemáticos
 function renderModalBOM() {
   const tags = [...new Set(BOM_DATA.flatMap(r => [r.cat, r.proyecto]))];
   const filterBar = document.getElementById('bom-filter-bar-modal');
@@ -1603,12 +1557,11 @@ function renderModalBOM() {
         case 'Potencia': icon = '<svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>'; break;
         case 'Almacenamiento': icon = '<svg viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="12" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 8V5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v3" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>'; break;
         case 'Pasivos': icon = '<svg viewBox="0 0 24 24"><rect x="7" y="5" width="10" height="14" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M12 5v14" stroke="currentColor" stroke-width="1.5"/></svg>'; break;
-        case 'Electromagnética': icon = '<svg viewBox="0 0 24 24"><path d="M4 12h16M12 4v16" stroke="currentColor" stroke-width="1.5"/><ellipse cx="12" cy="12" rx="4" ry="4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>'; break;
-        case 'Sensores': icon = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="currentColor"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>'; break;
+        case 'Electromecánicos': icon = '<svg viewBox="0 0 24 24"><path d="M4 12h16M12 4v16" stroke="currentColor" stroke-width="1.5"/><ellipse cx="12" cy="12" rx="4" ry="4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>'; break;
+        case 'Semiconductores': icon = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="currentColor"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>'; break;
         case 'Cañón Gauss': icon = '<svg viewBox="0 0 24 24"><rect x="10" y="15" width="4" height="1.5" rx="0.5" fill="currentColor" opacity="0.5"/><rect x="3" y="10.5" width="17" height="3" rx="0.75" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="7.5" y="9.5" width="1.8" height="5" rx="0.4" fill="currentColor"/><rect x="11.1" y="9.5" width="1.8" height="5" rx="0.4" fill="currentColor"/><rect x="14.7" y="9.5" width="1.8" height="5" rx="0.4" fill="currentColor"/><rect x="1.5" y="10" width="2" height="4" rx="0.5" fill="currentColor"/><rect x="20.5" y="10.5" width="2" height="3" rx="0.5" fill="currentColor"/></svg>'; break;
         case 'Placa de control': icon = '<svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="4.5" cy="6.5" r="0.8" fill="currentColor" opacity="0.5"/><circle cx="19.5" cy="6.5" r="0.8" fill="currentColor" opacity="0.5"/><circle cx="4.5" cy="17.5" r="0.8" fill="currentColor" opacity="0.5"/><circle cx="19.5" cy="17.5" r="0.8" fill="currentColor" opacity="0.5"/><rect x="9" y="9" width="6" height="6" rx="0.5" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="9" y1="10.5" x2="7" y2="10.5" stroke="currentColor" stroke-width="1"/><line x1="9" y1="12" x2="7" y2="12" stroke="currentColor" stroke-width="1"/><line x1="9" y1="13.5" x2="7" y2="13.5" stroke="currentColor" stroke-width="1"/><line x1="15" y1="10.5" x2="17" y2="10.5" stroke="currentColor" stroke-width="1"/><line x1="15" y1="12" x2="17" y2="12" stroke="currentColor" stroke-width="1"/><line x1="15" y1="13.5" x2="17" y2="13.5" stroke="currentColor" stroke-width="1"/></svg>'; break;
         case 'Interfaz': icon = '<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 8h8M8 12h8M8 16h4" stroke="currentColor" stroke-width="1.5"/></svg>'; break;
-        case 'Mecánica': icon = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M12 2v20M2 12h20" stroke="currentColor" stroke-width="1.5"/></svg>'; break;
         default: icon = '';
       }
       return `<button class="bom-filter-chip${c===activeCat?' on':''}" onclick="bomFilterModal('${c}')">${icon}${c}</button>`;
@@ -1631,14 +1584,18 @@ function renderModalBOM() {
     return `
       <div class="bom-stat"><div class="bs-l">Líneas</div><div class="bs-v">${filtered.length}</div></div>
       <div class="bom-stat"><div class="bs-l">Unidades</div><div class="bs-v">${totalQty}</div></div>
-      <div class="bom-stat"><div class="bs-l">Filtros Activos</div><div class="bs-v">${tags.length}</div></div>`;
+      <div class="bom-stat"><div class="bs-l">Filtros</div><div class="bs-v">${tags.length}</div></div>`;
   }
 
   document.getElementById('bom-thead-modal').innerHTML =
-    ' <th>Ref.</th><th>Cant.</th><th>Valor / Componente</th><th>Descripción</th><th>Clasificación y Proyecto</th> ';
+    '<th>Ref.</th><th>Cant.</th><th>Valor / Componente</th><th>Descripción</th><th>Clasificación y Proyecto</th>';
 
-  document.getElementById('bom-tbody-modal').innerHTML = BOM_DATA.map(r => `
-    <tr data-cat="${r.cat}" data-proyecto="${r.proyecto}">
+  const fragment = document.createDocumentFragment();
+  BOM_DATA.forEach(r => {
+    const tr = document.createElement('tr');
+    tr.dataset.cat = r.cat;
+    tr.dataset.proyecto = r.proyecto;
+    tr.innerHTML = `
       <td data-label="Ref." style="font-family:'Black Ops One',serif;font-size:.78rem;color:var(--teal)">${escHtml(r.ref)}</td>
       <td data-label="Cant."><span class="bom-badge ok">${escHtml(String(r.qty))}</span></td>
       <td data-label="Valor" style="color:#fff;font-weight:600">${escHtml(r.value)}</td>
@@ -1647,14 +1604,13 @@ function renderModalBOM() {
         <span class="bom-badge warn" style="font-size:.58rem; margin-bottom: 4px; display: inline-block;">${escHtml(r.cat)}</span>
         <span class="bom-badge ok" style="font-size:.58rem; display: inline-block;">${escHtml(r.proyecto)}</span>
       </td>
-     </tr>`).join('');
+    `;
+    fragment.appendChild(tr);
+  });
+  document.getElementById('bom-tbody-modal').appendChild(fragment);
 
   buildChips();
   document.getElementById('bom-summary-modal').innerHTML = buildSummaryModal('Todos');
-}
-
-function escHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1662,19 +1618,19 @@ function escHtml(s) {
 // ═══════════════════════════════════════════════════════════════
 let modalActive = false;
 
-function openBOM() { 
-  openModal('bom');
-}
+function openBOM() { openModal('bom'); }
 window.openBOM = openBOM;
 
 function openModal(tab) {
   document.getElementById('sch-modal').classList.add('open');
   switchTabByName(tab);
   modalActive = true;
+  _animPaused = true;
 }
 function closeModal() {
   document.getElementById('sch-modal').classList.remove('open');
   modalActive = false;
+  _animPaused = false;
 }
 window.openModal = openModal;
 window.closeModal = closeModal;
@@ -1695,7 +1651,7 @@ function switchTabByName(name) {
 window.switchTab = switchTab;
 
 // ═══════════════════════════════════════════════════════════════
-// HINT: Ocultar al primer movimiento
+// HINT
 // ═══════════════════════════════════════════════════════════════
 let hintHidden = false;
 function hideHintOnInteraction() {
@@ -1709,32 +1665,37 @@ renderer.domElement.addEventListener('touchstart', hideHintOnInteraction);
 renderer.domElement.addEventListener('wheel', hideHintOnInteraction);
 
 // ═══════════════════════════════════════════════════════════════
-// LIGHTBOX
+// COUNTER
 // ═══════════════════════════════════════════════════════════════
-function openLightbox(id) {
-  if(!id || !SCHEMS[id]) return;
-  document.getElementById('lb-wrap').innerHTML = SCHEMS[id];
-  document.getElementById('lb').classList.add('open');
+function updateCounter() {
+  const total = 10;
+  const count = seen ? seen.size : 0;
+  const percent = (count / total) * 100;
+  const circle = document.getElementById('progress-circle');
+  if (circle) {
+    const circumference = 2 * Math.PI * 16;
+    const dash = (percent / 100) * circumference;
+    circle.style.strokeDasharray = `${dash} ${circumference}`;
+  }
+  const txt = document.getElementById('counter-text');
+  if (txt) txt.textContent = `${count}/${total}`;
 }
-function closeLightbox() {
-  document.getElementById('lb').classList.remove('open');
-}
-window.openLightbox = openLightbox;
-window.closeLightbox = closeLightbox;
 
-// Keyboard
+// ═══════════════════════════════════════════════════════════════
+// KEYBOARD
+// ═══════════════════════════════════════════════════════════════
 window.addEventListener('keydown', e => {
   if(e.key==='Escape'){
-    closePanel(); closeModal(); closePZ(); 
+    closePanel(); closeModal(); closePZ();
   }
 });
 
 // ═══════════════════════════════════════════════════════════════
-// EVITAR QUE EL SCROLL EN PANELES AFECTE AL MODELO 3D
+// EVITAR SCROLL EN PANELES AFECTE AL 3D
 // ═══════════════════════════════════════════════════════════════
-document.getElementById('panel').addEventListener('wheel', (e) => e.stopPropagation(), { passive: false });
-document.getElementById('sch-modal').addEventListener('wheel', (e) => e.stopPropagation(), { passive: false });
-document.getElementById('pz-viewer').addEventListener('wheel', (e) => e.stopPropagation(), { passive: false });
+document.getElementById('panel').addEventListener('wheel', e => e.stopPropagation(), { passive: false });
+document.getElementById('sch-modal').addEventListener('wheel', e => e.stopPropagation(), { passive: false });
+document.getElementById('pz-viewer').addEventListener('wheel', e => e.stopPropagation(), { passive: false });
 
 // ═══════════════════════════════════════════════════════════════
 // RESIZE
@@ -1749,40 +1710,46 @@ window.addEventListener('resize', () => {
 // ANIMATION LOOP
 // ═══════════════════════════════════════════════════════════════
 const clock = new THREE.Clock();
-let autoRot = true;
+let _animPaused = false;
+const MODEL_COLLIDE = ZOOM_MIN;
+let frameCounter = 0;
 
 function animate() {
   requestAnimationFrame(animate);
+  if(_animPaused) return;
+
   const t = clock.getElapsedTime();
 
-  if(!drag && !touchDrag && !modalActive) {
+  if(!drag && !touchDrag) {
     model.rotation.y += .0012;
   }
 
-  // Copper coil emissive pulse when panel open
-  if(selectedId === 'coil1' || selectedId === 'coil2') {
-    const p = (.5+.5*Math.sin(t*8))*.4;
-    clickables.filter(c=>c.id===selectedId).forEach(c=>{
-      if(c.mesh.material.emissiveIntensity!==undefined)
-        c.mesh.material.emissiveIntensity = p;
-    });
+  const camDist = camera.position.length();
+  if(camDist < MODEL_COLLIDE) {
+    camera.position.normalize().multiplyScalar(MODEL_COLLIDE);
   }
 
-  // Point light flicker
-  pt1.intensity = .9 + .1*Math.sin(t*1.7);
-  pt2.intensity = .5 + .08*Math.sin(t*2.3+1);
+  if(++frameCounter % 3 === 0) {
+    if(selectedId === 'coil1' || selectedId === 'coil2') {
+      const p = (.5+.5*Math.sin(t*8))*.4;
+      clickables.filter(c=>c.id===selectedId).forEach(c=>{
+        if(c.mesh.material.emissiveIntensity!==undefined)
+          c.mesh.material.emissiveIntensity = p;
+      });
+    }
+    pt1.intensity = .9 + .1*Math.sin(t*1.7);
+  }
 
   renderer.render(scene,camera);
 }
 animate();
 
 // ═══════════════════════════════════════════════════════════════
-// VISOR SVG — ZOOM/PAN VÍA VIEWBOX
+// VISOR SVG (esquema completo) - optimizado con transform CSS
 // ═══════════════════════════════════════════════════════════════
 (function(){
   const SVG_URL = 'esquemas/esquema-completo.svg';
   const ZOOM_FACTOR = 0.14;
-  const ZOOM_MAX_FACTOR = 20;
 
   let ready = false;
   let svgEl = null;
@@ -1797,7 +1764,12 @@ animate();
   function pMid(t){ return { x:(t[0].clientX+t[1].clientX)/2, y:(t[0].clientY+t[1].clientY)/2 }; }
 
   function applyVB(){
-    if(svgEl) svgEl.setAttribute('viewBox', `${vbX} ${vbY} ${vbW} ${vbH}`);
+    if(!svgEl || !wrap) return;
+    const rect = wrap.getBoundingClientRect();
+    const scale = rect.width / vbW;
+    const tx = -vbX * scale;
+    const ty = -vbY * scale;
+    svgEl.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
   }
 
   function fit(){
@@ -1826,12 +1798,12 @@ animate();
     const pivotX = vbX + ratioX * vbW;
     const pivotY = vbY + ratioY * vbH;
 
-    const minW = origW / ZOOM_MAX_FACTOR;
-    const minH = origH / ZOOM_MAX_FACTOR;
+    const minW = origW / 10, minH = origH / 10;
+    const maxW = origW, maxH = origH;
     let newW = vbW / factor;
     let newH = vbH / factor;
     if(newW < minW){ newW = minW; newH = minH; }
-    if(newW > origW * 4){ newW = origW * 4; newH = origH * 4; }
+    if(newW > maxW){ newW = maxW; newH = maxH; }
 
     vbX = pivotX - ratioX * newW;
     vbY = pivotY - ratioY * newH;
@@ -1872,12 +1844,17 @@ animate();
       origH = parseFloat(svgEl.getAttribute('height')) || 700;
     }
 
-    svgEl.setAttribute('width',  '100%');
-    svgEl.setAttribute('height', '100%');
-    svgEl.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+    // Tamaño fijo para aplicar transform
+    svgEl.setAttribute('width', origW);
+    svgEl.setAttribute('height', origH);
+    svgEl.style.width = origW + 'px';
+    svgEl.style.height = origH + 'px';
+    svgEl.style.maxWidth = 'none';
     svgEl.style.display = 'block';
     svgEl.style.pointerEvents = 'none';
     svgEl.style.userSelect = 'none';
+    svgEl.style.transformOrigin = '0 0';
+    svgEl.style.willChange = 'transform';
     
     vbX = 0; vbY = 0; vbW = origW; vbH = origH;
     applyVB();
@@ -1950,8 +1927,12 @@ animate();
         const ratioX = (m.x - rect.left) / rect.width;
         const ratioY = (m.y - rect.top)  / rect.height;
         
-        const newW = pinchVBW0 / factor;
-        const newH = pinchVBH0 / factor;
+        let newW = pinchVBW0 / factor;
+        let newH = pinchVBH0 / factor;
+        const minW = origW / 10, maxW = origW;
+        const minH = origH / 10, maxH = origH;
+        if(newW < minW){ newW = minW; newH = minH; }
+        if(newW > maxW){ newW = maxW; newH = maxH; }
         const pivotX = pinchVBX0 + ratioX * pinchVBW0;
         const pivotY = pinchVBY0 + ratioY * pinchVBH0;
         vbX = pivotX - ratioX * newW;
@@ -1967,7 +1948,6 @@ animate();
     });
 
     wrap.addEventListener('dblclick', fit);
-    window.addEventListener('resize', () => { });
   }
 
   const _openModal = window.openModal;
@@ -1986,9 +1966,8 @@ animate();
   });
 })();
 
-// Inicializar el BOM de la pestaña
+// Inicializar BOM y contador
 renderModalBOM();
-// Inicializar contador circular
 updateCounter();
 </script>
 </body>

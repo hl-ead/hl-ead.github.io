@@ -79,10 +79,11 @@ canvas{display:block;touch-action:none}
 #mobile-nav{
   display:none;
   position:fixed;bottom:0;left:0;right:0;z-index:100;
-  background:rgba(7,9,15,0.97);
+  background:rgba(7,9,15,0.98);
   border-top:1px solid rgba(0,217,176,0.14);
-  backdrop-filter:blur(24px);
-  -webkit-backdrop-filter:blur(24px);
+  /* backdrop-filter reducido en móvil para no saturar GPU compositor */
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
   padding:6px 0 calc(6px + env(safe-area-inset-bottom));
 }
 @media(max-width:640px){#mobile-nav{display:flex}}
@@ -176,6 +177,7 @@ canvas{display:block;touch-action:none}
 #panel{
   position:fixed;z-index:50;
   background:var(--panel);border:1px solid var(--border);
+  /* blur reducido en móvil via media query — ver más abajo */
   backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
   transition:transform .44s cubic-bezier(.16,1,.3,1),opacity .32s;
   overflow:hidden;
@@ -407,6 +409,8 @@ canvas{display:block;touch-action:none}
   overflow-y:auto;overflow-x:hidden;
   -webkit-overflow-scrolling:touch;
   padding:16px;
+  /* Aísla el árbol de compositing del scroll de sectores */
+  contain: layout;
 }
 .sec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
 @media(max-width:480px){.sec-grid{grid-template-columns:1fr}}
@@ -419,7 +423,7 @@ canvas{display:block;touch-action:none}
 .sec-card:hover,.sec-card:active{
   border-color:var(--teal);
   box-shadow:var(--glow-t), 0 4px 12px rgba(0,217,176,0.2);
-  transform:scale(1.02);
+  /* transform:scale() eliminado — causa glitch GPU al componer SVGs en móvil */
 }
 .sec-title{
   padding:9px 13px;font-size:.7rem;font-weight:600;letter-spacing:.15em;
@@ -434,6 +438,9 @@ canvas{display:block;touch-action:none}
   display:flex;
   align-items:center;
   justify-content:center;
+  /* Aísla el layer de pintura de cada tarjeta — evita contaminación entre sectores */
+  contain: layout paint;
+  will-change: auto;
 }
 .sec-img-wrap img{
   width:100%;
@@ -441,10 +448,11 @@ canvas{display:block;touch-action:none}
   display:block;
   object-fit:cover;
   pointer-events:none;
-  transition:transform 0.3s;
+  /* Sin transition de transform — ver fix anterior */
 }
 .sec-card:hover .sec-img-wrap img{
-  transform:scale(1.05);
+  /* transform:scale(1.05) eliminado — comparte el mismo bug de compositing GPU */
+  opacity: 0.9;
 }
 .sec-placeholder{padding:22px 16px;text-align:center;font-size:.74rem;color:rgba(180,204,216,.35);line-height:1.7}
 .sec-placeholder code{display:block;margin-top:6px;color:rgba(0,217,176,.35);font-size:.68rem;word-break:break-all}
@@ -452,10 +460,17 @@ canvas{display:block;touch-action:none}
 @media(max-width:640px){
   #sch-modal{
     padding:58px 0 calc(72px + env(safe-area-inset-bottom)) 0;
+    /* blur reducido en móvil para no acumular capas GPU */
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
   }
   #smc{
     border-radius:0;
     max-height:100%;
+  }
+  #panel{
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
   }
 }
 
@@ -901,7 +916,8 @@ SECTORS.forEach(s => {
   card.innerHTML = `
     <div class="sec-title">${s.title}<span class="sec-title-zoom">🔍 zoom</span></div>
     <div class="sec-img-wrap">
-      <img src="${s.img}" alt="${s.title}" loading="lazy"
+      <img src="${s.img}" alt="${s.title}" loading="lazy" decoding="async"
+        width="400" height="300"
         onerror="this.parentElement.innerHTML='<div class=\\'sec-placeholder\\'>📁 Imagen no encontrada<code>${s.img}</code></div>'">
     </div>`;
   card.addEventListener('click', () => openPZ(s.img, s.title));

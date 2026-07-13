@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8">
+  <link href="Imagenes/icono.png" rel="icon" type="image/x-icon" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>HL-EAD · Esquemas</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header id="topbar">
+    <div id="topbar-left">
+      <img src="Imagenes/ABR-G.svg" alt="Logo" class="logo" />
+      <div class="brand">
+        <span class="brand-title">⚡ HL-EAD</span>
+        <span class="brand-sub">Sistema de dos etapas</span>
+      </div>
+    </div>
+    <div id="topbar-actions">
+      <a href="index.html" class="btn-nav">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        Home
+      </a>
+      <a href="esquemas.html" class="btn-nav active">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+        Esquemas
+      </a>
+      <a href="bom.html" class="btn-nav">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        BOM
+      </a>
+      <a href="equipo.html" class="btn-nav">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        Equipo
+      </a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       NAVEGACIÓN MÓVIL INFERIOR (enlaces)
+       ============================================================ -->
+  <div id="mobile-nav">
+    <div class="mnav-grid">
+      <a href="index.html" class="mnbtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span>Home</span>
+      </a>
+      <a href="esquemas.html" class="mnbtn active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+        <span>Esquemas</span>
+      </a>
+      <a href="bom.html" class="mnbtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        <span>BOM</span>
+      </a>
+      <a href="equipo.html" class="mnbtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        <span>Equipo</span>
+      </a>
+    </div>
+  </div>
+
+
+  <div class="container">
+    
+    <div class="section-header">
+      <h1>Planos del Sistema</h1>
+      <p>Documentación técnica y diagramas de flujo del Cañón de Gauss</p>
+    </div>
+
+    <div class="tabs-nav">
+      <button class="tab-btn active" onclick="switchTab('full')">Esquema Completo</button>
+      <button class="tab-btn" onclick="switchTab('sections')">Planos Seccionales</button>
+    </div>
+
+    <div id="tab-full" class="tab-content active">
+      <div class="full-schem-wrap">
+        <div class="full-preview-box" onclick="openPZ('Esquema Completo', 'esquemas/esquema-completo.svg')">
+          <img src="esquemas/esquema-completo.svg" alt="Esquema General HL-EAD">
+        </div>
+        <div class="action-bar">
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-sections" class="tab-content">
+      <div class="sec-grid">
+        
+        <div class="sec-card" onclick="openPZ('Placa de filtrado', 'esquemas/placa-de-filtrado.svg')">
+          <div class="sec-title">
+            <span>Placa de filtrado</span>
+            <span class="sec-title-zoom">Click para Zoom</span>
+          </div>
+          <div class="sec-img-wrap">
+            <img src="esquemas/placa-de-filtrado.svg" alt="Etapa 1">
+          </div>
+        </div>
+
+        <div class="sec-card" onclick="openPZ('Fuente de alimentacion', 'esquemas/fuente-de-alimentacion.svg')">
+          <div class="sec-title">
+            <span>Fuente de alimentacion</span>
+            <span class="sec-title-zoom">Click para Zoom</span>
+          </div>
+          <div class="sec-img-wrap">
+            <img src="esquemas/fuente-de-alimentacion.svg" alt="Etapa 2">
+          </div>
+        </div>
+
+        <div class="sec-card" onclick="openPZ('Módulo de aceleración de bobina', 'esquemas/modulo-bobina.svg')">
+          <div class="sec-title">
+            <span>Módulo de aceleración de bobina</span>
+            <span class="sec-title-zoom">Click para Zoom</span>
+          </div>
+          <div class="sec-img-wrap">
+            <img src="esquemas/modulo-bobina.svg" alt="Módulo Control">
+          </div>
+        </div>
+
+        <div class="sec-card" onclick="openPZ('Placa de control LEDs', 'esquemas/placa-para-leds.svg')">
+          <div class="sec-title">
+            <span>Placa de control LEDs</span>
+            <span class="sec-title-zoom">Click para Zoom</span>
+          </div>
+          <div class="sec-img-wrap">
+            <img src="esquemas/placa-para-leds.svg" alt="Banco de Capacitores">
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div id="pz-viewer">
+    <div id="pz-topbar">
+      <div id="pz-title">ESQUEMA TÉCNICO</div>
+      <div id="pz-controls">
+        <button class="pz-btn" onclick="zoomOut()" title="Alejar">-</button>
+        <button class="pz-btn" onclick="zoomIn()" title="Acercar">+</button>
+        <button class="pz-btn" onclick="resetZoom()" title="100%">1:1</button>
+        <button class="pz-btn pz-close-btn" onclick="closePZ()" title="Cerrar">✕</button>
+      </div>
+    </div>
+
+    <div id="pz-stage">
+      <div id="pz-content">
+        <img id="pz-img" src="esquemas/esquema-completo.svg" alt="esquema Ampliado">
+      </div>
+    </div>
+
+    <div id="pz-zoom-bar">
+      <span id="pz-zoom-val">100%</span>
+    </div>
+  </div>
+
+  <script>
+    // Cambio dinámico de pestañas
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      
+      document.getElementById('tab-' + tabId).classList.add('active');
+      event.currentTarget.classList.add('active');
+    }
+// ==========================================
+// CONTROLADOR INTERACTIVO: PAN & ZOOM (HUD)
+// ==========================================
+
+// Referencias a elementos del DOM
+const pz = document.getElementById('pz-viewer');
+const pzTitle = document.getElementById('pz-title');
+const pzImg = document.getElementById('pz-img');
+const zVal = document.getElementById('pz-zoom-val');
+const pzStage = document.getElementById('pz-stage');
+
+// Variables globales de estado
+let scale = 1;
+let minScale = 1; // Guardará el zoom base automático (Ajuste perfecto = 100% en UI)
+let pX = 0, pY = 0;
+let isDrag = false;
+let sX = 0, sY = 0;
+let touchStartX = 0, touchStartY = 0;
+
+/**
+ * Abre el visor modal, asigna el título y carga la ruta del esquema.
+ */
+function openPZ(title, src) {
+  pzTitle.innerText = title.toUpperCase();
+  pzImg.src = src;
+  pz.style.display = 'flex';
+  
+  // Si la imagen ya estaba en caché, inicializa inmediatamente. Si no, espera al evento onload.
+  if (pzImg.complete) {
+    initViewer();
+  } else {
+    pzImg.onload = initViewer;
+  }
+}
+
+/**
+ * Inicializa los valores de escala y limpia coordenadas previas.
+ */
+function initViewer() {
+  calculateMinScale();
+  resetZoom();
+}
+
+/**
+ * Cierra la ventana modal del visor.
+ */
+function closePZ() {
+  pz.style.display = 'none';
+}
+
+/**
+ * Calcula dinámicamente la escala óptima para que cualquier plano (grande o chico)
+ * entre completo en la pantalla del usuario dejando un margen estético.
+ */
+function calculateMinScale() {
+  const stageW = pzStage.clientWidth;
+  const stageH = pzStage.clientHeight;
+  
+  // Dimensiones nativas reales del archivo SVG/Imagen
+  const imgW = pzImg.naturalWidth || pzImg.clientWidth || 800;
+  const imgH = pzImg.naturalHeight || pzImg.clientHeight || 600;
+  
+  // Márgenes: 90% del ancho disponible y 75% del alto (para dar aire a las barras HUD)
+  const scaleX = (stageW * 0.9) / imgW;
+  const scaleY = (stageH * 0.75) / imgH;
+  
+  // Guardamos la menor escala para asegurar que ningún eje se desborde al inicio
+  minScale = Math.min(scaleX, scaleY);
+}
+
+/**
+ * Restringe el movimiento (Panning) para que el plano nunca se salga del cuadro visible.
+ */
+function clampPan() {
+  const stageW = pzStage.clientWidth;
+  const stageH = pzStage.clientHeight;
+  
+  const imgW = pzImg.naturalWidth || pzImg.clientWidth || 800;
+  const imgH = pzImg.naturalHeight || pzImg.clientHeight || 600;
+  
+  const scaledW = imgW * scale;
+  const scaledH = imgH * scale;
+  
+  // Restricciones en el eje Horizontal (X)
+  if (scaledW > stageW) {
+    const maxPX = (scaledW - stageW) / 2;
+    pX = Math.max(-maxPX, Math.min(maxPX, pX));
+  } else {
+    pX = 0; // Si el plano es menor que la pantalla, se fuerza su centrado automático
+  }
+  
+  // Restricciones en el eje Vertical (Y)
+  if (scaledH > stageH) {
+    const maxPY = (scaledH - stageH) / 2;
+    pY = Math.max(-maxPY, Math.min(maxPY, pY));
+  } else {
+    pY = 0; // Si el plano es menor que la pantalla, se fuerza su centrado automático
+  }
+}
+
+/**
+ * Aplica las transformaciones físicas a la imagen.
+ * @param {boolean} smooth - Determina si se desplaza con animación suave o en tiempo real.
+ */
+function updateTrsf(smooth = false) {
+  clampPan();
+  
+  if (smooth) {
+    // Curva cúbica ultra-fluida para cambios de zoom por rueda o clics
+    pzImg.style.transition = "transform 0.25s cubic-bezier(0.25, 1, 0.5, 1)";
+  } else {
+    // Desactivado para arrastre de mouse instantáneo (0ms de retraso/efecto chicle)
+    pzImg.style.transition = "none";
+  }
+  
+  // Ejecución de la transformación matricial directamente sobre el elemento de imagen
+  pzImg.style.transform = `translate(${pX}px, ${pY}px) scale(${scale})`;
+  
+  // Mostramos el porcentaje relativo en pantalla (Donde minScale calculado siempre equivale a un 100%)
+  zVal.innerText = Math.round((scale / minScale) * 100) + '%';
+}
+
+/**
+ * Restaura el plano al tamaño de ajuste perfecto inicial (Boton 1:1)
+ */
+function resetZoom() {
+  scale = minScale; 
+  pX = 0; 
+  pY = 0;
+  updateTrsf(true); 
+}
+
+/**
+ * Incrementa el nivel de zoom de forma controlada y suave.
+ */
+function zoomIn() { 
+  // Límite máximo: 8 veces la escala base por defecto
+  scale = Math.min(scale * 1.30, minScale * 8); 
+  updateTrsf(true); 
+}
+
+/**
+ * Reduce el nivel de zoom de forma controlada y suave.
+ */
+function zoomOut() { 
+  // Límite mínimo estricto: El tamaño por defecto en pantalla (nunca se verá más chico que eso)
+  scale = Math.max(scale / 1.30, minScale); 
+  updateTrsf(true); 
+}
+
+// ==========================================
+// CONFIGURACIÓN DE CAPTURA DE EVENTOS (LISTENERS)
+// ==========================================
+
+// --- Control por Arrastre (Mouse Panning) ---
+pz.addEventListener('mousedown', (e) => {
+  // Ignoramos clics si el usuario interactúa con los menús o la barra superior de botones
+  if (e.target.closest('#pz-topbar') || e.target.closest('#pz-controls')) return;
+  
+  isDrag = true;
+  sX = e.clientX - pX;
+  sY = e.clientY - pY;
+  pzStage.classList.add('dragging');
+});
+
+window.addEventListener('mousemove', (e) => {
+  if (!isDrag) return;
+  pX = e.clientX - sX;
+  pY = e.clientY - sY;
+  updateTrsf(false); // Falso para asegurar rastreo inmediato al puntero del mouse
+  
+  // Resincronización en caliente para evitar saltos o congelamientos al golpear bordes límites
+  sX = e.clientX - pX;
+  sY = e.clientY - pY;
+});
+
+window.addEventListener('mouseup', () => {
+  isDrag = false;
+  pzStage.classList.remove('dragging');
+});
+
+// --- Control por Rueda del Mouse (Scroll Zoom) ---
+pz.addEventListener('wheel', (e) => {
+  e.preventDefault(); // Evitamos que la página de fondo haga scroll vertical
+  if (e.deltaY < 0) {
+    zoomIn();
+  } else {
+    zoomOut();
+  }
+}, { passive: false });
+
+// --- Soporte de Gestos para Pantallas Táctiles (Móviles/Tablets) ---
+pz.addEventListener('touchstart', (e) => {
+  if (e.touches.length === 1) {
+    isDrag = true;
+    touchStartX = e.touches[0].clientX - pX;
+    touchStartY = e.touches[0].clientY - pY;
+  }
+});
+
+pz.addEventListener('touchmove', (e) => {
+  if (!isDrag || e.touches.length !== 1) return;
+  pX = e.touches[0].clientX - touchStartX;
+  pY = e.touches[0].clientY - touchStartY;
+  updateTrsf(false); // Falso para arrastre inmediato sin lag táctil
+  
+  touchStartX = e.touches[0].clientX - pX;
+  touchStartY = e.touches[0].clientY - pY;
+});
+
+pz.addEventListener('touchend', () => {
+  isDrag = false;
+});
+
+// --- Accesibilidad por Teclado y Redimensión ---
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closePZ(); // Cierra el visor con la tecla ESC
+});
+
+// Si cambian la orientación del dispositivo o reajustan el navegador, recalculamos el encuadre
+window.addEventListener('resize', () => {
+  if (pz.style.display === 'flex') {
+    calculateMinScale();
+    updateTrsf(true);
+  }
+});
+  </script>
+</body>
+</html>

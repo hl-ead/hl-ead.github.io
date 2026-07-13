@@ -1,2068 +1,865 @@
 <!DOCTYPE html>
 <html lang="es-AR">
 <head>
-<meta charset="UTF-8">
-<link href="Imagenes/icono.png" rel="icon" type="image/x-icon" />
-<link rel="preload" href="gauss_cannon_low.glb" as="fetch" crossorigin>
-<link rel="preload" href="gauss_cannon.glb" as="fetch" crossorigin>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>Cañón de Gauss</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Black+Ops+One&display=swap');
-:root {
-  --bg: #07090f;
-  --panel: rgba(7,12,22,0.96);
-  --amber: #ff8c2a;
-  --amber-dim: rgba(255,140,42,0.25);
-  --teal: #00d9b0;
-  --teal-dim: rgba(0,217,176,0.15);
-  --red: #ff4040;
-  --text: #b4ccd8;
-  --text-dim: rgba(180,204,216,0.45);
-  --border: rgba(0,217,176,0.18);
-  --border-a: rgba(255,140,42,0.28);
-  --glow-a: 0 0 24px rgba(255,140,42,0.35);
-  --glow-t: 0 0 24px rgba(0,217,176,0.35);
-}
-
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow:hidden;background:var(--bg)}
-body{font-family:'Rajdhani',sans-serif;color:var(--text);touch-action:none;user-select:none}
-canvas{display:block;touch-action:none}
-
-::-webkit-scrollbar{width:5px;height:5px}
-::-webkit-scrollbar-track{background:rgba(0,217,176,0.04);border-radius:3px}
-::-webkit-scrollbar-thumb{background:rgba(0,217,176,0.28);border-radius:3px;transition:background .2s}
-::-webkit-scrollbar-thumb:hover{background:rgba(0,217,176,0.55)}
-::-webkit-scrollbar-corner{background:transparent}
-* { scrollbar-width:thin; scrollbar-color:rgba(0,217,176,0.28) rgba(0,217,176,0.04); }
-
-#nav{
-  position:fixed;top:0;left:0;right:0;height:54px;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 18px;z-index:100;
-  background:rgba(7,9,15,0.94);
-  border-bottom:1px solid rgba(0,217,176,0.12);
-  backdrop-filter:blur(20px);
-}
-#nav-brand{line-height:1.1;flex-shrink:0}
-#nav-title{
-  font-family:'Black Ops One',serif;font-size:1.05rem;
-  color:var(--amber);letter-spacing:0.06em;
-  text-shadow:0 0 16px rgba(255,140,42,0.5);
-}
-#nav-sub{
-  font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;
-  color:rgba(180,204,216,0.7); /* más claro */
-  margin-top:1px;
-}
-
-#nav-btns{display:flex;gap:8px}
-.nbtn{
-  display:flex;align-items:center;gap:7px;
-  padding:7px 13px;
-  background:var(--teal-dim);border:1px solid var(--border);border-radius:3px;
-  color:var(--teal);font-family:'Rajdhani',sans-serif;font-size:0.77rem;
-  font-weight:600;letter-spacing:0.1em;text-transform:uppercase;
-  cursor:pointer;transition:all .2s;white-space:nowrap;
-}
-.nbtn:hover{background:rgba(0,217,176,0.2);border-color:var(--teal);box-shadow:var(--glow-t)}
-.nbtn.nbtn-amber{background:rgba(255,140,42,0.12);border-color:var(--border-a);color:var(--amber)}
-.nbtn.nbtn-amber:hover{background:rgba(255,140,42,0.22);border-color:var(--amber);box-shadow:var(--glow-a)}
-.nbtn svg{flex-shrink:0}
-
-@media(max-width:640px){
-  #nav-btns{display:none}
-}
-
-#mobile-nav{
-  display:none;
-  position:fixed;bottom:0;left:0;right:0;z-index:100;
-  background:rgba(7,9,15,0.98);
-  border-top:1px solid rgba(0,217,176,0.14);
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
-  padding:6px 0 calc(6px + env(safe-area-inset-bottom));
-}
-@media(max-width:640px){#mobile-nav{display:flex}}
-.mnav-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  width:100%;
-}
-.mnbtn{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:4px;padding:8px 4px;border:none;background:none;cursor:pointer;
-  color:rgba(0,217,176,0.55);font-family:'Rajdhani',sans-serif;
-  font-size:0.58rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
-  transition:color .2s;
-  -webkit-tap-highlight-color:transparent;
-}
-.mnbtn:active,.mnbtn:hover{color:var(--teal)}
-.mnbtn.amber{color:rgba(255,140,42,0.55)}
-.mnbtn.amber:active,.mnbtn.amber:hover{color:var(--amber)}
-.mnbtn svg{width:18px;height:18px}
-
-#hint{
-  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
-  z-index:10;pointer-events:none;text-align:center;
-  transition:opacity .8s;
-}
-#hint-inner{
-  display:inline-flex;align-items:center;gap:10px;
-  font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;
-  color:rgba(180,204,216,0.32);
-  border:1px solid rgba(255,140,42,0.1);padding:6px 18px;border-radius:20px;
-  backdrop-filter:blur(8px);background:rgba(7,9,15,0.35);
-}
-.hdot{width:5px;height:5px;border-radius:50%;background:var(--amber);opacity:.5;animation:dp 2.2s infinite}
-@keyframes dp{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.9;transform:scale(1.4)}}
-
-#counter{
-  position:fixed;bottom:20px;right:18px;
-  width:60px;height:60px;
-  z-index:10;pointer-events:none;
-  display:flex;align-items:center;justify-content:center;
-}
-.circular-chart {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-.circle-bg {
-  stroke: rgba(0,217,176,0.15);
-  stroke-width: 3;
-  fill: none;
-}
-.circle {
-  stroke: var(--teal);
-  stroke-width: 3;
-  fill: none;
-  stroke-linecap: round;
-  transition: stroke-dasharray 0.3s;
-  filter: drop-shadow(0 0 6px var(--teal));
-}
-#counter-text {
-  position:absolute;
-  font-family:'Black Ops One',serif;
-  font-size:0.9rem;
-  color:var(--teal);
-  text-shadow:0 0 10px var(--teal);
-}
-
-#tip{
-  position:fixed;pointer-events:none;z-index:200;
-  background:rgba(7,12,22,0.95);border:1px solid var(--border-a);border-radius:6px;
-  padding:8px 14px;font-family:'Rajdhani',sans-serif;
-  font-size:0.8rem;font-weight:500;letter-spacing:0.05em;
-  color:var(--amber);opacity:0;transition:opacity .2s;
-  backdrop-filter:blur(10px);white-space:nowrap;
-  box-shadow:0 0 20px rgba(255,140,42,0.2);
-}
-#tip small {
-  display:block;
-  font-size:0.65rem;
-  color:var(--teal);
-  letter-spacing:0.1em;
-  text-transform:uppercase;
-  margin-top:2px;
-}
-
-#panel{
-  position:fixed;z-index:50;
-  background:var(--panel);border:1px solid var(--border);
-  backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);
-  transition:transform .44s cubic-bezier(.16,1,.3,1),opacity .32s;
-  overflow:hidden;
-}
-@media(min-width:769px){
-  #panel{
-    top:50%;right:18px;width:316px;
-    max-height:calc(100vh - 110px);border-radius:5px;
-    transform:translateY(-50%) translateX(380px);opacity:0;
-    overflow-y:auto;
-  }
-  #panel.open{transform:translateY(-50%) translateX(0);opacity:1}
-}
-
-@media(max-width:768px){
-  #panel{
-    bottom:0;left:0;right:0;max-height:68vh;
-    border-radius:14px 14px 0 0;border-bottom:none;
-    transform:translateY(100%);overflow-y:auto;
-  }
-  #panel.open{transform:translateY(0)}
-}
-.drag-bar{
-  width:38px;height:4px;background:rgba(255,255,255,0.13);
-  border-radius:2px;margin:11px auto 0;display:none;
-}
-@media(max-width:768px){.drag-bar{display:block}}
-.pi{padding:20px 22px 26px}
-.p-cat{font-size:0.6rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--teal);margin-bottom:7px;opacity:.8}
-.p-name{font-family:'Black Ops One',serif;font-size:1.1rem;color:#fff;margin-bottom:3px;line-height:1.2}
-.p-id{font-size:0.67rem;letter-spacing:.15em;color:var(--amber);margin-bottom:13px;font-weight:600}
-.p-div{height:1px;background:linear-gradient(to right,var(--teal),transparent);opacity:.25;margin-bottom:13px}
-.p-desc{font-size:0.87rem;line-height:1.62;color:var(--text);opacity:.87}
-.p-stats{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.sbox{background:rgba(0,217,176,0.04);border:1px solid rgba(0,217,176,0.11);border-radius:4px;padding:8px 11px}
-.slbl{font-size:0.59rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-dim);margin-bottom:3px}
-.sval{font-family:'Black Ops One',serif;font-size:0.84rem;color:var(--amber)}
-
-.sch-sec{margin-top:16px}
-.sch-lbl{font-size:0.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--teal);margin-bottom:7px;opacity:.7}
-.sch-thumb{
-  width:100%;border:1px solid rgba(0,217,176,0.18);border-radius:4px;
-  background:#050e18;cursor:zoom-in;overflow:hidden;position:relative;
-  transition:border-color .2s,box-shadow .2s;min-height:80px;
-  display:flex;align-items:center;justify-content:center;
-}
-.sch-thumb:hover{border-color:var(--teal);box-shadow:var(--glow-t)}
-.sch-thumb img{width:100%;height:auto;display:block;pointer-events:none}
-.sch-zh{position:absolute;bottom:6px;right:8px;font-size:0.58rem;letter-spacing:.1em;color:rgba(0,217,176,0.6);text-transform:uppercase;background:rgba(3,5,8,.7);padding:2px 6px;border-radius:2px}
-#panel{overflow-y:auto;-webkit-overflow-scrolling:touch}
-#panel::-webkit-scrollbar{width:3px}
-#panel::-webkit-scrollbar-thumb{background:rgba(0,217,176,0.2)}
-#close-panel{
-  position:absolute;top:14px;right:14px;background:none;border:none;
-  color:var(--text-dim);font-size:1.1rem;cursor:pointer;line-height:1;
-  transition:color .2s;z-index:2;
-}
-#close-panel:hover{color:var(--amber)}
-
-#sch-modal{
-  position:fixed;inset:0;z-index:300;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  padding:58px 16px 8px;
-  background:rgba(0,0,0,0.92);
-  backdrop-filter:blur(14px);
-  -webkit-backdrop-filter:blur(14px);
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-  transition:opacity 0.25s ease, visibility 0.25s;
-}
-#sch-modal.open{
-  opacity:1;
-  visibility:visible;
-  pointer-events:auto;
-}
-
-#smc{
-  max-width:980px;
-  width:100%;
-  height:calc(100vh - 66px);
-  max-height:calc(100vh - 66px);
-  margin:0 auto;
-  background:var(--panel);
-  border:1px solid var(--border);
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-  transform:scale(0.95);
-  transition:transform 0.3s ease;
-}
-#sch-modal.open #smc {
-  transform:scale(1);
-}
-
-#smh{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:12px 18px;border-bottom:1px solid var(--border);flex-shrink:0;
-}
-#smt{font-family:'Black Ops One',serif;font-size:.88rem;color:var(--teal);letter-spacing:.08em}
-#smclose{
-  background:none;border:none;color:var(--text-dim);font-size:1.5rem;
-  cursor:pointer;transition:color .2s;line-height:1;padding:4px 8px;
-  -webkit-tap-highlight-color:transparent;
-}
-#smclose:hover{color:var(--amber)}
-.tabs{display:flex;border-bottom:1px solid var(--border);flex-shrink:0;overflow:hidden}
-.tab{
-  padding:11px 22px;font-family:'Rajdhani',sans-serif;font-size:.77rem;
-  font-weight:600;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;
-  color:var(--text-dim);cursor:pointer;border:none;background:none;
-  border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;
-  -webkit-tap-highlight-color:transparent;flex:1;text-align:center;
-}
-.tab.on{color:var(--teal);border-bottom-color:var(--teal)}
-.tab:hover:not(.on){color:var(--text)}
-.tpane{display:none;flex:1;min-height:0;flex-direction:column;overflow:hidden}
-.tpane.on{display:flex}
-#tpane-full{flex:1;min-height:0;overflow:hidden;flex-direction:column}
-
-#pdf-pz-wrap{
-  flex:1;
-  min-height:0;
-  position:relative;
-  overflow:hidden;
-  cursor:grab;
-  background:#050e18;
-  touch-action:none;
-}
-#pdf-pz-wrap.dragging{cursor:grabbing}
-#sch-img-inner{
-  position:absolute;
-  inset:0;
-  display:flex;
-  line-height:0;
-}
-#sch-img-inner svg{
-  display:block;
-  width:100%;
-  height:100%;
-  pointer-events:none;
-  user-select:none;
-  shape-rendering:geometricPrecision;
-  text-rendering:optimizeLegibility;
-}
-#pdf-loading{
-  position:absolute;inset:0;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:14px;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;
-  color:rgba(0,217,176,.4);pointer-events:none;
-  background:#050e18;
-  z-index:2;
-}
-#pdf-loading-bar{width:120px;height:2px;background:rgba(0,217,176,.1);border-radius:2px;overflow:hidden}
-#pdf-loading-bar-inner{
-  height:100%;width:30%;background:var(--teal);
-  box-shadow:0 0 8px var(--teal);
-  animation:pdfPulse 1.4s ease-in-out infinite;
-}
-@keyframes pdfPulse{0%,100%{opacity:.3}50%{opacity:1}}
-#pdf-zoom-indicator{
-  position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
-  display:flex;align-items:center;gap:10px;
-  background:rgba(3,5,8,.8);border:1px solid rgba(0,217,176,.15);
-  border-radius:20px;padding:5px 14px;pointer-events:none;
-  opacity:0;transition:opacity .3s;z-index:2;
-}
-#pdf-zoom-indicator.visible{opacity:1}
-#pdf-zoom-val{
-  font-family:'Black Ops One',serif;font-size:.7rem;
-  color:rgba(0,217,176,.6);letter-spacing:.1em;min-width:40px;text-align:center;
-}
-@media(max-width:640px){#pdf-pz-wrap{display:none}}
-
-#full-mobile-preview{
-  display:none;
-  flex:1;
-  min-height:0;
-  overflow-y:auto;
-  -webkit-overflow-scrolling:touch;
-  padding:16px;
-}
-@media(max-width:640px){
-  #full-mobile-preview{display:block}
-}
-#full-mobile-card{
-  background:rgba(0,217,176,0.03);
-  border:1px solid var(--border);
-  border-radius:8px;
-  overflow:hidden;
-  cursor:zoom-in;
-  transition:all 0.25s;
-  -webkit-tap-highlight-color:transparent;
-  box-shadow:0 2px 8px rgba(0,0,0,0.3);
-}
-#full-mobile-card:active{
-  border-color:var(--teal);
-  box-shadow:var(--glow-t), 0 4px 12px rgba(0,217,176,0.2);
-  transform:scale(0.98);
-}
-#full-mobile-card .sec-title{
-  padding:9px 13px;font-size:.7rem;font-weight:600;letter-spacing:.15em;
-  text-transform:uppercase;color:var(--teal);border-bottom:1px solid var(--border);
-  background:rgba(0,217,176,0.04);display:flex;align-items:center;justify-content:space-between;
-}
-#full-mobile-card .sec-img-wrap{
-  background:#050e18;overflow:hidden;min-height:160px;
-  display:flex;align-items:center;justify-content:center;
-}
-#full-mobile-card .sec-img-wrap img{
-  width:100%;height:auto;display:block;pointer-events:none;
-}
-
-#tpane-sec{
-  flex:1;min-height:0;
-  overflow-y:auto;overflow-x:hidden;
-  -webkit-overflow-scrolling:touch;
-  padding:16px;
-  contain: layout;
-}
-.sec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-@media(max-width:480px){.sec-grid{grid-template-columns:1fr}}
-.sec-card{
-  background:rgba(0,217,176,0.03);border:1px solid var(--border);border-radius:8px;
-  overflow:hidden;cursor:zoom-in;transition:all 0.25s;
-  -webkit-tap-highlight-color:transparent;
-  box-shadow:0 2px 8px rgba(0,0,0,0.3);
-}
-.sec-card:hover,.sec-card:active{
-  border-color:var(--teal);
-  box-shadow:var(--glow-t), 0 4px 12px rgba(0,217,176,0.2);
-}
-.sec-title{
-  padding:9px 13px;font-size:.7rem;font-weight:600;letter-spacing:.15em;
-  text-transform:uppercase;color:var(--teal);border-bottom:1px solid var(--border);
-  background:rgba(0,217,176,0.04);display:flex;align-items:center;justify-content:space-between;
-}
-.sec-title-zoom{font-size:.58rem;opacity:.5;letter-spacing:.08em}
-.sec-img-wrap{
-  background:#050e18;
-  overflow:hidden;
-  min-height:110px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  contain: layout paint;
-  will-change: auto;
-}
-.sec-img-wrap img{
-  width:100%;
-  height:auto;
-  display:block;
-  object-fit:cover;
-  pointer-events:none;
-}
-.sec-placeholder{padding:22px 16px;text-align:center;font-size:.74rem;color:rgba(180,204,216,.35);line-height:1.7}
-.sec-placeholder code{display:block;margin-top:6px;color:rgba(0,217,176,.35);font-size:.68rem;word-break:break-all}
-
-@media(max-width:640px){
-  #sch-modal{
-    padding:58px 0 calc(72px + env(safe-area-inset-bottom)) 0;
-    backdrop-filter:blur(6px);
-    -webkit-backdrop-filter:blur(6px);
-  }
-  #smc{
-    border-radius:0;
-    max-height:100%;
-  }
-  #panel{
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
-  }
-}
-
-.pdf-desktop-hint{
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  padding:7px 16px;background:rgba(0,217,176,0.04);border-bottom:1px solid rgba(0,217,176,.08);
-  font-size:.67rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(0,217,176,.4);
-  flex-shrink:0;
-}
-@media(max-width:640px){.pdf-desktop-hint{display:none}}
-
-#pz-viewer{
-  position:fixed;inset:0;z-index:500;
-  display:none;flex-direction:column;
-  background:#030508;
-}
-#pz-viewer.open{display:flex}
-#pz-topbar{
-  position:absolute;top:0;left:0;right:0;height:52px;z-index:2;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 16px;gap:12px;
-  background:linear-gradient(to bottom,rgba(3,5,8,.97) 60%,transparent);
-  pointer-events:none;
-}
-#pz-topbar > *{pointer-events:auto}
-#pz-title{
-  font-family:'Black Ops One',serif;font-size:.85rem;
-  color:var(--teal);letter-spacing:.08em;flex:1;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-#pz-controls{display:flex;gap:6px;align-items:center}
-.pz-btn{
-  display:flex;align-items:center;justify-content:center;
-  width:36px;height:36px;border-radius:4px;
-  background:rgba(7,9,15,0.8);border:1px solid rgba(0,217,176,.2);
-  color:rgba(0,217,176,.7);cursor:pointer;transition:all .18s;font-size:1rem;
-  -webkit-tap-highlight-color:transparent;
-}
-.pz-btn:hover{background:rgba(0,217,176,.15);color:var(--teal);border-color:var(--teal)}
-.pz-close-btn{
-  background:rgba(7,9,15,0.8);border:1px solid rgba(255,140,42,.2);
-  color:rgba(255,140,42,.7);
-}
-.pz-close-btn:hover{background:rgba(255,140,42,.15);color:var(--amber);border-color:var(--amber)}
-#pz-stage{
-  flex:1;position:relative;overflow:hidden;
-  cursor:grab;touch-action:none;
-}
-#pz-stage.dragging{cursor:grabbing}
-#pz-content{
-  position:absolute;
-  inset:0;
-  display:flex;
-  line-height:0;
-}
-#pz-content svg{
-  display:block;
-  width:100%;
-  height:100%;
-  pointer-events:none;
-  user-select:none;
-  shape-rendering:geometricPrecision;
-  text-rendering:optimizeLegibility;
-}
-#pz-img{
-  display:block;max-width:none;
-  user-select:none;-webkit-user-drag:none;pointer-events:none;
-}
-#pz-zoom-bar{
-  position:absolute;bottom:18px;left:50%;transform:translateX(-50%);
-  display:flex;align-items:center;gap:10px;
-  background:rgba(3,5,8,.8);border:1px solid rgba(0,217,176,.15);
-  border-radius:20px;padding:6px 14px;z-index:2;pointer-events:none;
-}
-#pz-zoom-val{
-  font-family:'Black Ops One',serif;font-size:.72rem;
-  color:rgba(0,217,176,.55);letter-spacing:.1em;min-width:42px;text-align:center;
-}
-#pz-hint-bar{
-  position:absolute;bottom:56px;left:50%;transform:translateX(-50%);
-  font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
-  color:rgba(180,204,216,.22);pointer-events:none;white-space:nowrap;
-  animation:fadeHint 4s forwards;
-}
-@keyframes fadeHint{0%,60%{opacity:1}100%{opacity:0}}
-@media(max-width:640px){#pz-hint-bar{display:none}}
-
-#tpane-bom {
-  flex:1;
-  min-height:0;
-  display:none;
-  flex-direction:column;
-  overflow:hidden;
-}
-#tpane-bom.on { display:flex; }
-
-/* ── FILTROS DE PROYECTO (ahora en color TEAL) ── */
-#bom-project-filter {
-  display:flex; align-items:center; gap:10px;
-  padding:8px 16px;
-  background:rgba(0,217,176,0.06);
-  border-bottom:1px solid rgba(0,217,176,0.15);
-  flex-shrink:0; flex-wrap:wrap;
-}
-.bom-project-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 14px;
-  background: rgba(0,217,176,0.08);
-  border: 1px solid rgba(0,217,176,0.2);
-  border-radius: 30px;
-  color: rgba(0,217,176,0.7);
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.2s;
-  -webkit-tap-highlight-color: transparent;
-}
-.bom-project-chip.on {
-  background: rgba(0,217,176,0.15);
-  border-color: var(--teal);
-  color: var(--teal);
-  box-shadow: 0 0 12px rgba(0,217,176,0.2);
-}
-.bom-project-chip:hover {
-  color: var(--teal);
-  border-color: var(--teal);
-  background: rgba(0,217,176,0.1);
-}
-.bom-project-chip svg {
-  width: 16px;
-  height: 16px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  filter: drop-shadow(0 0 2px currentColor);
-}
-
-/* ── FILTROS DE CATEGORÍA (ahora en color ÁMBAR) ── */
-#bom-filter-bar-modal {
-  display:flex; align-items:center; gap:10px;
-  padding:8px 16px;
-  border-bottom:1px solid rgba(255,140,42,0.15);
-  flex-shrink:0; flex-wrap:wrap;
-  background:rgba(255,140,42,0.04);
-}
-.bom-filter-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 14px;
-  background: rgba(255,140,42,0.08);
-  border: 1px solid rgba(255,140,42,0.2);
-  border-radius: 30px;
-  color: rgba(255,140,42,0.7);
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.2s;
-  -webkit-tap-highlight-color: transparent;
-}
-.bom-filter-chip svg {
-  width: 16px;
-  height: 16px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  filter: drop-shadow(0 0 2px currentColor);
-}
-.bom-filter-chip.on {
-  background: rgba(255,140,42,0.2);
-  border-color: var(--amber);
-  color: var(--amber);
-  box-shadow: 0 0 12px rgba(255,140,42,0.25);
-}
-.bom-filter-chip:hover {
-  color: var(--amber);
-  border-color: var(--amber);
-  background: rgba(255,140,42,0.15);
-}
-
-#bom-scroll-modal {
-  flex:1;
-  min-height:0; overflow:auto;
-  -webkit-overflow-scrolling:touch;
-  padding:14px 16px;
-}
-#bom-summary-modal {
-  margin-bottom:12px; display:flex; gap:8px; flex-wrap:wrap;
-}
-#bom-table-wrap-modal {
-  overflow-x:auto;
-}
-
-.bom-table{width:100%;border-collapse:collapse;font-size:.82rem}
-.bom-table thead tr{
-  background:rgba(255,140,42,0.07);
-  border-bottom:1px solid var(--border-a);
-}
-.bom-table th{
-  padding:10px 14px;text-align:left;font-family:'Rajdhani',sans-serif;
-  font-size:.66rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--amber);white-space:nowrap;
-}
-.bom-table td{
-  padding:9px 14px;color:var(--text);border-bottom:1px solid rgba(255,140,42,0.07);
-  vertical-align:middle;
-}
-.bom-table tbody tr:hover{background:rgba(255,140,42,0.04)}
-.bom-table tbody tr:last-child td{border-bottom:none}
-@media (max-width:640px) {
-  .bom-table, .bom-table thead, .bom-table tbody, .bom-table tr, .bom-table td { display: block; }
-  .bom-table thead { display: none; }
-  .bom-table tr {
-    margin-bottom: 1rem;
-    background: rgba(255,140,42,0.02);
-    border: 1px solid var(--border-a);
-    border-radius: 4px;
-    padding: 0.5rem;
-  }
-  .bom-table td {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.5rem 0.3rem;
-    border-bottom: 1px dashed rgba(255,140,42,0.1);
-  }
-  .bom-table td:last-child { border-bottom: none; }
-  .bom-table td:before {
-    content: attr(data-label);
-    font-weight: 700;
-    color: var(--amber);
-    text-transform: uppercase;
-    font-size: 0.65rem;
-    margin-right: 1rem;
-    white-space: nowrap;
-  }
-  .bom-table td[data-label="Ref."] { font-family:'Black Ops One',serif; color:var(--teal); }
-  .bom-table td[data-label="Cant."] .bom-badge { margin-left: auto; }
-  .bom-table td[data-label="Valor"] { color:#fff; font-weight:600; }
-  .bom-table td[data-label="Descripción"] { font-size:0.75rem; }
-}
-.bom-badge{
-  display:inline-block;padding:2px 8px;border-radius:2px;font-size:.65rem;
-  font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-}
-.bom-badge.ok{background:rgba(0,217,176,0.1);color:var(--teal);border:1px solid rgba(0,217,176,0.2)}
-.bom-badge.warn{background:rgba(255,140,42,0.1);color:var(--amber);border:1px solid rgba(255,140,42,0.2)}
-.bom-stat{
-  background:rgba(255,140,42,0.05);border:1px solid var(--border-a);
-  border-radius:4px;padding:9px 14px;
-}
-.bom-stat .bs-l{font-size:.59rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-dim);margin-bottom:3px}
-.bom-stat .bs-v{font-family:'Black Ops One',serif;font-size:.88rem;color:var(--amber)}
-
-@media (max-width:640px) {
-  .bom-project-chip, .bom-filter-chip {
-    padding: 4px 10px;
-    font-size: 0.65rem;
-  }
-  .bom-project-chip svg, .bom-filter-chip svg {
-    width: 14px;
-    height: 14px;
-  }
-}
-
-@media(max-width:640px){
-  #hint{
-    bottom:calc(78px + env(safe-area-inset-bottom)) !important;
-    left:8px !important;
-    right:82px !important;
-    transform:none !important;
-    width:auto !important;
-    z-index:101 !important;
-    pointer-events:none;
-  }
-  #hint-inner{
-    display:block !important;
-    width:100% !important;
-    font-size:0.5rem !important;
-    padding:5px 10px !important;
-    letter-spacing:0.08em !important;
-    white-space:normal !important;
-    text-align:center !important;
-    line-height:1.5 !important;
-    border-radius:12px !important;
-  }
-  .hdot{ display:none !important }
-  #counter{
-    bottom:calc(78px + env(safe-area-inset-bottom)) !important;
-    right:10px !important;
-    width:54px !important;
-    height:54px !important;
-    z-index:101 !important;
-  }
-  #counter-text{ font-size:0.75rem !important }
-}
-</style>
+  <meta charset="UTF-8">
+  <link href="Imagenes/icono.png" rel="icon" type="image/x-icon" />
+  <link rel="preload" href="gauss_cannon_low.glb" as="fetch" crossorigin>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>HL‑EAD · Cañón de Gauss</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-<nav id="nav">
-  <div id="nav-brand">
-    <div id="nav-title">⚡ HL-EAD</div>
-    <div id="nav-sub">Sistema de dos etapas</div>
-  </div>
-  <div id="nav-btns">
-    <button class="nbtn" onclick="openModal('full')">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-      <span>Esquemático Completo</span>
-    </button>
-    <button class="nbtn" onclick="openModal('sec')">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-      <span>Por Sectores</span>
-    </button>
-    <button class="nbtn nbtn-amber" onclick="openBOM()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg>
-      <span>BOM</span>
-    </button>
-  </div>
-</nav>
-
-<div id="mobile-nav">
-  <div class="mnav-grid">
-    <button class="mnbtn" onclick="openModal('full')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>
-      <span>Esquemático</span>
-    </button>
-    <button class="mnbtn" onclick="openModal('sec')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-      <span>Sectores</span>
-    </button>
-    <button class="mnbtn amber" onclick="openBOM()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg>
-      <span>BOM</span>
-    </button>
-  </div>
-</div>
-
-<div id="hint">
-  <div id="hint-inner">
-    <div class="hdot"></div>
-    Toca un componente para inspeccionarlo · Arrastra para rotar · Pellizca para zoom
-    <div class="hdot" style="animation-delay:.7s"></div>
-  </div>
-</div>
-
-<div id="counter">
-  <svg viewBox="0 0 40 40" class="circular-chart">
-    <circle class="circle-bg" cx="20" cy="20" r="16" />
-    <circle class="circle" cx="20" cy="20" r="16" stroke-dasharray="0, 100" id="progress-circle" />
-  </svg>
-  <span id="counter-text">0/10</span>
-</div>
-
-<div id="tip"></div>
-
-<div id="panel">
-  <div class="drag-bar"></div>
-  <button id="close-panel" onclick="closePanel()">✕</button>
-  <div class="pi">
-    <div class="p-cat" id="p-cat">Componente</div>
-    <div class="p-name" id="p-name">—</div>
-    <div class="p-id" id="p-id">—</div>
-    <div class="p-div"></div>
-    <div class="p-desc" id="p-desc">—</div>
-    <div class="p-stats" id="p-stats"></div>
-    <div class="sch-sec" id="sch-sec" style="display:none">
-      <div class="sch-lbl">Esquemático del módulo</div>
-      <div class="sch-thumb" id="sch-thumb">
-        <img id="sch-img" src="" alt="Esquemático">
-        <div class="sch-zh">🔍 Zoom</div>
+  <header id="topbar">
+    <div id="topbar-left">
+      <img src="Imagenes/ABR-G.svg" alt="Logo" class="logo" />
+      <div class="brand">
+        <span class="brand-title">⚡ HL-EAD</span>
+        <span class="brand-sub">Sistema de dos etapas</span>
       </div>
     </div>
-  </div>
-</div>
+    <div id="topbar-actions">
+      <a href="index.html" class="btn-nav active">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        Home
+      </a>
+      <a href="esquemas.html" class="btn-nav">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+        Esquemas
+      </a>
+      <a href="bom.html" class="btn-nav">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        BOM
+      </a>
+      <a href="equipo.html" class="btn-nav">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        Equipo
+      </a>
+    </div>
+  </header>
 
-<div id="sch-modal">
-  <div id="smc">
-    <div id="smh">
-      <div id="smt">Esquemático del Circuito</div>
-      <button id="smclose" onclick="closeModal()">✕</button>
+  <!-- ============================================================
+       NAVEGACIÓN MÓVIL INFERIOR (enlaces)
+       ============================================================ -->
+  <div id="mobile-nav">
+    <div class="mnav-grid">
+      <a href="index.html" class="mnbtn active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span>Home</span>
+      </a>
+      <a href="esquemas.html" class="mnbtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+        <span>Esquemas</span>
+      </a>
+      <a href="bom.html" class="mnbtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        <span>BOM</span>
+      </a>
+      <a href="equipo.html" class="mnbtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        <span>Equipo</span>
+      </a>
     </div>
-    <div class="tabs">
-      <button class="tab on" onclick="switchTab('full',this)">Circuito Completo</button>
-      <button class="tab" onclick="switchTab('sec',this)">Por Sectores</button>
-      <button class="tab" onclick="switchTab('bom',this)">BOM</button>
+  </div>
+
+  <!-- ============================================================
+       HINT Y CONTADOR
+       ============================================================ -->
+  <div id="hint">
+    <div id="hint-inner">
+      <div class="hdot"></div>
+      Toca un componente para inspeccionarlo · Arrastra para rotar · Pellizca para zoom
+      <div class="hdot" style="animation-delay:.7s"></div>
     </div>
-    <div id="tpane-full" class="tpane on">
-      <div class="pdf-desktop-hint">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-        Rueda del ratón para zoom · Click y arrastra para mover · Doble clic para ajustar
-      </div>
-      <div id="pdf-pz-wrap">
-        <div id="sch-img-inner"></div>
-        <div id="pdf-loading">
-          <span>Cargando esquemático</span>
-          <div id="pdf-loading-bar"><div id="pdf-loading-bar-inner"></div></div>
-        </div>
-        <div id="pdf-zoom-indicator">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="opacity:.5;color:var(--teal)"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <span id="pdf-zoom-val">100%</span>
-        </div>
-      </div>
-      <div id="full-mobile-preview">
-        <div id="full-mobile-card" onclick="openPZ('esquemas/esquema-completo.svg','Circuito Completo')">
-          <div class="sec-title">
-            Circuito Completo
-            <span class="sec-title-zoom">🔍 Toca para zoom</span>
-          </div>
-          <div class="sec-img-wrap">
-            <img src="esquemas/esquema-completo.svg" alt="Circuito Completo"
-              onerror="this.parentElement.innerHTML='<div class=\'sec-placeholder\'>📁 Imagen no encontrada<code>esquemas/esquema-completo.svg</code></div>'">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div id="tpane-sec" class="tpane">
-      <div class="sec-grid" id="sec-grid"></div>
-    </div>
-    <div id="tpane-bom" class="tpane">
-      <!-- Filtro por Proyecto (teal, arriba) -->
-      <div id="bom-project-filter" class="bom-project-filter"></div>
-      <!-- Filtro por Categoría (ámbar, debajo) -->
-      <div id="bom-filter-bar-modal" class="bom-filter-bar"></div>
-      <div id="bom-scroll-modal">
-        <div id="bom-summary-modal"></div>
-        <div id="bom-table-wrap-modal">
-          <table class="bom-table" id="bom-table-modal">
-            <thead id="bom-thead-modal"></thead>
-            <tbody id="bom-tbody-modal"></tbody>
-          </table>
+  </div>
+
+  <div id="counter">
+    <svg viewBox="0 0 40 40" class="circular-chart">
+      <circle class="circle-bg" cx="20" cy="20" r="16" />
+      <circle class="circle" cx="20" cy="20" r="16" stroke-dasharray="0, 100" id="progress-circle" />
+    </svg>
+    <span id="counter-text">0/10</span>
+  </div>
+
+  <!-- ============================================================
+       TOOLTIP
+       ============================================================ -->
+  <div id="tip"></div>
+
+  <!-- ============================================================
+       PANEL DE INFORMACIÓN
+       ============================================================ -->
+  <div id="panel">
+    <div class="drag-bar"></div>
+    <button id="close-panel" onclick="closePanel()">✕</button>
+    <div class="pi">
+      <div class="p-cat" id="p-cat">Componente</div>
+      <div class="p-name" id="p-name">—</div>
+      <div class="p-id" id="p-id">—</div>
+      <div class="p-div"></div>
+      <div class="p-desc" id="p-desc">—</div>
+      <div class="p-stats" id="p-stats"></div>
+      <div class="sch-sec" id="sch-sec" style="display:none">
+        <div class="sch-lbl">Esquemático del módulo</div>
+        <div class="sch-thumb" id="sch-thumb">
+          <img id="sch-img" src="" alt="Esquemático">
+          <div class="sch-zh">🔍 Zoom</div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<div id="pz-viewer">
-  <div id="pz-topbar">
-    <div id="pz-title">Esquemático</div>
-    <div id="pz-controls">
-      <button class="pz-btn" onclick="pzZoomBtn(1.3)" title="Acercar">+</button>
-      <button class="pz-btn" onclick="pzZoomBtn(0.77)" title="Alejar">−</button>
-      <button class="pz-btn" onclick="pzFit()" title="Ajustar" style="font-size:.75rem;letter-spacing:.05em;width:auto;padding:0 10px;font-family:'Rajdhani',sans-serif;font-weight:700">FIT</button>
-      <button class="pz-btn pz-close-btn" onclick="closePZ()" title="Cerrar">✕</button>
+  <!-- ============================================================
+       VISOR INDEPENDIENTE (ZOOM DE IMÁGENES)
+       ============================================================ -->
+  <div id="pz-viewer">
+    <div id="pz-topbar">
+      <div id="pz-title">Esquemático</div>
+      <div id="pz-controls">
+        <button class="pz-btn" onclick="pzZoomBtn(1.3)" title="Acercar">+</button>
+        <button class="pz-btn" onclick="pzZoomBtn(0.77)" title="Alejar">−</button>
+        <button class="pz-btn" onclick="pzFit()" title="Ajustar" style="font-size:.75rem;letter-spacing:.05em;width:auto;padding:0 10px;font-family:'Rajdhani',sans-serif;font-weight:700">FIT</button>
+        <button class="pz-btn pz-close-btn" onclick="closePZ()" title="Cerrar">✕</button>
+      </div>
+    </div>
+    <div id="pz-stage">
+      <div id="pz-content"></div>
+      <div id="pz-zoom-bar">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="opacity:.5;color:var(--teal)"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span id="pz-zoom-val">100%</span>
+      </div>
+      <div id="pz-hint-bar">Arrastra · Pellizca para zoom · Doble toque para ajustar</div>
     </div>
   </div>
-  <div id="pz-stage">
-    <div id="pz-content"></div>
-    <div id="pz-zoom-bar">
-      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="opacity:.5;color:var(--teal)"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <span id="pz-zoom-val">100%</span>
-    </div>
-    <div id="pz-hint-bar">Arrastra · Pellizca para zoom · Doble toque para ajustar</div>
-  </div>
-</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://unpkg.com/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-<script src="https://unpkg.com/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
+  <!-- ============================================================
+       SCRIPTS
+       ============================================================ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://unpkg.com/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://unpkg.com/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
 
-<script>
-// ═══════════════════════════════════════════════════════════════
-// SECTOR IMAGES CONFIG
-// ═══════════════════════════════════════════════════════════════
-const SECTORS = [
-  { id:'control',  title:'Placa de Filtrado',                     img:'esquemas/placa-de-filtrado.svg'       },
-  { id:'driver1',  title:'Fuente de Alimentacion 36V',            img:'esquemas/fuente-de-alimentacion.svg'  },
-  { id:'driver2',  title:'Modulo de Aceleracion de Bobina 1 & 2', img:'esquemas/modulo-bobina.svg'           },
-  { id:'driver2',  title:'Placa de control de leds y ventilacion',img:'esquemas/placa-para-leds.svg'         },
-];
-const SECTOR_IMG = {
-  pcb1: 'esquemas/placa-de-filtrado.svg',
-  pcb3: 'esquemas/fuente-de-alimentacion.svg',
-  pcb4: 'esquemas/modulo-bobina.svg',
-  pcb5: 'esquemas/placa-para-leds.svg',
-};
-const secGrid = document.getElementById('sec-grid');
-SECTORS.forEach(s => {
-  const card = document.createElement('div');
-  card.className = 'sec-card';
-  card.innerHTML = `
-    <div class="sec-title">${s.title}<span class="sec-title-zoom">🔍 zoom</span></div>
-    <div class="sec-img-wrap">
-      <img src="${s.img}" alt="${s.title}" loading="lazy" decoding="async"
-        width="400" height="300"
-        onerror="this.parentElement.innerHTML='<div class=\\'sec-placeholder\\'>📁 Imagen no encontrada<code>${s.img}</code></div>'">
-    </div>`;
-  card.addEventListener('click', () => openPZ(s.img, s.title));
-  secGrid.appendChild(card);
-});
-
-// ═══════════════════════════════════════════════════════════════
-// PARTS DATA
-// ═══════════════════════════════════════════════════════════════
-const PARTS = {
-  barrel:{
-    cat:'Mecánica',name:'Cañón / Tubo Guía',id:'MECH-01',
-    desc:'Tubo de acero inoxidable de calibre 8mm que actúa como guía para el proyectil ferromagnético. El diámetro interior está calibrado con tolerancia de ±0.05mm para minimizar la fricción mientras mantiene el proyectil centrado dentro del campo magnético de las bobinas.',
-    stats:[{l:'Material',v:'Acero inox'},{l:'Calibre',v:'8 mm'},{l:'Longitud',v:'~22 cm'},{l:'Tolerancia',v:'±0.05 mm'}]
+  <script>
+    // ═══════════════════════════════════════════════════════════════
+    // PARTS DATA
+    // ═══════════════════════════════════════════════════════════════
+    const PARTS = {
+      
+  "Tubo_para_Bobinas_Salida-2": {
+    cat: 'Estructura',
+    name: 'Tubo de Salida',
+    id: 'MECH-03',
+    desc: 'Tubo que guía el proyectil después de pasar por las bobinas. Está fabricado en acero inoxidable con un acabado interior pulido para minimizar la fricción y asegurar una trayectoria recta.',
+    stats: [
+      { l: 'Material', v: 'Acero inoxidable' },
+      { l: 'Diámetro interno', v: '8 mm' },
+      { l: 'Longitud', v: '~12 cm' },
+      { l: 'Acabado', v: 'Pulido espejo' }
+    ]
   },
-  coil1:{
-    cat:'Electromagnética',name:'Modulo de Sensores',id:'Modulo de Sensores',
-    desc:'Primera bobina de disparo, fabricada con alambre de cobre esmaltado de 1.2mm enrollado en 4 capas de 35 vueltas cada una. Es la primera en activarse al detectar el proyectil en posición de carga. Su campo magnético acelera el proyectil hacia el centro de la bobina.',
-    stats:[{l:'Alambre',v:'CuEsm 1.2mm'},{l:'Vueltas',v:'140 total'},{l:'Inductancia',v:'~2.8 mH'},{l:'Resistencia',v:'0.6 Ω'}]
+  "Tubo_para_Bobinas_Entrada-2": {
+    cat: 'Estructura',
+    name: 'Tubo de Entrada',
+    id: 'MECH-02',
+    desc: 'Tubo de alimentación del proyectil. Es el primer tramo que el proyectil recorre antes de ser acelerado por las bobinas. Su diseño asegura un centrado perfecto del proyectil en el eje del cañón.',
+    stats: [
+      { l: 'Material', v: 'Acero inoxidable' },
+      { l: 'Diámetro interno', v: '8 mm' },
+      { l: 'Longitud', v: '~10 cm' },
+      { l: 'Tolerancia', v: '±0.03 mm' }
+    ]
   },
-  coil2:{
-    cat:'Electromagnética',name:'Bobina de Etapa 2',id:'COIL-B',
-    desc:'Segunda bobina de disparo, activada con un retardo de 80-120µs tras la primera. Continúa la aceleración del proyectil que ya tiene velocidad inicial. El uso de dos etapas aumenta la eficiencia energética y la velocidad final del proyectil respecto a un diseño de etapa única.',
-    stats:[{l:'Alambre',v:'CuEsm 1.2mm'},{l:'Vueltas',v:'140 total'},{l:'Inductancia',v:'~2.8 mH'},{l:'Resistencia',v:'0.6 Ω'}]
+  "Anillo_Final-2": {
+    cat: 'Estructura',
+    name: 'Anillo Final (Salida)',
+    id: 'STR-03',
+    desc: 'Anillo de sujeción ubicado en el extremo de salida del cañón. Proporciona rigidez estructural y sirve como punto de anclaje para el sistema de fijación del conjunto.',
+    stats: [
+      { l: 'Material', v: 'Aluminio 6061' },
+      { l: 'Diámetro exterior', v: '25 mm' },
+      { l: 'Función', v: 'Sujeción y alineación' }
+    ]
   },
-  support:{
-    cat:'Estructura',name:'Soporte del Cañón',id:'STRUC-01',
-    desc:'Estructura fabricada en PLA mediante impresión 3D (FDM). Mantiene el cañón alineado horizontalmente sobre la base de madera y soporta las bobinas en posición. El diseño en U permite la extracción del cañón para mantenimiento sin desmontar las bobinas.',
-    stats:[{l:'Material',v:'PLA 1.75mm'},{l:'Relleno',v:'40%'},{l:'Patrón',v:'Gyroid'},{l:'Peso',v:'~85 g'}]
+  "Anillo_Final-1": {
+    cat: 'Estructura',
+    name: 'Anillo Final (Entrada)',
+    id: 'STR-02',
+    desc: 'Anillo de sujeción ubicado en la parte frontal del cañón. Mantiene fijo el tubo de entrada y proporciona un soporte adicional para el módulo de sensores.',
+    stats: [
+      { l: 'Material', v: 'Aluminio 6061' },
+      { l: 'Diámetro exterior', v: '25 mm' },
+      { l: 'Función', v: 'Sujeción y alineación' }
+    ]
   },
-  capBank:{
-    cat:'Almacenamiento',name:'Banco de Capacitores',id:'ELEC-CAP',
-    desc:'Batería de Li-Po de 3S (11.1V / 1000mAh) que actúa como fuente de energía primaria para el circuito de carga. La energía se convierte a alta tensión (300-400V) y almacena en un banco de capacitores electrolíticos de 2200µF antes de cada disparo.',
-    stats:[{l:'Tensión',v:'11.1 V (3S)'},{l:'Capacidad',v:'1000 mAh'},{l:'Descarga',v:'30C max'},{l:'Conector',v:'XT60'}]
+  "Conector_para_Tubo_Final-1": {
+    cat: 'Estructura',
+    name: 'Conector de Tubo Final',
+    id: 'CON-01',
+    desc: 'Pieza de conexión que une el tubo de salida con la estructura base. Asegura una transición rígida y estable entre el cañón y el soporte del sistema.',
+    stats: [
+      { l: 'Material', v: 'Acero galvanizado' },
+      { l: 'Tipo', v: 'Rosca métrica M6' },
+      { l: 'Función', v: 'Fijación estructural' }
+    ]
   },
-  pcb1:{
-    cat:'Electrónica · Control',name:'Placa de Control Principal',id:'PCB-01',
-    desc:'Arduino Nano como microcontrolador central del sistema. Gestiona la secuencia de disparo leyendo los sensores ópticos infrarrojos para detectar la posición del proyectil y activando los drivers de cada etapa en el momento óptimo. También controla el circuito de carga y la pantalla LCD.',
-    stats:[{l:'MCU',v:'ATmega328'},{l:'Clock',v:'16 MHz'},{l:'I/O',v:'14 digital'},{l:'ADC',v:'10-bit, 6ch'}],
-    schemImg:'esquemas/sector_control.png', schemTitle:'Control Principal'
+  "Modulo_de_Sensores-3": {
+    cat: 'Electrónica',
+    name: 'Módulo de Sensores (Superior)',
+    id: 'SENS-02',
+    desc: 'Módulo que aloja los sensores ópticos infrarrojos (emisor y receptor) para la detección del proyectil. Está posicionado para leer la posición del proyectil antes de la primera etapa de aceleración.',
+    stats: [
+      { l: 'Sensor', v: 'IR LED + Fototransistor' },
+      { l: 'Tensión', v: '5V' },
+      { l: 'Rango', v: '10 mm' },
+      { l: 'Precisión', v: '±0.1 mm' }
+    ],
+    schemImg: 'esquemas/sector_control.png',
+    schemTitle: 'Esquema de Sensores'
   },
-  pcb2:{
-    cat:'Electrónica · Potencia',name:'Placa de Carga HV',id:'PCB-02',
-    desc:'Módulo elevador de tensión basado en un convertidor flyback controlado por un circuito 555 en modo astable. Convierte los 12V de la batería a 300-400V DC con los que se carga el banco de capacitores. Incluye divisor resistivo para retroalimentar la tensión al ADC del Arduino.',
-    stats:[{l:'Vin',v:'12 V DC'},{l:'Vout',v:'300-400 V'},{l:'Cap. final',v:'2200 µF'},{l:'T. carga',v:'~3 s'}],
-    schemImg:'esquemas/sector_carga.png', schemTitle:'Carga HV'
+  "Modulo_de_Sensores-4": {
+    cat: 'Electrónica',
+    name: 'Módulo de Sensores (Inferior)',
+    id: 'SENS-01',
+    desc: 'Módulo gemelo al superior, ubicado en la parte inferior del cañón. Trabaja en conjunto con el superior para detectar con precisión el paso del proyectil y sincronizar el disparo de las bobinas.',
+    stats: [
+      { l: 'Sensor', v: 'IR LED + Fototransistor' },
+      { l: 'Tensión', v: '5V' },
+      { l: 'Rango', v: '10 mm' },
+      { l: 'Precisión', v: '±0.1 mm' }
+    ],
+    schemImg: 'esquemas/sector_control.png',
+    schemTitle: 'Esquema de Sensores'
   },
-  pcb3:{
-    cat:'Electrónica · Driver',name:'Driver de Etapa 1',id:'PCB-03',
-    desc:'Circuito de disparo para la primera bobina. Un optoacoplador 4N35 aísla la lógica de 5V del Arduino del circuito de alta tensión. La señal de disparo activa un IGBT a través de una resistencia de gate de 10Ω, descargando el banco de capacitores a través de la bobina en microsegundos.',
-    stats:[{l:'Switch',v:'IGBT 600V'},{l:'Corriente',v:'~50 A pico'},{l:'t disparo',v:'<1 µs'},{l:'Aislamiento',v:'4N35 Opto'}],
-    schemImg:'esquemas/sector_driver1.png', schemTitle:'Driver Etapa 1'
-  },
-  pcb4:{
-    cat:'Electrónica · Driver',name:'Driver de Etapa 2',id:'PCB-04',
-    desc:'Circuito de disparo para la segunda bobina, funcionalmente idéntico al Driver de Etapa 1. Se activa con un retardo configurable por software de 80-120 microsegundos respecto al disparo de la etapa 1, calculado para que el proyectil esté en la posición óptima de entrada a la segunda bobina.',
-    stats:[{l:'Switch',v:'IGBT 600V'},{l:'Retardo',v:'80-120 µs'},{l:'Sensor',v:'IR post-et1'},{l:'Control',v:'Arduino'}],
-    schemImg:'esquemas/sector_driver2.png', schemTitle:'Driver Etapa 2'
-  },
-  lcd:{
-    cat:'Interfaz',name:'Display LCD 16×2',id:'UI-01',
-    desc:'Pantalla de cristal líquido HD44780 de 16 columnas por 2 filas con retroiluminación azul. Muestra la tensión del banco de capacitores en tiempo real, el estado del sistema (cargando / listo / disparando) y el contador de disparos acumulados. Conectada al Arduino por bus de 4 bits.',
-    stats:[{l:'Resolución',v:'16×2 chars'},{l:'Interfaz',v:'4-bit HD44780'},{l:'Luz',v:'LED azul'},{l:'Tensión',v:'5V'}]
-  },
-  wiring:{
-    cat:'Conexión',name:'Cableado del Sistema',id:'WIRE-SYS',
-    desc:'Red de conexiones que interconecta todos los módulos. Los cables de señal (lógica 5V) son AWG22 y los cables de potencia (alta tensión) son AWG18 con aislamiento de silicona de 600V. Los conectores de alta tensión están etiquetados en rojo para prevenir conexiones incorrectas.',
-    stats:[{l:'Señal',v:'AWG22'},{l:'Potencia',v:'AWG18 Si'},{l:'Aislamiento',v:'600V'},{l:'Conectores',v:'JST / KF'}]
+  "Soporte_del_Tubo_Medio-2": {
+    cat: 'Estructura',
+    name: 'Soporte Central',
+    id: 'STR-01',
+    desc: 'Soporte intermedio que mantiene alineado el tubo central del cañón. Proporciona rigidez al conjunto y evita vibraciones durante el disparo. Fabricado en aluminio mediante mecanizado CNC.',
+    stats: [
+      { l: 'Material', v: 'Aluminio 7075' },
+      { l: 'Proceso', v: 'Mecanizado CNC' },
+      { l: 'Función', v: 'Sujeción y amortiguación' }
+    ]
   }
-};
+    };
 
-// ═══════════════════════════════════════════════════════════════
-// THREE.JS SETUP
-// ═══════════════════════════════════════════════════════════════
-const renderer = new THREE.WebGLRenderer({antialias:true,alpha:true});
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-renderer.outputEncoding = THREE.sRGBEncoding;
-document.body.appendChild(renderer.domElement);
+    // ═══════════════════════════════════════════════════════════════
+    // THREE.JS SETUP
+    // ═══════════════════════════════════════════════════════════════
+    const renderer = new THREE.WebGLRenderer({antialias:true,alpha:true});
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    document.body.appendChild(renderer.domElement);
 
-const isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
-if(isMobile){
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
-  renderer.shadowMap.enabled = false;
-}
-
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(42, innerWidth/innerHeight, 0.1, 500);
-
-const ZOOM_MIN = isMobile ? 14 : 10;
-const ZOOM_MAX = isMobile ? 38 : 32;
-const CAM_INIT = isMobile ? 24 : 16;
-camera.position.set(5, 6, CAM_INIT);
-camera.lookAt(0, 1, 0);
-
-const starG = new THREE.BufferGeometry();
-const spos = new Float32Array(2400);
-for(let i=0;i<2400;i++) spos[i]=(Math.random()-.5)*300;
-starG.setAttribute('position',new THREE.BufferAttribute(spos,3));
-scene.add(new THREE.Points(starG, new THREE.PointsMaterial({color:0xffffff,size:.12,transparent:true,opacity:.6})));
-
-scene.add(new THREE.AmbientLight(0x1a2240,.7));
-const sun = new THREE.DirectionalLight(0xfff5e8,1.8);
-sun.position.set(12,14,8);sun.castShadow=!isMobile;
-sun.shadow.mapSize.width=isMobile?512:1024;
-sun.shadow.mapSize.height=isMobile?512:1024;
-scene.add(sun);
-const fill = new THREE.DirectionalLight(0x2244ff,.25);
-fill.position.set(-10,-4,-8);scene.add(fill);
-const pt1 = new THREE.PointLight(0xff8c2a,.9,18);
-pt1.position.set(-2,4,2);scene.add(pt1);
-const pt2 = new THREE.PointLight(0x00d9b0,.5,20);
-pt2.position.set(4,3,1);scene.add(pt2);
-
-// ═══════════════════════════════════════════════════════════════
-// MODEL CONSTRUCTION
-// ═══════════════════════════════════════════════════════════════
-const model = new THREE.Group();
-scene.add(model);
-const clickables = [];
-
-const _origCreateImageBitmap = window.createImageBitmap;
-window.createImageBitmap = function(source) {
-  return _origCreateImageBitmap(source).catch(function() {
-    const canvas = document.createElement('canvas');
-    canvas.width = 1; canvas.height = 1;
-    return _origCreateImageBitmap(canvas);
-  });
-};
-
-const dracoLoader = new THREE.DRACOLoader();
-dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
-dracoLoader.setDecoderConfig({ type: 'js' });
-dracoLoader.preload();
-
-const gltfLoader = new THREE.GLTFLoader();
-gltfLoader.setDRACOLoader(dracoLoader);
-
-function prepararModelo(root) {
-  root.traverse(function(child) {
-    if(child.isMesh) {
-      const c = child.material.color || new THREE.Color(0xcccccc);
-      const r = child.material.roughness !== undefined ? child.material.roughness : 0.5;
-      const m = child.material.metalness !== undefined ? child.material.metalness : 0.3;
-      child.material = new THREE.MeshStandardMaterial({ color:c, roughness:r, metalness:m });
-      child.castShadow = !isMobile;
-      child.receiveShadow = !isMobile;
+    const isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+    if(isMobile){
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
+      renderer.shadowMap.enabled = false;
     }
-  });
-  const box = new THREE.Box3().setFromObject(root);
-  const center = box.getCenter(new THREE.Vector3());
-  const maxDim = Math.max(...box.getSize(new THREE.Vector3()).toArray());
-  const scale = 12 / maxDim;
-  root.scale.setScalar(scale);
-  root.position.set(-center.x*scale, -center.y*scale, -center.z*scale);
-}
 
-function conectarClickables(root) {
-  clickables.length = 0;
-  root.traverse(function(child) {
-    if(child.isMesh && PARTS[child.name]) {
-      child.userData.partId = child.name;
-      clickables.push({ mesh:child, origMat:child.material, id:child.name });
-    }
-  });
-}
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(42, innerWidth/innerHeight, 0.1, 500);
 
-let rootLow = null;
-gltfLoader.load(
-  'gauss_cannon_low.glb',
-  function(gltf) {
-    rootLow = gltf.scene;
-    prepararModelo(rootLow);
-    model.add(rootLow);
-    model.rotation.y = 0.3;
-    conectarClickables(rootLow);
-    console.log('✅ Modelo liviano cargado.');
+    const ZOOM_MIN = isMobile ? 14 : 10;
+    const ZOOM_MAX = isMobile ? 38 : 32;
+    const CAM_INIT = isMobile ? 24 : 16;
+    camera.position.set(5, 6, CAM_INIT);
+    camera.lookAt(0, 1, 0);
 
-    gltfLoader.load(
-      'gauss_cannon.glb',
-      function(gltfHD) {
-        const rootHD = gltfHD.scene;
-        prepararModelo(rootHD);
-        model.remove(rootLow);
-        model.add(rootHD);
-        conectarClickables(rootHD);
-        console.log('✅ Modelo completo cargado. Piezas:', clickables.length);
-        if(clickables.length === 0) {
-          console.warn('⚠️ Nodos en el modelo:');
-          rootHD.traverse(c => { if(c.isMesh) console.log(' -', c.name); });
+    const starG = new THREE.BufferGeometry();
+    const spos = new Float32Array(2400);
+    for(let i=0;i<2400;i++) spos[i]=(Math.random()-.5)*300;
+    starG.setAttribute('position',new THREE.BufferAttribute(spos,3));
+    scene.add(new THREE.Points(starG, new THREE.PointsMaterial({color:0xffffff,size:.12,transparent:true,opacity:.6})));
+
+    scene.add(new THREE.AmbientLight(0x1a2240,.7));
+    const sun = new THREE.DirectionalLight(0xfff5e8,1.8);
+    sun.position.set(12,14,8);sun.castShadow=!isMobile;
+    sun.shadow.mapSize.width=isMobile?512:1024;
+    sun.shadow.mapSize.height=isMobile?512:1024;
+    scene.add(sun);
+    const fill = new THREE.DirectionalLight(0x2244ff,.25);
+    fill.position.set(-10,-4,-8);scene.add(fill);
+    const pt1 = new THREE.PointLight(0xff8c2a,.9,18);
+    pt1.position.set(-2,4,2);scene.add(pt1);
+    const pt2 = new THREE.PointLight(0x00d9b0,.5,20);
+    pt2.position.set(4,3,1);scene.add(pt2);
+
+    // ═══════════════════════════════════════════════════════════════
+    // MODEL CONSTRUCTION
+    // ═══════════════════════════════════════════════════════════════
+    const model = new THREE.Group();
+    scene.add(model);
+    const clickables = [];
+
+    const _origCreateImageBitmap = window.createImageBitmap;
+    window.createImageBitmap = function(source) {
+      return _origCreateImageBitmap(source).catch(function() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1; canvas.height = 1;
+        return _origCreateImageBitmap(canvas);
+      });
+    };
+
+    const dracoLoader = new THREE.DRACOLoader();
+    dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
+    dracoLoader.setDecoderConfig({ type: 'js' });
+    dracoLoader.preload();
+
+    const gltfLoader = new THREE.GLTFLoader();
+    gltfLoader.setDRACOLoader(dracoLoader);
+
+    function prepararModelo(root) {
+      root.traverse(function(child) {
+        if(child.isMesh) {
+          const c = child.material.color || new THREE.Color(0xcccccc);
+          const r = child.material.roughness !== undefined ? child.material.roughness : 0.5;
+          const m = child.material.metalness !== undefined ? child.material.metalness : 0.3;
+          child.material = new THREE.MeshStandardMaterial({ color:c, roughness:r, metalness:m });
+          child.castShadow = !isMobile;
+          child.receiveShadow = !isMobile;
         }
+      });
+      const box = new THREE.Box3().setFromObject(root);
+      const center = box.getCenter(new THREE.Vector3());
+      const maxDim = Math.max(...box.getSize(new THREE.Vector3()).toArray());
+      const scale = 12 / maxDim;
+      root.scale.setScalar(scale);
+      root.position.set(-center.x*scale, -center.y*scale, -center.z*scale);
+    }
+
+    function conectarClickables(root) {
+      clickables.length = 0;
+      root.traverse(function(child) {
+        if(child.isMesh && PARTS[child.name]) {
+          child.userData.partId = child.name;
+          clickables.push({ mesh:child, origMat:child.material, id:child.name });
+        }
+      });
+    }
+
+    let rootLow = null;
+    gltfLoader.load(
+      'gauss_cannon_low.glb',
+      function(gltf) {
+        rootLow = gltf.scene;
+        prepararModelo(rootLow);
+        model.add(rootLow);
+        model.rotation.y = 0.3;
+        conectarClickables(rootLow);
+        console.log('✅ Modelo liviano cargado.');
+
+        gltfLoader.load(
+          'gauss_cannon.glb',
+          function(gltfHD) {
+            const rootHD = gltfHD.scene;
+            prepararModelo(rootHD);
+            model.remove(rootLow);
+            model.add(rootHD);
+            conectarClickables(rootHD);
+            console.log('✅ Modelo completo cargado. Piezas:', clickables.length);
+            if(clickables.length === 0) {
+              console.warn('⚠️ Nodos en el modelo:');
+              rootHD.traverse(c => { if(c.isMesh) console.log(' -', c.name); });
+            }
+          },
+          null,
+          function(err) {
+            console.warn('Modelo completo no disponible, usando liviano:', err.message);
+          }
+        );
       },
       null,
       function(err) {
-        console.warn('Modelo completo no disponible, usando liviano:', err.message);
+        console.warn('Modelo liviano no disponible:', err.message);
       }
     );
-  },
-  null,
-  function(err) {
-    console.warn('Modelo liviano no disponible:', err.message);
-  }
-);
 
-// ═══════════════════════════════════════════════════════════════
-// HIGHLIGHT / INTERACTION
-// ═══════════════════════════════════════════════════════════════
-const highlightMat = new THREE.MeshStandardMaterial({
-  color:0x00d9b0,roughness:.25,metalness:.5,emissive:0x00d9b0,emissiveIntensity:.35
-});
-
-let selectedId = null, hoveredId = null;
-const seen = new Set();
-
-function setHighlight(id, on) {
-  clickables.forEach(c => {
-    if(c.id === id) {
-      if(on){
-        const hm = highlightMat.clone();
-        hm.color.set(c.id.startsWith('pcb') ? 0x00d9b0 : 0xff8c2a);
-        hm.emissive.set(c.id.startsWith('pcb') ? 0x00d9b0 : 0xff8c2a);
-        hm.emissiveIntensity = .3;
-        c.mesh.material = hm;
-      } else {
-        c.mesh.material = c.origMat;
-      }
-    }
-  });
-}
-
-function openPanel(id) {
-  if(selectedId && selectedId !== id) setHighlight(selectedId, false);
-  selectedId = id;
-  setHighlight(id, true);
-  seen.add(id);
-  updateCounter();
-  const d = PARTS[id];
-  document.getElementById('p-cat').textContent = d.cat;
-  document.getElementById('p-name').textContent = d.name;
-  document.getElementById('p-id').textContent = d.id;
-  document.getElementById('p-desc').textContent = d.desc;
-
-  const statsEl = document.getElementById('p-stats');
-  statsEl.innerHTML = d.stats.map(s=>
-    `<div class="sbox"><div class="slbl">${s.l}</div><div class="sval">${s.v}</div></div>`
-  ).join('');
-
-  const schSec = document.getElementById('sch-sec');
-  const schImg = document.getElementById('sch-img');
-  const schThumb = document.getElementById('sch-thumb');
-  if(d.schemImg) {
-    schSec.style.display = 'block';
-    schImg.src = d.schemImg;
-    schThumb.onclick = () => openPZ(d.schemImg, d.schemTitle || d.name);
-    currentSchemId = d.schemImg;
-  } else {
-    schSec.style.display = 'none';
-    currentSchemId = null;
-  }
-
-  document.getElementById('panel').classList.add('open');
-  document.getElementById('hint').style.opacity = '0';
-}
-
-function closePanel() {
-  if(selectedId) setHighlight(selectedId, false);
-  selectedId = null;
-  document.getElementById('panel').classList.remove('open');
-}
-window.closePanel = closePanel;
-
-// ═══════════════════════════════════════════════════════════════
-// RAYCASTER
-// ═══════════════════════════════════════════════════════════════
-const ray = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-const tip = document.getElementById('tip');
-let currentSchemId = null;
-
-function updateMouse(x, y) {
-  mouse.x = (x/innerWidth)*2-1;
-  mouse.y = -(y/innerHeight)*2+1;
-}
-
-function doRaycast() {
-  ray.setFromCamera(mouse, camera);
-  return ray.intersectObjects(clickables.map(c=>c.mesh));
-}
-
-let _mouseMoveQueued = false;
-let _lastMouseX = 0, _lastMouseY = 0;
-window.addEventListener('mousemove', e => {
-  _lastMouseX = e.clientX; _lastMouseY = e.clientY;
-  updateMouse(e.clientX, e.clientY);
-
-  if(!_mouseMoveQueued){
-    _mouseMoveQueued = true;
-    requestAnimationFrame(() => {
-      _mouseMoveQueued = false;
-      if(modalActive) return;
-      const hits = doRaycast();
-      const hid = hits.length ? hits[0].object.userData.partId : null;
-
-      if(hid !== hoveredId) {
-        if(hoveredId && hoveredId !== selectedId) setHighlight(hoveredId, false);
-        hoveredId = hid;
-        if(hoveredId && hoveredId !== selectedId) setHighlight(hoveredId, true);
-        document.body.classList.toggle('hov', !!hoveredId);
-      }
-
-      if(hid) {
-        const part = PARTS[hid];
-        tip.style.left = (_lastMouseX+16)+'px';
-        tip.style.top  = (_lastMouseY-8)+'px';
-        tip.innerHTML = part ? `${part.name} <small>${part.cat}</small>` : hid;
-        tip.style.opacity = '1';
-      } else {
-        tip.style.opacity = '0';
-      }
+    // ═══════════════════════════════════════════════════════════════
+    // HIGHLIGHT / INTERACTION
+    // ═══════════════════════════════════════════════════════════════
+    const highlightMat = new THREE.MeshStandardMaterial({
+      color:0x00d9b0,roughness:.25,metalness:.5,emissive:0x00d9b0,emissiveIntensity:.35
     });
-  }
-});
 
-window.addEventListener('click', e => {
-  if(e.target !== renderer.domElement) return;
-  updateMouse(e.clientX, e.clientY);
-  const hits = doRaycast();
-  if(hits.length) {
-    const id = hits[0].object.userData.partId;
-    if(id) { id===selectedId ? closePanel() : openPanel(id); }
-  } else {
-    closePanel();
-  }
-});
+    let selectedId = null, hoveredId = null;
+    const seen = new Set();
 
-// ═══════════════════════════════════════════════════════════════
-// DRAG TO ROTATE
-// ═══════════════════════════════════════════════════════════════
-let drag = false, px = 0, py = 0, dragDist = 0;
-window.addEventListener('mousedown', e => {
-  if(e.target!==renderer.domElement) return;
-  drag=true; px=e.clientX; py=e.clientY; dragDist=0;
-  hideHintOnInteraction();
-});
-window.addEventListener('mouseup', () => drag=false);
-window.addEventListener('mousemove', e => {
-  if(!drag || modalActive) return;
-  const dx=e.clientX-px, dy=e.clientY-py;
-  dragDist += Math.abs(dx)+Math.abs(dy);
-  model.rotation.y += dx*.007;
-  model.rotation.x = Math.max(-1,Math.min(.6,model.rotation.x+dy*.004));
-  px=e.clientX; py=e.clientY;
-});
-
-window.addEventListener('wheel', e=>{
-  if (modalActive) return;
-  camera.position.multiplyScalar(1+e.deltaY*.001);
-  camera.position.clampLength(ZOOM_MIN, ZOOM_MAX);
-  hideHintOnInteraction();
-},{passive:true});
-
-// ═══════════════════════════════════════════════════════════════
-// TOUCH CONTROLS
-// ═══════════════════════════════════════════════════════════════
-let touches = {}, pinchDist = 0, touchDrag = false, touchMoved = false;
-let tpx = 0, tpy = 0, touchTime = 0;
-
-window.addEventListener('touchstart', e => {
-  if (modalActive) return;
-  if (e.target !== renderer.domElement) return;
-  e.preventDefault();
-  touchMoved = false; touchTime = Date.now();
-  if(e.touches.length === 1) {
-    tpx = e.touches[0].clientX; tpy = e.touches[0].clientY; touchDrag=true;
-  } else if(e.touches.length === 2) {
-    pinchDist = Math.hypot(
-      e.touches[0].clientX - e.touches[1].clientX,
-      e.touches[0].clientY - e.touches[1].clientY
-    );
-  }
-  hideHintOnInteraction();
-},{passive:false});
-
-window.addEventListener('touchmove', e => {
-  if (modalActive) return;
-  if (e.target !== renderer.domElement) return;
-  e.preventDefault();
-  touchMoved = true;
-  if(e.touches.length === 1 && touchDrag) {
-    const dx=e.touches[0].clientX-tpx, dy=e.touches[0].clientY-tpy;
-    model.rotation.y += dx*.007;
-    model.rotation.x = Math.max(-1,Math.min(.6,model.rotation.x+dy*.004));
-    tpx=e.touches[0].clientX; tpy=e.touches[0].clientY;
-  } else if(e.touches.length === 2) {
-    const d = Math.hypot(
-      e.touches[0].clientX-e.touches[1].clientX,
-      e.touches[0].clientY-e.touches[1].clientY
-    );
-    camera.position.multiplyScalar(pinchDist/d);
-    camera.position.clampLength(ZOOM_MIN, ZOOM_MAX);
-    pinchDist=d;
-  }
-},{passive:false});
-
-window.addEventListener('touchend', e => {
-  if (modalActive) return;
-  if (e.target !== renderer.domElement) { touchDrag=false; return; }
-  touchDrag=false;
-  if(!touchMoved && Date.now()-touchTime < 300 && e.changedTouches.length===1) {
-    const t = e.changedTouches[0];
-    updateMouse(t.clientX, t.clientY);
-    const hits = doRaycast();
-    if(hits.length){
-      const id=hits[0].object.userData.partId;
-      if(id){ id===selectedId?closePanel():openPanel(id); }
-    } else {
-      closePanel();
-    }
-  }
-});
-
-// ═══════════════════════════════════════════════════════════════
-// PAN-ZOOM VIEWER (original con viewBox)
-// ═══════════════════════════════════════════════════════════════
-let pzSvgW = 0, pzSvgH = 0;
-async function openPZ(src, title) {
-  const content = document.getElementById('pz-content');
-  const viewer  = document.getElementById('pz-viewer');
-  document.getElementById('pz-title').textContent = title || 'Esquemático';
-
-  content.innerHTML = '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(0,217,176,.4);font-size:.75rem;letter-spacing:.2em;text-transform:uppercase">Cargando…</div>';
-  viewer.classList.add('open');
-
-  const h = document.getElementById('pz-hint-bar');
-  h.style.animation='none';
-  void h.offsetWidth; h.style.animation='fadeHint 4s forwards';
-  modalActive = true;
-  _animPaused = true;
-
-  const isSVG = src.toLowerCase().endsWith('.svg');
-  if(isSVG){
-    let svgText;
-    try {
-      const res = await fetch(src);
-      if(!res.ok) throw new Error(res.status);
-      svgText = await res.text();
-    } catch(e) {
-      content.innerHTML = `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,140,42,.5);font-size:.8rem;padding:20px;text-align:center">Imagen no encontrada:<br><code style="font-size:.7rem;opacity:.7">${src}</code></div>`;
-      return;
-    }
-
-    const parser = new DOMParser();
-    const doc    = parser.parseFromString(svgText, 'image/svg+xml');
-    pzSvgEl      = doc.documentElement;
-
-    let w = 0, hh = 0;
-    const vb = pzSvgEl.getAttribute('viewBox');
-    if(vb){ const p=vb.trim().split(/[\s,]+/); w=parseFloat(p[2]); hh=parseFloat(p[3]); }
-    if(!w||!hh){ w=parseFloat(pzSvgEl.getAttribute('width'))||1000; hh=parseFloat(pzSvgEl.getAttribute('height'))||700; }
-    pzOrigW=w; pzOrigH=hh;
-
-    pzSvgEl.setAttribute('width',  '100%');
-    pzSvgEl.setAttribute('height', '100%');
-    pzSvgEl.setAttribute('preserveAspectRatio', 'xMidYMid meet');
-    pzSvgEl.style.cssText = 'display:block;pointer-events:none;user-select:none;';
-    
-    pzVbX=0; pzVbY=0; pzVbW=pzOrigW; pzVbH=pzOrigH;
-    pzSvgEl.setAttribute('viewBox', `0 0 ${pzOrigW} ${pzOrigH}`);
-    content.innerHTML = '';
-    content.appendChild(pzSvgEl);
-    document.getElementById('pz-zoom-val').textContent = '100%';
-
-  } else {
-    const img = document.createElement('img');
-    img.style.cssText = 'width:100%;height:100%;object-fit:contain;pointer-events:none;';
-    content.innerHTML = '';
-    content.appendChild(img);
-    img.src = src;
-  }
-}
-window.openPZ = openPZ;
-
-function closePZ() {
-  document.getElementById('pz-viewer').classList.remove('open');
-  document.getElementById('pz-content').innerHTML = '';
-  pzSvgEl = null; pzOrigW = 0; pzOrigH = 0;
-  modalActive = false;
-  _animPaused = false;
-}
-window.closePZ = closePZ;
-
-let pzSvgEl = null; 
-let pzOrigW = 0, pzOrigH = 0;
-let pzVbX = 0, pzVbY = 0, pzVbW = 0, pzVbH = 0;
-const PZ_ZOOM_F = 0.14;
-
-let _pzVBPending = false;
-function pzApplyVB(){
-  if(!_pzVBPending){
-    _pzVBPending = true;
-    requestAnimationFrame(() => {
-      _pzVBPending = false;
-      if(pzSvgEl) pzSvgEl.setAttribute('viewBox', `${pzVbX} ${pzVbY} ${pzVbW} ${pzVbH}`);
-      const lvl = pzOrigW > 0 ? Math.round(pzOrigW / pzVbW * 100) : 100;
-      document.getElementById('pz-zoom-val').textContent = lvl + '%';
-    });
-  }
-}
-
-function pzFit() {
-  pzVbX = 0; pzVbY = 0; pzVbW = pzOrigW; pzVbH = pzOrigH;
-  pzApplyVB();
-}
-window.pzFit = pzFit;
-
-function pzZoomAt(factor, clientX, clientY) {
-  const stage = document.getElementById('pz-stage');
-  const rect  = stage.getBoundingClientRect();
-  const rx = (clientX - rect.left) / rect.width;
-  const ry = (clientY - rect.top)  / rect.height;
-  const pivotX = pzVbX + rx * pzVbW;
-  const pivotY = pzVbY + ry * pzVbH;
-  const minW = pzOrigW / 10,  minH = pzOrigH / 10;
-  const maxW = pzOrigW * 1, maxH = pzOrigH * 1;
-  let nw = Math.max(minW, Math.min(maxW, pzVbW / factor));
-  let nh = nw * (pzOrigH / pzOrigW);
-  pzVbX = pivotX - rx * nw;
-  pzVbY = pivotY - ry * nh;
-  pzVbW = nw; pzVbH = nh;
-  pzApplyVB();
-}
-
-function pzZoomBtn(f) {
-  const stage = document.getElementById('pz-stage');
-  const r = stage.getBoundingClientRect();
-  pzZoomAt(f, r.left + r.width/2, r.top + r.height/2);
-}
-window.pzZoomBtn = pzZoomBtn;
-
-const pzStage = document.getElementById('pz-stage');
-let pzDrag = false, pzDSX = 0, pzDSY = 0, pzDVBX = 0, pzDVBY = 0;
-pzStage.addEventListener('wheel', e => {
-  e.preventDefault(); e.stopPropagation();
-  pzZoomAt(e.deltaY < 0 ? 1+PZ_ZOOM_F : 1-PZ_ZOOM_F, e.clientX, e.clientY);
-},{passive:false});
-
-pzStage.addEventListener('mousedown', e => {
-  if(e.button!==0) return;
-  e.preventDefault();
-  pzDrag=true; pzDSX=e.clientX; pzDSY=e.clientY; pzDVBX=pzVbX; pzDVBY=pzVbY;
-  pzStage.classList.add('dragging');
-});
-
-window.addEventListener('mousemove', e => {
-  if(!pzDrag) return;
-  const stage = document.getElementById('pz-stage');
-  const rect  = stage.getBoundingClientRect();
-  pzVbX = pzDVBX - (e.clientX-pzDSX) * (pzVbW/rect.width);
-  pzVbY = pzDVBY - (e.clientY-pzDSY) * (pzVbH/rect.height);
-  pzApplyVB();
-});
-
-window.addEventListener('mouseup', () => { pzDrag=false; pzStage.classList.remove('dragging'); });
-pzStage.addEventListener('dblclick', pzFit);
-
-let pzLastTap = 0, pzTDrag = false, pzTSX = 0, pzTSY = 0, pzTVBX = 0, pzTVBY = 0;
-let pzPD0 = 0, pzPVBX0 = 0, pzPVBY0 = 0, pzPVBW0 = 0, pzPVBH0 = 0;
-
-pzStage.addEventListener('touchstart', e => {
-  e.preventDefault();
-  if(e.touches.length === 1){
-    pzTDrag=true; pzTSX=e.touches[0].clientX; pzTSY=e.touches[0].clientY;
-    pzTVBX=pzVbX; pzTVBY=pzVbY;
-    const now=Date.now(); if(now-pzLastTap<300) pzFit(); pzLastTap=now;
-  } else if(e.touches.length === 2){
-    pzTDrag=false;
-    pzPD0 = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
-    pzPVBX0=pzVbX; pzPVBY0=pzVbY; pzPVBW0=pzVbW; pzPVBH0=pzVbH;
-  }
-},{passive:false});
-
-pzStage.addEventListener('touchmove', e => {
-  e.preventDefault();
-  if(e.touches.length===1 && pzTDrag){
-    const stage=document.getElementById('pz-stage'), rect=stage.getBoundingClientRect();
-    pzVbX = pzTVBX - (e.touches[0].clientX-pzTSX)*(pzVbW/rect.width);
-    pzVbY = pzTVBY - (e.touches[0].clientY-pzTSY)*(pzVbH/rect.height);
-    pzApplyVB();
-  } else if(e.touches.length===2 && pzPD0){
-    const nd = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
-    const f  = nd/pzPD0;
-    const mx = (e.touches[0].clientX+e.touches[1].clientX)/2;
-    const my = (e.touches[0].clientY+e.touches[1].clientY)/2;
-    const stage=document.getElementById('pz-stage'), rect=stage.getBoundingClientRect();
-    const rx=(mx-rect.left)/rect.width, ry=(my-rect.top)/rect.height;
-    let nw = pzPVBW0/f, nh = pzPVBH0/f;
-    if(pzOrigW > 0){
-      const minW=pzOrigW/10, maxW=pzOrigW*0.9;
-      const minH=pzOrigH/10, maxH=pzOrigH*0.9;
-      if(nw < minW){ nw=minW; nh=minH; }
-      if(nw > maxW){ nw=maxW; nh=maxH; }
-    }
-    const pivX = pzPVBX0+rx*pzPVBW0, pivY = pzPVBY0+ry*pzPVBH0;
-    pzVbX=pivX-rx*nw; pzVbY=pivY-ry*nh; pzVbW=nw; pzVbH=nh;
-    pzApplyVB();
-  }
-},{passive:false});
-
-pzStage.addEventListener('touchend', e => {
-  if(e.touches.length===0){ pzTDrag=false; }
-  if(e.touches.length<2){ pzPD0=0; }
-});
-
-const BOM_DATA_RAW = [
-  // ==========================================
-  // PROYECTO: Cañón Gauss
-  // ==========================================
-  {ref:'C1-C3', qty:3, value:'4700μF/63V', desc:'Capacitor polarizado (Electrolítico)', cat:'Almacenamiento', proyecto:'Cañón Gauss'},
-  {ref:'C4', qty:1, value:'47nF', desc:'Capacitor no polarizado', cat:'Pasivos', proyecto:'Cañón Gauss'},
-  {ref:'C5,C6', qty:2, value:'100nF', desc:'Capacitor no polarizado', cat:'Pasivos', proyecto:'Cañón Gauss'},
-  
-  {ref:'D2,D7', qty:2, value:'BOARD LED', desc:'Diodo emisor de luz (LED) indicador de placa', cat:'Interfaz', proyecto:'Cañón Gauss'},
-  {ref:'D3,D8', qty:2, value:'COIL LED', desc:'Diodo emisor de luz (LED) indicador de estado de bobina', cat:'Interfaz', proyecto:'Cañón Gauss'},
-  {ref:'D4,D9', qty:2, value:'31DF4', desc:'Diodo rectificador de barrera Schottky 30V 3A, DO-201AD', cat:'Potencia', proyecto:'Cañón Gauss'},
-  {ref:'D5,D10', qty:2, value:'75V/5W', desc:'Diodo Zener de 75V y 5W', cat:'Potencia', proyecto:'Cañón Gauss'},
-  {ref:'D6,D11', qty:2, value:'IR LED', desc:'Diodo emisor de luz infrarroja (LED IR)', cat:'Interfaz', proyecto:'Cañón Gauss'},
-  
-  {ref:'J1', qty:1, value:'TRANSFORMER', desc:'Terminal de conexión para entrada del transformador', cat:'Conectores', proyecto:'Cañón Gauss'},
-  {ref:'J2', qty:1, value:'OUTPUT', desc:'Terminal de conexión para salida general', cat:'Conectores', proyecto:'Cañón Gauss'},
-  {ref:'J3', qty:1, value:'BOARD INPUT 36V', desc:'Terminal de entrada de alimentación de la placa (36V)', cat:'Conectores', proyecto:'Cañón Gauss'},
-  {ref:'J4', qty:1, value:'BOARD INPUT 12V', desc:'Terminal de entrada de alimentación de la placa (12V)', cat:'Conectores', proyecto:'Cañón Gauss'},
-  
-  {ref:'L1,L2', qty:2, value:'COIL', desc:'Bobina magnética', cat:'Pasivos', proyecto:'Cañón Gauss'},
-  
-  {ref:'Q1,Q6', qty:2, value:'BPW40', desc:'Fototransistor NPN (Receptor óptico)', cat:'Semiconductores', proyecto:'Cañón Gauss'},
-  {ref:'Q2,Q7', qty:2, value:'2N2222', desc:'Transistor NPN (Emisor/Base/Colector)', cat:'Semiconductores', proyecto:'Cañón Gauss'},
-  {ref:'Q3-Q5,Q8-Q10', qty:6, value:'IRF740', desc:'Transistor MOSFET de potencia Canal N, 10A Id, 400V Vds, 500mOhm Rds, TO-220AB', cat:'Potencia', proyecto:'Cañón Gauss'},
-  
-  {ref:'R1,R2,R11,R12', qty:4, value:'1.2KΩ', desc:'Resistencia', cat:'Pasivos', proyecto:'Cañón Gauss'},
-  {ref:'R3,R6,R13,R16', qty:4, value:'10KΩ', desc:'Resistencia', cat:'Pasivos', proyecto:'Cañón Gauss'},
-  {ref:'R4,R5,R14,R15', qty:4, value:'2.2KΩ', desc:'Resistencia', cat:'Pasivos', proyecto:'Cañón Gauss'},
-  {ref:'R7,R17', qty:2, value:'4.7KΩ', desc:'Resistencia', cat:'Pasivos', proyecto:'Cañón Gauss'},
-  {ref:'R8-R10,R18-R20', qty:6, value:'10Ω', desc:'Resistencia', cat:'Pasivos', proyecto:'Cañón Gauss'},
-  
-  {ref:'TP1-TP4', qty:4, value:'TestPoint', desc:'Punto de prueba (Test point) para medición en placa', cat:'Interfaz', proyecto:'Cañón Gauss'},
-
-  // ==========================================
-  // PROYECTO: Placa de control
-  // ==========================================
-  {ref:'C7,C10', qty:2, value:'100nF', desc:'Capacitor no polarizado', cat:'Pasivos', proyecto:'Placa de control'},
-  {ref:'C8', qty:1, value:'10nF', desc:'Capacitor no polarizado', cat:'Pasivos', proyecto:'Placa de control'},
-  {ref:'C9', qty:1, value:'68nF', desc:'Capacitor no polarizado', cat:'Pasivos', proyecto:'Placa de control'},
-  
-  {ref:'D12-D51', qty:40, value:'LED', desc:'Diodo emisor de luz (LED)', cat:'Interfaz', proyecto:'Placa de control'},
-  {ref:'D52,D53', qty:2, value:'1N4148', desc:'Diodo estándar de conmutación 100V 0.15A, DO-35', cat:'Potencia', proyecto:'Placa de control'},
-  
-  {ref:'J5', qty:1, value:'12V POWER SUPPLY', desc:'Terminal de conexión para fuente de alimentación de 12V', cat:'Conectores', proyecto:'Placa de control'},
-  {ref:'J6', qty:1, value:'PWM OUTPUT', desc:'Terminal de conexión para salida de señal PWM', cat:'Conectores', proyecto:'Placa de control'},
-  
-  {ref:'Q11', qty:1, value:'IRF540N', desc:'Transistor MOSFET HEXFET Canal N, 33A Id, 100V Vds, TO-220', cat:'Potencia', proyecto:'Placa de control'},
-  
-  {ref:'R21', qty:1, value:'6.8KΩ', desc:'Resistencia', cat:'Pasivos', proyecto:'Placa de control'},
-  {ref:'R22,R64', qty:2, value:'100KΩ', desc:'Potenciómetro', cat:'Pasivos', proyecto:'Placa de control'},
-  {ref:'R23-R63', qty:41, value:'1KΩ', desc:'Resistencia', cat:'Pasivos', proyecto:'Placa de control'},
-  {ref:'R65', qty:1, value:'100Ω', desc:'Resistencia', cat:'Pasivos', proyecto:'Placa de control'},
-  
-  {ref:'U1,U7', qty:2, value:'NE555P', desc:'Temporizador de precisión, compatible con 555, PDIP-8', cat:'Semiconductores', proyecto:'Placa de control'},
-  {ref:'U2-U6', qty:5, value:'CD4017', desc:'Circuito integrado Contador Johnson (10 salidas)', cat:'Semiconductores', proyecto:'Placa de control'}
-];
-BOM_DATA_RAW.sort((a, b) => a.ref.localeCompare(b.ref));
-const BOM_DATA = BOM_DATA_RAW;
-
-function updateCounter() {
-  const total = 10; 
-  const count = seen ? seen.size : 0;
-  const percent = (count / total) * 100;
-  const circle = document.getElementById('progress-circle');
-  if (circle) {
-    const circumference = 2 * Math.PI * 16;
-    const dash = (percent / 100) * circumference;
-    circle.style.strokeDasharray = `${dash} ${circumference}`;
-  }
-  const txt = document.getElementById('counter-text');
-  if (txt) txt.textContent = `${count}/${total}`;
-}
-
-function escHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-let activeProject = 'Todos';
-let activeCategory = 'Todos';
-
-function applyFilters() {
-  const rows = document.querySelectorAll('#bom-tbody-modal tr');
-  let visibleCount = 0;
-  rows.forEach(tr => {
-    const proyecto = tr.dataset.proyecto;
-    const cat = tr.dataset.cat;
-    let show = true;
-    if (activeProject !== 'Todos' && proyecto !== activeProject) show = false;
-    if (activeCategory !== 'Todos' && cat !== activeCategory) show = false;
-    tr.style.display = show ? '' : 'none';
-    if (show) visibleCount++;
-  });
-  const filteredData = BOM_DATA.filter(r => {
-    if (activeProject !== 'Todos' && r.proyecto !== activeProject) return false;
-    if (activeCategory !== 'Todos' && r.cat !== activeCategory) return false;
-    return true;
-  });
-  const totalQty = filteredData.reduce((s, r) => s + parseInt(r.qty || 0), 0);
-  document.getElementById('bom-summary-modal').innerHTML = `
-    <div class="bom-stat"><div class="bs-l">Líneas</div><div class="bs-v">${filteredData.length}</div></div>
-    <div class="bom-stat"><div class="bs-l">Unidades</div><div class="bs-v">${totalQty}</div></div>
-    <div class="bom-stat"><div class="bs-l">Filtros</div><div class="bs-v">${activeProject !== 'Todos' ? 'P:'+activeProject : ''} ${activeCategory !== 'Todos' ? 'C:'+activeCategory : ''}</div></div>
-  `;
-}
-
-function buildProjectChips() {
-  const container = document.getElementById('bom-project-filter');
-  const projects = ['Todos', 'Cañón Gauss', 'Placa de control'];
-  container.innerHTML = projects.map(p => {
-    let icon = '';
-    if (p === 'Cañón Gauss') icon = `<svg viewBox="0 0 24 24"><rect x="10" y="15" width="4" height="1.5" rx="0.5" fill="currentColor" opacity="0.5"/><rect x="3" y="10.5" width="17" height="3" rx="0.75" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="7.5" y="9.5" width="1.8" height="5" rx="0.4" fill="currentColor"/><rect x="11.1" y="9.5" width="1.8" height="5" rx="0.4" fill="currentColor"/><rect x="14.7" y="9.5" width="1.8" height="5" rx="0.4" fill="currentColor"/><rect x="1.5" y="10" width="2" height="4" rx="0.5" fill="currentColor"/><rect x="20.5" y="10.5" width="2" height="3" rx="0.5" fill="currentColor"/></svg>`;
-    else if (p === 'Placa de control') icon = `<svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="4.5" cy="6.5" r="0.8" fill="currentColor" opacity="0.5"/><circle cx="19.5" cy="6.5" r="0.8" fill="currentColor" opacity="0.5"/><circle cx="4.5" cy="17.5" r="0.8" fill="currentColor" opacity="0.5"/><circle cx="19.5" cy="17.5" r="0.8" fill="currentColor" opacity="0.5"/><rect x="9" y="9" width="6" height="6" rx="0.5" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="9" y1="10.5" x2="7" y2="10.5" stroke="currentColor" stroke-width="1"/><line x1="9" y1="12" x2="7" y2="12" stroke="currentColor" stroke-width="1"/><line x1="9" y1="13.5" x2="7" y2="13.5" stroke="currentColor" stroke-width="1"/><line x1="15" y1="10.5" x2="17" y2="10.5" stroke="currentColor" stroke-width="1"/><line x1="15" y1="12" x2="17" y2="12" stroke="currentColor" stroke-width="1"/><line x1="15" y1="13.5" x2="17" y2="13.5" stroke="currentColor" stroke-width="1"/></svg>`;
-    return `<button class="bom-project-chip${p===activeProject?' on':''}" onclick="setProject('${p}')">${icon}${p}</button>`;
-  }).join('');
-}
-
-function setProject(p) {
-  activeProject = p;
-  buildProjectChips();
-  applyFilters();
-}
-window.setProject = setProject;
-
-function buildCategoryChips() {
-  const tags = [...new Set(BOM_DATA.map(r => r.cat))];
-  const container = document.getElementById('bom-filter-bar-modal');
-  container.innerHTML = ['Todos', ...tags].map(c => {
-    let icon = '';
-    switch(c) {
-      case 'Control': icon = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="1.5"/></svg>'; break;
-      case 'Potencia': icon = '<svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>'; break;
-      case 'Almacenamiento': icon = '<svg viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="12" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 8V5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v3" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>'; break;
-      case 'Pasivos': icon = '<svg viewBox="0 0 24 24"><rect x="7" y="5" width="10" height="14" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M12 5v14" stroke="currentColor" stroke-width="1.5"/></svg>'; break;
-      case 'Electromecánicos': icon = '<svg viewBox="0 0 24 24"><path d="M4 12h16M12 4v16" stroke="currentColor" stroke-width="1.5"/><ellipse cx="12" cy="12" rx="4" ry="4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>'; break;
-      case 'Semiconductores': icon = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="currentColor"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>'; break;
-      case 'Interfaz': icon = '<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 8h8M8 12h8M8 16h4" stroke="currentColor" stroke-width="1.5"/></svg>'; break;
-      case 'Conectores': icon = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M7 7l4 4M17 7l-4 4M7 17l4-4M17 17l-4-4" stroke="currentColor" stroke-width="1.5"/></svg>'; break;
-      default: icon = '';
-    }
-    return `<button class="bom-filter-chip${c===activeCategory?' on':''}" onclick="setCategory('${c}')">${icon}${c}</button>`;
-  }).join('');
-}
-
-function setCategory(c) {
-  activeCategory = c;
-  buildCategoryChips();
-  applyFilters();
-}
-window.setCategory = setCategory;
-
-function renderModalBOM() {
-  document.getElementById('bom-thead-modal').innerHTML =
-    '<th>Ref.</th><th>Cant.</th><th>Valor / Componente</th><th>Descripción</th><th>Clasificación y Proyecto</th>';
-
-  const fragment = document.createDocumentFragment();
-  BOM_DATA.forEach(r => {
-    const tr = document.createElement('tr');
-    tr.dataset.cat = r.cat;
-    tr.dataset.proyecto = r.proyecto;
-    tr.innerHTML = `
-      <td data-label="Ref." style="font-family:'Black Ops One',serif;font-size:.78rem;color:var(--teal)">${escHtml(r.ref)}</td>
-      <td data-label="Cant."><span class="bom-badge ok">${escHtml(String(r.qty))}</span></td>
-      <td data-label="Valor" style="color:#fff;font-weight:600">${escHtml(r.value)}</td>
-      <td data-label="Descripción">${escHtml(r.desc||'')}</td>
-      <td data-label="Clasificación">
-        <span class="bom-badge warn" style="font-size:.58rem; margin-bottom: 4px; display: inline-block;">${escHtml(r.cat)}</span>
-        <span class="bom-badge ok" style="font-size:.58rem; display: inline-block;">${escHtml(r.proyecto)}</span>
-      </td>
-    `;
-    fragment.appendChild(tr);
-  });
-  document.getElementById('bom-tbody-modal').appendChild(fragment);
-
-  buildProjectChips();
-  buildCategoryChips();
-  applyFilters();
-}
-
-// ═══════════════════════════════════════════════════════════════
-// MODAL / TABS
-// ═══════════════════════════════════════════════════════════════
-let modalActive = false;
-
-function openBOM() { 
-  openModal('bom');
-}
-window.openBOM = openBOM;
-
-function openModal(tab) {
-  document.getElementById('sch-modal').classList.add('open');
-  switchTabByName(tab);
-  modalActive = true;
-  _animPaused = true;
-}
-function closeModal() {
-  document.getElementById('sch-modal').classList.remove('open');
-  modalActive = false;
-  _animPaused = false;
-}
-window.openModal = openModal;
-window.closeModal = closeModal;
-
-function switchTab(name, btn) {
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
-  document.querySelectorAll('.tpane').forEach(t=>t.classList.remove('on'));
-  btn.classList.add('on');
-  document.getElementById('tpane-'+name).classList.add('on');
-}
-function switchTabByName(name) {
-  document.querySelectorAll('.tab').forEach((t,i)=>{
-    t.classList.toggle('on', (name==='full'&&i===0)||(name==='sec'&&i===1)||(name==='bom'&&i===2));
-  });
-  document.querySelectorAll('.tpane').forEach(t=>t.classList.remove('on'));
-  document.getElementById('tpane-'+name).classList.add('on');
-}
-window.switchTab = switchTab;
-
-// ═══════════════════════════════════════════════════════════════
-// HINT
-// ═══════════════════════════════════════════════════════════════
-let hintHidden = false;
-function hideHintOnInteraction() {
-  if (!hintHidden) {
-    document.getElementById('hint').style.opacity = '0';
-    hintHidden = true;
-  }
-}
-renderer.domElement.addEventListener('mousedown', hideHintOnInteraction);
-renderer.domElement.addEventListener('touchstart', hideHintOnInteraction);
-renderer.domElement.addEventListener('wheel', hideHintOnInteraction);
-
-window.addEventListener('keydown', e => {
-  if(e.key==='Escape'){
-    closePanel(); closeModal(); closePZ(); 
-  }
-});
-
-document.getElementById('panel').addEventListener('wheel', (e) => e.stopPropagation(), { passive: false });
-document.getElementById('sch-modal').addEventListener('wheel', (e) => e.stopPropagation(), { passive: false });
-document.getElementById('pz-viewer').addEventListener('wheel', (e) => e.stopPropagation(), { passive: false });
-
-window.addEventListener('resize', () => {
-  camera.aspect = innerWidth/innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(innerWidth,innerHeight);
-});
-
-// ═══════════════════════════════════════════════════════════════
-// ANIMATION LOOP
-// ═══════════════════════════════════════════════════════════════
-const clock = new THREE.Clock();
-let autoRot = true;
-let _animPaused = false;
-const MODEL_COLLIDE = ZOOM_MIN;
-
-function animate() {
-  requestAnimationFrame(animate);
-  if(_animPaused) return;
-
-  const t = clock.getElapsedTime();
-
-  if(!drag && !touchDrag) {
-    model.rotation.y += .0012;
-  }
-
-  const camDist = camera.position.length();
-  if(camDist < MODEL_COLLIDE) {
-    camera.position.normalize().multiplyScalar(MODEL_COLLIDE);
-  }
-
-  if(selectedId === 'coil1' || selectedId === 'coil2') {
-    const p = (.5+.5*Math.sin(t*8))*.4;
-    clickables.filter(c=>c.id===selectedId).forEach(c=>{
-      if(c.mesh.material.emissiveIntensity!==undefined)
-        c.mesh.material.emissiveIntensity = p;
-    });
-  }
-
-  pt1.intensity = .9 + .1*Math.sin(t*1.7);
-  pt2.intensity = .5 + .08*Math.sin(t*2.3+1);
-
-  renderer.render(scene,camera);
-}
-animate();
-
-// ═══════════════════════════════════════════════════════════════
-// VISOR SVG — ZOOM/PAN VÍA VIEWBOX (versión original)
-// ═══════════════════════════════════════════════════════════════
-(function(){
-  const SVG_URL = 'esquemas/esquema-completo.svg';
-  const ZOOM_FACTOR = 0.14;
-  const ZOOM_MAX_FACTOR = 20;
-
-  let ready = false;
-  let svgEl = null;
-  let origW = 0, origH = 0;
-  let vbX = 0, vbY = 0, vbW = 0, vbH = 0;
-  let drag = false, dragSX = 0, dragSY = 0, dragVBX = 0, dragVBY = 0;
-  let pinchDist0 = 0, pinchVBX0 = 0, pinchVBY0 = 0, pinchVBW0 = 0, pinchVBH0 = 0;
-  let zoomTimer = null;
-  let wrap = null, inner = null;
-
-  function pDist(t){ const dx=t[0].clientX-t[1].clientX, dy=t[0].clientY-t[1].clientY; return Math.sqrt(dx*dx+dy*dy); }
-  function pMid(t){ return { x:(t[0].clientX+t[1].clientX)/2, y:(t[0].clientY+t[1].clientY)/2 }; }
-
-  let _vbPending = false;
-  function applyVB(){
-    if(!_vbPending){
-      _vbPending = true;
-      requestAnimationFrame(() => {
-        _vbPending = false;
-        if(svgEl) svgEl.setAttribute('viewBox', `${vbX} ${vbY} ${vbW} ${vbH}`);
+    function setHighlight(id, on) {
+      clickables.forEach(c => {
+        if(c.id === id) {
+          if(on){
+            const hm = highlightMat.clone();
+            hm.color.set(c.id.startsWith('pcb') ? 0x00d9b0 : 0xff8c2a);
+            hm.emissive.set(c.id.startsWith('pcb') ? 0x00d9b0 : 0xff8c2a);
+            hm.emissiveIntensity = .3;
+            c.mesh.material = hm;
+          } else {
+            c.mesh.material = c.origMat;
+          }
+        }
       });
     }
-  }
 
-  function fit(){
-    vbX = 0; vbY = 0; vbW = origW; vbH = origH;
-    applyVB();
-    showZoom(100);
-  }
+    function openPanel(id) {
+      if(selectedId && selectedId !== id) setHighlight(selectedId, false);
+      selectedId = id;
+      setHighlight(id, true);
+      seen.add(id);
+      updateCounter();
+      const d = PARTS[id];
+      document.getElementById('p-cat').textContent = d.cat;
+      document.getElementById('p-name').textContent = d.name;
+      document.getElementById('p-id').textContent = d.id;
+      document.getElementById('p-desc').textContent = d.desc;
 
-  function showZoom(pct){
-    const ind = document.getElementById('pdf-zoom-indicator');
-    const val = document.getElementById('pdf-zoom-val');
-    if(!ind) return;
-    const level = pct !== undefined ? pct : Math.round(origW / vbW * 100);
-    if(val) val.textContent = level + '%';
-    ind.classList.add('visible');
-    clearTimeout(zoomTimer);
-    zoomTimer = setTimeout(() => ind.classList.remove('visible'), 1400);
-  }
+      const statsEl = document.getElementById('p-stats');
+      statsEl.innerHTML = d.stats.map(s=>
+        `<div class="sbox"><div class="slbl">${s.l}</div><div class="sval">${s.v}</div></div>`
+      ).join('');
 
-  function zoomAt(clientX, clientY, factor){
-    if(!svgEl || !wrap) return;
-    const rect = wrap.getBoundingClientRect();
-    const ratioX = (clientX - rect.left) / rect.width;
-    const ratioY = (clientY - rect.top)  / rect.height;
+      const schSec = document.getElementById('sch-sec');
+      const schImg = document.getElementById('sch-img');
+      const schThumb = document.getElementById('sch-thumb');
+      if(d.schemImg) {
+        schSec.style.display = 'block';
+        schImg.src = d.schemImg;
+        schThumb.onclick = () => openPZ(d.schemImg, d.schemTitle || d.name);
+        currentSchemId = d.schemImg;
+      } else {
+        schSec.style.display = 'none';
+        currentSchemId = null;
+      }
 
-    const pivotX = vbX + ratioX * vbW;
-    const pivotY = vbY + ratioY * vbH;
-
-    const minW = origW / 10;
-    const minH = origH / 10;
-    const maxW = origW * 0.9;
-    const maxH = origH * 0.9;
-    let newW = vbW / factor;
-    let newH = vbH / factor;
-    if(newW < minW){ newW = minW; newH = minH; }
-    if(newW > maxW){ newW = maxW; newH = maxH; }
-
-    vbX = pivotX - ratioX * newW;
-    vbY = pivotY - ratioY * newH;
-    vbW = newW;
-    vbH = newH;
-    applyVB();
-    showZoom();
-  }
-
-  async function loadSVG(){
-    wrap  = document.getElementById('pdf-pz-wrap');
-    inner = document.getElementById('sch-img-inner');
-    const loading = document.getElementById('pdf-loading');
-    if(!wrap || !inner) return;
-
-    let svgText;
-    try {
-      const res = await fetch(SVG_URL);
-      if(!res.ok) throw new Error(res.status);
-      svgText = await res.text();
-    } catch(e) {
-      if(loading) loading.innerHTML = `<span style="color:rgba(255,140,42,.5)">Imagen no encontrada<br><code style="font-size:.65rem;opacity:.6">${SVG_URL}</code></span>`;
-      console.warn('SVG viewer:', e.message);
-      return;
+      document.getElementById('panel').classList.add('open');
+      document.getElementById('hint').style.opacity = '0';
     }
 
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(svgText, 'image/svg+xml');
-    svgEl = doc.documentElement;
-
-    const vb = svgEl.getAttribute('viewBox');
-    if(vb){
-      const p = vb.trim().split(/[\s,]+/);
-      origW = parseFloat(p[2]); origH = parseFloat(p[3]);
+    function closePanel() {
+      if(selectedId) setHighlight(selectedId, false);
+      selectedId = null;
+      document.getElementById('panel').classList.remove('open');
     }
-    if(!origW || !origH){
-      origW = parseFloat(svgEl.getAttribute('width'))  || 1000;
-      origH = parseFloat(svgEl.getAttribute('height')) || 700;
+    window.closePanel = closePanel;
+
+    // ═══════════════════════════════════════════════════════════════
+    // RAYCASTER
+    // ═══════════════════════════════════════════════════════════════
+    const ray = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    const tip = document.getElementById('tip');
+    let currentSchemId = null;
+
+    function updateMouse(x, y) {
+      mouse.x = (x/innerWidth)*2-1;
+      mouse.y = -(y/innerHeight)*2+1;
     }
 
-    svgEl.setAttribute('width',  '100%');
-    svgEl.setAttribute('height', '100%');
-    svgEl.setAttribute('preserveAspectRatio', 'xMidYMid meet');
-    svgEl.style.display = 'block';
-    svgEl.style.pointerEvents = 'none';
-    svgEl.style.userSelect = 'none';
-    
-    vbX = 0; vbY = 0; vbW = origW; vbH = origH;
-    applyVB();
+    function doRaycast() {
+      ray.setFromCamera(mouse, camera);
+      return ray.intersectObjects(clickables.map(c=>c.mesh));
+    }
 
-    inner.innerHTML = '';
-    inner.appendChild(svgEl);
-    if(loading) loading.style.display = 'none';
-    ready = true;
-    setupEvents();
-  }
+    let _mouseMoveQueued = false;
+    let _lastMouseX = 0, _lastMouseY = 0;
+    window.addEventListener('mousemove', e => {
+      _lastMouseX = e.clientX; _lastMouseY = e.clientY;
+      updateMouse(e.clientX, e.clientY);
 
-  function setupEvents(){
-    if(!wrap) return;
+      if(!_mouseMoveQueued){
+        _mouseMoveQueued = true;
+        requestAnimationFrame(() => {
+          _mouseMoveQueued = false;
+          const hits = doRaycast();
+          const hid = hits.length ? hits[0].object.userData.partId : null;
 
-    wrap.addEventListener('wheel', e => {
+          if(hid !== hoveredId) {
+            if(hoveredId && hoveredId !== selectedId) setHighlight(hoveredId, false);
+            hoveredId = hid;
+            if(hoveredId && hoveredId !== selectedId) setHighlight(hoveredId, true);
+            document.body.classList.toggle('hov', !!hoveredId);
+          }
+
+          if(hid) {
+            const part = PARTS[hid];
+            tip.style.left = (_lastMouseX+16)+'px';
+            tip.style.top  = (_lastMouseY-8)+'px';
+            tip.innerHTML = part ? `${part.name} <small>${part.cat}</small>` : hid;
+            tip.style.opacity = '1';
+          } else {
+            tip.style.opacity = '0';
+          }
+        });
+      }
+    });
+
+    window.addEventListener('click', e => {
+      if(e.target !== renderer.domElement) return;
+      updateMouse(e.clientX, e.clientY);
+      const hits = doRaycast();
+      if(hits.length) {
+        const id = hits[0].object.userData.partId;
+        if(id) { id===selectedId ? closePanel() : openPanel(id); }
+      } else {
+        closePanel();
+      }
+    });
+
+    // ═══════════════════════════════════════════════════════════════
+    // DRAG TO ROTATE
+    // ═══════════════════════════════════════════════════════════════
+    let drag = false, px = 0, py = 0, dragDist = 0;
+    window.addEventListener('mousedown', e => {
+      if(e.target!==renderer.domElement) return;
+      drag=true; px=e.clientX; py=e.clientY; dragDist=0;
+      hideHintOnInteraction();
+    });
+    window.addEventListener('mouseup', () => drag=false);
+    window.addEventListener('mousemove', e => {
+      if(!drag) return;
+      const dx=e.clientX-px, dy=e.clientY-py;
+      dragDist += Math.abs(dx)+Math.abs(dy);
+      model.rotation.y += dx*.007;
+      model.rotation.x = Math.max(-1,Math.min(.6,model.rotation.x+dy*.004));
+      px=e.clientX; py=e.clientY;
+    });
+
+    window.addEventListener('wheel', e=>{
+      camera.position.multiplyScalar(1+e.deltaY*.001);
+      camera.position.clampLength(ZOOM_MIN, ZOOM_MAX);
+      hideHintOnInteraction();
+    },{passive:true});
+
+    // ═══════════════════════════════════════════════════════════════
+    // TOUCH CONTROLS
+    // ═══════════════════════════════════════════════════════════════
+    let touches = {}, pinchDist = 0, touchDrag = false, touchMoved = false;
+    let tpx = 0, tpy = 0, touchTime = 0;
+
+    window.addEventListener('touchstart', e => {
+      if (e.target !== renderer.domElement) return;
       e.preventDefault();
-      const factor = e.deltaY < 0 ? (1 + ZOOM_FACTOR) : (1 - ZOOM_FACTOR);
-      zoomAt(e.clientX, e.clientY, factor);
-    }, {passive: false});
+      touchMoved = false; touchTime = Date.now();
+      if(e.touches.length === 1) {
+        tpx = e.touches[0].clientX; tpy = e.touches[0].clientY; touchDrag=true;
+      } else if(e.touches.length === 2) {
+        pinchDist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+      }
+      hideHintOnInteraction();
+    },{passive:false});
 
-    wrap.addEventListener('mousedown', e => {
-      if(e.button !== 0) return;
-      drag = true;
-      dragSX = e.clientX; dragSY = e.clientY;
-      dragVBX = vbX; dragVBY = vbY;
-      wrap.classList.add('dragging');
+    window.addEventListener('touchmove', e => {
+      if (e.target !== renderer.domElement) return;
+      e.preventDefault();
+      touchMoved = true;
+      if(e.touches.length === 1 && touchDrag) {
+        const dx=e.touches[0].clientX-tpx, dy=e.touches[0].clientY-tpy;
+        model.rotation.y += dx*.007;
+        model.rotation.x = Math.max(-1,Math.min(.6,model.rotation.x+dy*.004));
+        tpx=e.touches[0].clientX; tpy=e.touches[0].clientY;
+      } else if(e.touches.length === 2) {
+        const d = Math.hypot(
+          e.touches[0].clientX-e.touches[1].clientX,
+          e.touches[0].clientY-e.touches[1].clientY
+        );
+        camera.position.multiplyScalar(pinchDist/d);
+        camera.position.clampLength(ZOOM_MIN, ZOOM_MAX);
+        pinchDist=d;
+      }
+    },{passive:false});
+
+    window.addEventListener('touchend', e => {
+      if (e.target !== renderer.domElement) { touchDrag=false; return; }
+      touchDrag=false;
+      if(!touchMoved && Date.now()-touchTime < 300 && e.changedTouches.length===1) {
+        const t = e.changedTouches[0];
+        updateMouse(t.clientX, t.clientY);
+        const hits = doRaycast();
+        if(hits.length){
+          const id=hits[0].object.userData.partId;
+          if(id){ id===selectedId?closePanel():openPanel(id); }
+        } else {
+          closePanel();
+        }
+      }
+    });
+
+    // ═══════════════════════════════════════════════════════════════
+    // PAN-ZOOM VIEWER (original con viewBox)
+    // ═══════════════════════════════════════════════════════════════
+    let pzSvgW = 0, pzSvgH = 0;
+    async function openPZ(src, title) {
+      const content = document.getElementById('pz-content');
+      const viewer  = document.getElementById('pz-viewer');
+      document.getElementById('pz-title').textContent = title || 'Esquemático';
+
+      content.innerHTML = '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(0,217,176,.4);font-size:.75rem;letter-spacing:.2em;text-transform:uppercase">Cargando…</div>';
+      viewer.classList.add('open');
+
+      const h = document.getElementById('pz-hint-bar');
+      h.style.animation='none';
+      void h.offsetWidth; h.style.animation='fadeHint 4s forwards';
+
+      const isSVG = src.toLowerCase().endsWith('.svg');
+      if(isSVG){
+        let svgText;
+        try {
+          const res = await fetch(src);
+          if(!res.ok) throw new Error(res.status);
+          svgText = await res.text();
+        } catch(e) {
+          content.innerHTML = `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,140,42,.5);font-size:.8rem;padding:20px;text-align:center">Imagen no encontrada:<br><code style="font-size:.7rem;opacity:.7">${src}</code></div>`;
+          return;
+        }
+
+        const parser = new DOMParser();
+        const doc    = parser.parseFromString(svgText, 'image/svg+xml');
+        pzSvgEl      = doc.documentElement;
+
+        let w = 0, hh = 0;
+        const vb = pzSvgEl.getAttribute('viewBox');
+        if(vb){ const p=vb.trim().split(/[\s,]+/); w=parseFloat(p[2]); hh=parseFloat(p[3]); }
+        if(!w||!hh){ w=parseFloat(pzSvgEl.getAttribute('width'))||1000; hh=parseFloat(pzSvgEl.getAttribute('height'))||700; }
+        pzOrigW=w; pzOrigH=hh;
+
+        pzSvgEl.setAttribute('width',  '100%');
+        pzSvgEl.setAttribute('height', '100%');
+        pzSvgEl.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+        pzSvgEl.style.cssText = 'display:block;pointer-events:none;user-select:none;';
+        
+        pzVbX=0; pzVbY=0; pzVbW=pzOrigW; pzVbH=pzOrigH;
+        pzSvgEl.setAttribute('viewBox', `0 0 ${pzOrigW} ${pzOrigH}`);
+        content.innerHTML = '';
+        content.appendChild(pzSvgEl);
+        document.getElementById('pz-zoom-val').textContent = '100%';
+
+      } else {
+        const img = document.createElement('img');
+        img.style.cssText = 'width:100%;height:100%;object-fit:contain;pointer-events:none;';
+        content.innerHTML = '';
+        content.appendChild(img);
+        img.src = src;
+      }
+    }
+    window.openPZ = openPZ;
+
+    function closePZ() {
+      document.getElementById('pz-viewer').classList.remove('open');
+      document.getElementById('pz-content').innerHTML = '';
+      pzSvgEl = null; pzOrigW = 0; pzOrigH = 0;
+    }
+    window.closePZ = closePZ;
+
+    let pzSvgEl = null; 
+    let pzOrigW = 0, pzOrigH = 0;
+    let pzVbX = 0, pzVbY = 0, pzVbW = 0, pzVbH = 0;
+    const PZ_ZOOM_F = 0.14;
+
+    let _pzVBPending = false;
+    function pzApplyVB(){
+      if(!_pzVBPending){
+        _pzVBPending = true;
+        requestAnimationFrame(() => {
+          _pzVBPending = false;
+          if(pzSvgEl) pzSvgEl.setAttribute('viewBox', `${pzVbX} ${pzVbY} ${pzVbW} ${pzVbH}`);
+          const lvl = pzOrigW > 0 ? Math.round(pzOrigW / pzVbW * 100) : 100;
+          document.getElementById('pz-zoom-val').textContent = lvl + '%';
+        });
+      }
+    }
+
+    function pzFit() {
+      pzVbX = 0; pzVbY = 0; pzVbW = pzOrigW; pzVbH = pzOrigH;
+      pzApplyVB();
+    }
+    window.pzFit = pzFit;
+
+    function pzZoomAt(factor, clientX, clientY) {
+      const stage = document.getElementById('pz-stage');
+      const rect  = stage.getBoundingClientRect();
+      const rx = (clientX - rect.left) / rect.width;
+      const ry = (clientY - rect.top)  / rect.height;
+      const pivotX = pzVbX + rx * pzVbW;
+      const pivotY = pzVbY + ry * pzVbH;
+      const minW = pzOrigW / 10,  minH = pzOrigH / 10;
+      const maxW = pzOrigW * 1, maxH = pzOrigH * 1;
+      let nw = Math.max(minW, Math.min(maxW, pzVbW / factor));
+      let nh = nw * (pzOrigH / pzOrigW);
+      pzVbX = pivotX - rx * nw;
+      pzVbY = pivotY - ry * nh;
+      pzVbW = nw; pzVbH = nh;
+      pzApplyVB();
+    }
+
+    function pzZoomBtn(f) {
+      const stage = document.getElementById('pz-stage');
+      const r = stage.getBoundingClientRect();
+      pzZoomAt(f, r.left + r.width/2, r.top + r.height/2);
+    }
+    window.pzZoomBtn = pzZoomBtn;
+
+    const pzStage = document.getElementById('pz-stage');
+    let pzDrag = false, pzDSX = 0, pzDSY = 0, pzDVBX = 0, pzDVBY = 0;
+    pzStage.addEventListener('wheel', e => {
+      e.preventDefault(); e.stopPropagation();
+      pzZoomAt(e.deltaY < 0 ? 1+PZ_ZOOM_F : 1-PZ_ZOOM_F, e.clientX, e.clientY);
+    },{passive:false});
+
+    pzStage.addEventListener('mousedown', e => {
+      if(e.button!==0) return;
+      e.preventDefault();
+      pzDrag=true; pzDSX=e.clientX; pzDSY=e.clientY; pzDVBX=pzVbX; pzDVBY=pzVbY;
+      pzStage.classList.add('dragging');
     });
 
     window.addEventListener('mousemove', e => {
-      if(!drag || !wrap) return;
-      const rect = wrap.getBoundingClientRect();
-      const pxToVBX = vbW / rect.width;
-      const pxToVBY = vbH / rect.height;
-      vbX = dragVBX - (e.clientX - dragSX) * pxToVBX;
-      vbY = dragVBY - (e.clientY - dragSY) * pxToVBY;
-      applyVB();
+      if(!pzDrag) return;
+      const stage = document.getElementById('pz-stage');
+      const rect  = stage.getBoundingClientRect();
+      pzVbX = pzDVBX - (e.clientX-pzDSX) * (pzVbW/rect.width);
+      pzVbY = pzDVBY - (e.clientY-pzDSY) * (pzVbH/rect.height);
+      pzApplyVB();
     });
 
-    window.addEventListener('mouseup', () => {
-      drag = false;
-      if(wrap) wrap.classList.remove('dragging');
-    });
+    window.addEventListener('mouseup', () => { pzDrag=false; pzStage.classList.remove('dragging'); });
+    pzStage.addEventListener('dblclick', pzFit);
 
-    wrap.addEventListener('touchstart', e => {
-      if(e.touches.length === 1){
-        drag = true;
-        dragSX = e.touches[0].clientX; dragSY = e.touches[0].clientY;
-        dragVBX = vbX; dragVBY = vbY;
-      } else if(e.touches.length === 2){
-        drag = false;
-        pinchDist0  = pDist(e.touches);
-        pinchVBX0   = vbX; pinchVBY0 = vbY;
-        pinchVBW0   = vbW; pinchVBH0 = vbH;
-      }
-    }, {passive: true});
+    let pzLastTap = 0, pzTDrag = false, pzTSX = 0, pzTSY = 0, pzTVBX = 0, pzTVBY = 0;
+    let pzPD0 = 0, pzPVBX0 = 0, pzPVBY0 = 0, pzPVBW0 = 0, pzPVBH0 = 0;
 
-    wrap.addEventListener('touchmove', e => {
+    pzStage.addEventListener('touchstart', e => {
       e.preventDefault();
-      if(e.touches.length === 1 && drag){
-        const rect = wrap.getBoundingClientRect();
-        const pxToVBX = vbW / rect.width, pxToVBY = vbH / rect.height;
-        vbX = dragVBX - (e.touches[0].clientX - dragSX) * pxToVBX;
-        vbY = dragVBY - (e.touches[0].clientY - dragSY) * pxToVBY;
-        applyVB();
+      if(e.touches.length === 1){
+        pzTDrag=true; pzTSX=e.touches[0].clientX; pzTSY=e.touches[0].clientY;
+        pzTVBX=pzVbX; pzTVBY=pzVbY;
+        const now=Date.now(); if(now-pzLastTap<300) pzFit(); pzLastTap=now;
       } else if(e.touches.length === 2){
-        const nd = pDist(e.touches);
-        const factor = nd / pinchDist0;
-        const m = pMid(e.touches);
-        const rect = wrap.getBoundingClientRect();
-        const ratioX = (m.x - rect.left) / rect.width;
-        const ratioY = (m.y - rect.top)  / rect.height;
-        
-        let newW = pinchVBW0 / factor;
-        let newH = pinchVBH0 / factor;
-        const minW = origW / 10, maxW = origW * 0.9;
-        const minH = origH / 10, maxH = origH * 0.9;
-        if(newW < minW){ newW = minW; newH = minH; }
-        if(newW > maxW){ newW = maxW; newH = maxH; }
-        const pivotX = pinchVBX0 + ratioX * pinchVBW0;
-        const pivotY = pinchVBY0 + ratioY * pinchVBH0;
-        vbX = pivotX - ratioX * newW;
-        vbY = pivotY - ratioY * newH;
-        vbW = newW; vbH = newH;
-        applyVB(); showZoom();
+        pzTDrag=false;
+        pzPD0 = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
+        pzPVBX0=pzVbX; pzPVBY0=pzVbY; pzPVBW0=pzVbW; pzPVBH0=pzVbH;
       }
-    }, {passive: false});
+    },{passive:false});
 
-    wrap.addEventListener('touchend', e => {
-      if(e.touches.length < 2) pinchDist0 = 0;
-      if(e.touches.length === 0) drag = false;
+    pzStage.addEventListener('touchmove', e => {
+      e.preventDefault();
+      if(e.touches.length===1 && pzTDrag){
+        const stage=document.getElementById('pz-stage'), rect=stage.getBoundingClientRect();
+        pzVbX = pzTVBX - (e.touches[0].clientX-pzTSX)*(pzVbW/rect.width);
+        pzVbY = pzTVBY - (e.touches[0].clientY-pzTSY)*(pzVbH/rect.height);
+        pzApplyVB();
+      } else if(e.touches.length===2 && pzPD0){
+        const nd = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
+        const f  = nd/pzPD0;
+        const mx = (e.touches[0].clientX+e.touches[1].clientX)/2;
+        const my = (e.touches[0].clientY+e.touches[1].clientY)/2;
+        const stage=document.getElementById('pz-stage'), rect=stage.getBoundingClientRect();
+        const rx=(mx-rect.left)/rect.width, ry=(my-rect.top)/rect.height;
+        let nw = pzPVBW0/f, nh = pzPVBH0/f;
+        if(pzOrigW > 0){
+          const minW=pzOrigW/10, maxW=pzOrigW*0.9;
+          const minH=pzOrigH/10, maxH=pzOrigH*0.9;
+          if(nw < minW){ nw=minW; nh=minH; }
+          if(nw > maxW){ nw=maxW; nh=maxH; }
+        }
+        const pivX = pzPVBX0+rx*pzPVBW0, pivY = pzPVBY0+ry*pzPVBH0;
+        pzVbX=pivX-rx*nw; pzVbY=pivY-ry*nh; pzVbW=nw; pzVbH=nh;
+        pzApplyVB();
+      }
+    },{passive:false});
+
+    pzStage.addEventListener('touchend', e => {
+      if(e.touches.length===0){ pzTDrag=false; }
+      if(e.touches.length<2){ pzPD0=0; }
     });
 
-    wrap.addEventListener('dblclick', fit);
-    window.addEventListener('resize', () => { });
-  }
+    // ═══════════════════════════════════════════════════════════════
+    // COUNTER
+    // ═══════════════════════════════════════════════════════════════
+    function updateCounter() {
+      const total = 10; 
+      const count = seen ? seen.size : 0;
+      const percent = (count / total) * 100;
+      const circle = document.getElementById('progress-circle');
+      if (circle) {
+        const circumference = 2 * Math.PI * 16;
+        const dash = (percent / 100) * circumference;
+        circle.style.strokeDasharray = `${dash} ${circumference}`;
+      }
+      const txt = document.getElementById('counter-text');
+      if (txt) txt.textContent = `${count}/${total}`;
+    }
 
-  const _openModal = window.openModal;
-  window.openModal = function(tab){
-    _openModal(tab);
-    if(tab === 'full'){ setTimeout(() => { if(!ready) loadSVG(); else fit(); }, 320); }
-  };
-  const _switchTab = window.switchTab;
-  window.switchTab = function(name, btn){
-    _switchTab(name, btn);
-    if(name === 'full'){ if(!ready) loadSVG(); else fit(); }
-  };
+    // ═══════════════════════════════════════════════════════════════
+    // HINT
+    // ═══════════════════════════════════════════════════════════════
+    let hintHidden = false;
+    function hideHintOnInteraction() {
+      if (!hintHidden) {
+        document.getElementById('hint').style.opacity = '0';
+        hintHidden = true;
+      }
+    }
+    renderer.domElement.addEventListener('mousedown', hideHintOnInteraction);
+    renderer.domElement.addEventListener('touchstart', hideHintOnInteraction);
+    renderer.domElement.addEventListener('wheel', hideHintOnInteraction);
 
-  document.addEventListener('DOMContentLoaded', () => {
-    if(document.getElementById('tpane-full')?.classList.contains('on')) loadSVG();
-  });
-})();
+    window.addEventListener('keydown', e => {
+      if(e.key==='Escape'){
+        closePanel(); closePZ(); 
+      }
+    });
 
-renderModalBOM();
-updateCounter();
-</script>
+    document.getElementById('panel').addEventListener('wheel', (e) => e.stopPropagation(), { passive: false });
+    document.getElementById('pz-viewer').addEventListener('wheel', (e) => e.stopPropagation(), { passive: false });
+
+    window.addEventListener('resize', () => {
+      camera.aspect = innerWidth/innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(innerWidth,innerHeight);
+    });
+
+    // ═══════════════════════════════════════════════════════════════
+    // ANIMATION LOOP
+    // ═══════════════════════════════════════════════════════════════
+    const clock = new THREE.Clock();
+    let autoRot = true;
+    const MODEL_COLLIDE = ZOOM_MIN;
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const t = clock.getElapsedTime();
+
+      if(!drag && !touchDrag) {
+        model.rotation.y += .0012;
+      }
+
+      const camDist = camera.position.length();
+      if(camDist < MODEL_COLLIDE) {
+        camera.position.normalize().multiplyScalar(MODEL_COLLIDE);
+      }
+
+      if(selectedId === 'coil1' || selectedId === 'coil2') {
+        const p = (.5+.5*Math.sin(t*8))*.4;
+        clickables.filter(c=>c.id===selectedId).forEach(c=>{
+          if(c.mesh.material.emissiveIntensity!==undefined)
+            c.mesh.material.emissiveIntensity = p;
+        });
+      }
+
+      pt1.intensity = .9 + .1*Math.sin(t*1.7);
+      pt2.intensity = .5 + .08*Math.sin(t*2.3+1);
+
+      renderer.render(scene,camera);
+    }
+    animate();
+
+    // Inicializar contador
+    updateCounter();
+  </script>
 </body>
 </html>

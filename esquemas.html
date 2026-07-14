@@ -355,26 +355,56 @@ pz.addEventListener('wheel', (e) => {
 }, { passive: false });
 
 // --- Soporte de Gestos para Pantallas Táctiles (Móviles/Tablets) ---
+let lastTouchDistance = 0;
+
+// Función para calcular distancia entre dos dedos
+function getTouchDistance(touch1, touch2) {
+  const dx = touch1.clientX - touch2.clientX;
+  const dy = touch1.clientY - touch2.clientY;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
 pz.addEventListener('touchstart', (e) => {
-  if (e.touches.length === 1) {
+  if (e.touches.length === 2) {
+    // Pinch-zoom: dos dedos
+    e.preventDefault();
+    lastTouchDistance = getTouchDistance(e.touches[0], e.touches[1]);
+    isDrag = false;
+  } else if (e.touches.length === 1) {
+    // Pan: un dedo
     isDrag = true;
     touchStartX = e.touches[0].clientX - pX;
     touchStartY = e.touches[0].clientY - pY;
   }
-});
+}, { passive: false });
 
 pz.addEventListener('touchmove', (e) => {
-  if (!isDrag || e.touches.length !== 1) return;
-  pX = e.touches[0].clientX - touchStartX;
-  pY = e.touches[0].clientY - touchStartY;
-  updateTrsf(false); // Falso para arrastre inmediato sin lag táctil
-  
-  touchStartX = e.touches[0].clientX - pX;
-  touchStartY = e.touches[0].clientY - pY;
-});
+  if (e.touches.length === 2) {
+    // Pinch-zoom: pellizco
+    e.preventDefault();
+    const currentDistance = getTouchDistance(e.touches[0], e.touches[1]);
+    const scaleFactor = currentDistance / lastTouchDistance;
+    
+    scale *= scaleFactor;
+    // Límites: entre minScale (100%) y minScale * 8 (800%)
+    scale = Math.max(minScale, Math.min(scale, minScale * 8));
+    
+    updateTrsf(false);
+    lastTouchDistance = currentDistance;
+  } else if (e.touches.length === 1 && isDrag) {
+    // Pan: arrastrar con un dedo
+    pX = e.touches[0].clientX - touchStartX;
+    pY = e.touches[0].clientY - touchStartY;
+    updateTrsf(false);
+    
+    touchStartX = e.touches[0].clientX - pX;
+    touchStartY = e.touches[0].clientY - pY;
+  }
+}, { passive: false });
 
 pz.addEventListener('touchend', () => {
   isDrag = false;
+  lastTouchDistance = 0;
 });
 
 // --- Accesibilidad por Teclado y Redimensión ---

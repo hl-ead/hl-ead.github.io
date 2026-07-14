@@ -73,7 +73,8 @@
       position: fixed; top: 0; left: 0; right: 0; height: 56px; z-index: 100;
       display: flex; align-items: center; justify-content: space-between; padding: 0 16px;
       background: rgba(7,9,15,0.95); border-bottom: 1px solid var(--border);
-      backdrop-filter: blur(20px); gap: 12px;
+      backdrop-filter: blur(20px); gap: 12px; touch-action: none; overflow: hidden; -webkit-user-select: none;
+user-select: none;
     }
     #topbar-left { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
     #topbar-left .logo { height: 24px; width: auto; display: inline-block; vertical-align: middle; }
@@ -331,7 +332,14 @@
 body.page-index {
   height: 100vh;
   overflow: hidden !important;
-  touch-action: none;
+  touch-action: none !important;
+  overscroll-behavior: none;      /* ← AGREGAR ESTO para evitar scroll elástico */
+}
+
+html.page-index {
+  overflow: hidden !important;
+  touch-action: none !important;
+  height: 100vh;
 }
 
 body.page-index canvas {

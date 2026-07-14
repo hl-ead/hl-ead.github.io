@@ -328,24 +328,25 @@
    ESTILOS EXCLUSIVOS PARA LA PÁGINA INDEX (VISOR 3D)
    ============================================================ */
 
-.page-index html,
-.page-index body {
-  height: 100%;
-  overflow: hidden;
-  background: var(--bg);
+body.page-index {
+  height: 100vh;
+  overflow: hidden !important;
   touch-action: none;
 }
 
-.page-index canvas {
+body.page-index canvas {
   display: block;
   touch-action: none;
 }
 
-/* Para todas las otras páginas */
-html, body {
+/* Para equipo.html, bom.html, esquemas.html: PERMITIR scroll */
+body:not(.page-index) {
   height: auto;
   overflow-y: auto !important;
-  background: var(--bg);
+}
+
+body:not(.page-index) html {
+  overflow-y: auto !important;
 }
 canvas {
   display: block;

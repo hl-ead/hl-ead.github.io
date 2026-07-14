@@ -328,11 +328,24 @@
    ESTILOS EXCLUSIVOS PARA LA PÁGINA INDEX (VISOR 3D)
    ============================================================ */
 
-html, body {
+.page-index html,
+.page-index body {
   height: 100%;
   overflow: hidden;
   background: var(--bg);
   touch-action: none;
+}
+
+.page-index canvas {
+  display: block;
+  touch-action: none;
+}
+
+/* Para todas las otras páginas */
+html, body {
+  height: auto;
+  overflow-y: auto !important;
+  background: var(--bg);
 }
 canvas {
   display: block;
@@ -1119,18 +1132,20 @@ canvas {
   0%, 60% { opacity: 1; }
   100% { opacity: 0; }
 }
+/* Fix para scroll en versión móvil */
 @media (max-width: 640px) {
-  #mobile-nav { display: flex; }
+  body {
+    padding-bottom: calc(70px + env(safe-area-inset-bottom));
+    overflow-y: auto !important;
+  }
   
-  /* Fuerza scroll en móvil */
-  html, body {
-    height: auto !important;
-    overflow-y: scroll !important;
-    -webkit-overflow-scrolling: touch;
+  html {
+    overflow-y: auto !important;
   }
   
   .container {
-    margin-bottom: calc(80px + env(safe-area-inset-bottom));
+    margin-bottom: 20px;
+    padding-bottom: 0;
   }
 }
 @media (max-width: 640px) { #pz-hint-bar { display: none; } }

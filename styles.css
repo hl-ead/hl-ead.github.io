@@ -1119,20 +1119,18 @@ canvas {
   0%, 60% { opacity: 1; }
   100% { opacity: 0; }
 }
-/* Fix para scroll en versión móvil */
 @media (max-width: 640px) {
-  body {
-    padding-bottom: calc(70px + env(safe-area-inset-bottom));
-    overflow-y: auto !important;
-  }
+  #mobile-nav { display: flex; }
   
-  html {
-    overflow-y: auto !important;
+  /* Fuerza scroll en móvil */
+  html, body {
+    height: auto !important;
+    overflow-y: scroll !important;
+    -webkit-overflow-scrolling: touch;
   }
   
   .container {
-    margin-bottom: 20px;
-    padding-bottom: 0;
+    margin-bottom: calc(80px + env(safe-area-inset-bottom));
   }
 }
 @media (max-width: 640px) { #pz-hint-bar { display: none; } }

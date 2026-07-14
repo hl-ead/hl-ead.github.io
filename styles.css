@@ -1119,6 +1119,22 @@ canvas {
   0%, 60% { opacity: 1; }
   100% { opacity: 0; }
 }
+/* Fix para scroll en versión móvil */
+@media (max-width: 640px) {
+  body {
+    padding-bottom: calc(70px + env(safe-area-inset-bottom));
+    overflow-y: auto !important;
+  }
+  
+  html {
+    overflow-y: auto !important;
+  }
+  
+  .container {
+    margin-bottom: 20px;
+    padding-bottom: 0;
+  }
+}
 @media (max-width: 640px) { #pz-hint-bar { display: none; } }
 
 /* Ajustes responsive para el hint y contador en móvil */

@@ -143,103 +143,115 @@
     // PARTS DATA
     // ═══════════════════════════════════════════════════════════════
     const PARTS = {
-      
-  "Tubo_para_Bobinas_Salida-2": {
-    cat: 'Estructura',
-    name: 'Tubo de Salida',
-    id: 'MECH-03',
-    desc: 'Tubo que guía el proyectil después de pasar por las bobinas. Está fabricado en acero inoxidable con un acabado interior pulido para minimizar la fricción y asegurar una trayectoria recta.',
-    stats: [
-      { l: 'Material', v: 'Acero inoxidable' },
-      { l: 'Diámetro interno', v: '8 mm' },
-      { l: 'Longitud', v: '~12 cm' },
-      { l: 'Acabado', v: 'Pulido espejo' }
-    ]
-  },
+
   "Tubo_para_Bobinas_Entrada-2": {
     cat: 'Estructura',
     name: 'Tubo de Entrada',
     id: 'MECH-02',
     desc: 'Tubo de alimentación del proyectil. Es el primer tramo que el proyectil recorre antes de ser acelerado por las bobinas. Su diseño asegura un centrado perfecto del proyectil en el eje del cañón.',
     stats: [
-      { l: 'Material', v: 'Acero inoxidable' },
-      { l: 'Diámetro interno', v: '8 mm' },
-      { l: 'Longitud', v: '~10 cm' },
-      { l: 'Tolerancia', v: '±0.03 mm' }
+      { l: 'Material', v: 'PETG' },
+      { l: 'Longitud', v: '250 mm' },
+      { l: 'Diámetro interno', v: '23 mm' },
+      { l: 'Diámetro externo', v: '26 mm' } 
     ]
-  },
-  "Anillo_Final-2": {
+  },   
+
+  "Tubo_para_Bobinas_Salida-2": {
     cat: 'Estructura',
-    name: 'Anillo Final (Salida)',
-    id: 'STR-03',
-    desc: 'Anillo de sujeción ubicado en el extremo de salida del cañón. Proporciona rigidez estructural y sirve como punto de anclaje para el sistema de fijación del conjunto.',
+    name: 'Tubo de Salida',
+    id: 'MECH-03',
+    desc: 'Tubo que guía el proyectil después de pasar por las bobinas. Está fabricado en acero inoxidable con un acabado interior pulido para minimizar la fricción y asegurar una trayectoria recta.',
     stats: [
-      { l: 'Material', v: 'Aluminio 6061' },
-      { l: 'Diámetro exterior', v: '25 mm' },
-      { l: 'Función', v: 'Sujeción y alineación' }
+      { l: 'Material', v: 'PETG' },
+      { l: 'Longitud', v: '250 mm' },
+      { l: 'Diámetro interno', v: '23 mm' },
+      { l: 'Diámetro externo', v: '26 mm' } 
     ]
   },
+
   "Anillo_Final-1": {
     cat: 'Estructura',
     name: 'Anillo Final (Entrada)',
     id: 'STR-02',
     desc: 'Anillo de sujeción ubicado en la parte frontal del cañón. Mantiene fijo el tubo de entrada y proporciona un soporte adicional para el módulo de sensores.',
     stats: [
-      { l: 'Material', v: 'Aluminio 6061' },
-      { l: 'Diámetro exterior', v: '25 mm' },
-      { l: 'Función', v: 'Sujeción y alineación' }
+      { l: 'Material', v: 'PLA' },
+      { l: 'Longitud', v: '3 mm' },
+      { l: 'Diámetro interno', v: '26.7 mm' },
+      { l: 'Diámetro externo', v: '36.7 mm' }   
     ]
   },
+
+  "Anillo_Final-2": {
+    cat: 'Estructura',
+    name: 'Anillo Final (Salida)',
+    id: 'STR-03',
+    desc: 'Anillo de sujeción ubicado en el extremo de salida del cañón. Proporciona rigidez estructural y sirve como punto de anclaje para el sistema de fijación del conjunto.',
+    stats: [
+      { l: 'Material', v: 'PLA' },
+      { l: 'Longitud', v: '3 mm' },
+      { l: 'Diámetro interno', v: '26.7 mm' },
+      { l: 'Diámetro externo', v: '36.7 mm' }
+    ]
+  },
+
   "Conector_para_Tubo_Final-1": {
     cat: 'Estructura',
-    name: 'Conector de Tubo Final',
+    name: 'Conector',
     id: 'CON-01',
     desc: 'Pieza de conexión que une el tubo de salida con la estructura base. Asegura una transición rígida y estable entre el cañón y el soporte del sistema.',
     stats: [
-      { l: 'Material', v: 'Acero galvanizado' },
-      { l: 'Tipo', v: 'Rosca métrica M6' },
-      { l: 'Función', v: 'Fijación estructural' }
+      { l: 'Material', v: 'PETG' },
+      { l: 'Longitud', v: '60 mm' },
+      { l: 'Diámetro interno', v: '23 mm' },
+      { l: 'Diámetro externo', v: '29 mm' }
     ]
   },
-  "Modulo_de_Sensores-3": {
-    cat: 'Electrónica',
-    name: 'Módulo de Sensores (Superior)',
-    id: 'SENS-02',
-    desc: 'Módulo que aloja los sensores ópticos infrarrojos (emisor y receptor) para la detección del proyectil. Está posicionado para leer la posición del proyectil antes de la primera etapa de aceleración.',
-    stats: [
-      { l: 'Sensor', v: 'IR LED + Fototransistor' },
-      { l: 'Tensión', v: '5V' },
-      { l: 'Rango', v: '10 mm' },
-      { l: 'Precisión', v: '±0.1 mm' }
-    ],
-    schemImg: 'esquemas/sector_control.png',
-    schemTitle: 'Esquema de Sensores'
-  },
-  "Modulo_de_Sensores-4": {
-    cat: 'Electrónica',
-    name: 'Módulo de Sensores (Inferior)',
-    id: 'SENS-01',
-    desc: 'Módulo gemelo al superior, ubicado en la parte inferior del cañón. Trabaja en conjunto con el superior para detectar con precisión el paso del proyectil y sincronizar el disparo de las bobinas.',
-    stats: [
-      { l: 'Sensor', v: 'IR LED + Fototransistor' },
-      { l: 'Tensión', v: '5V' },
-      { l: 'Rango', v: '10 mm' },
-      { l: 'Precisión', v: '±0.1 mm' }
-    ],
-    schemImg: 'esquemas/sector_control.png',
-    schemTitle: 'Esquema de Sensores'
-  },
+
   "Soporte_del_Tubo_Medio-2": {
     cat: 'Estructura',
     name: 'Soporte Central',
     id: 'STR-01',
     desc: 'Soporte intermedio que mantiene alineado el tubo central del cañón. Proporciona rigidez al conjunto y evita vibraciones durante el disparo. Fabricado en aluminio mediante mecanizado CNC.',
     stats: [
-      { l: 'Material', v: 'Aluminio 7075' },
-      { l: 'Proceso', v: 'Mecanizado CNC' },
-      { l: 'Función', v: 'Sujeción y amortiguación' }
+      { l: 'Material', v: 'PETG' },
+      { l: 'Longitud', v: '10 mm' },
+      { l: 'Diámetro interno', v: '29.7 mm' },
+      { l: 'Diámetro externo', v: '34.2 mm' }
     ]
+  },
+
+  "Modulo_de_Sensores-3": {
+    cat: 'Electrónica',
+    name: 'Módulo de Sensores para Bobina ',
+    id: 'SENS-02',
+    desc: 'Módulo que aloja los sensores ópticos infrarrojos (emisor y receptor) para la detección del proyectil. Está posicionado para leer la posición del proyectil antes de la primera etapa de aceleración.',
+    stats: [
+      { l: 'Material', v: 'PLA' },
+      { l: 'Sensor', v: 'IR LED + Fototransistor' },
+      { l: 'Titulo', v: 'Valor' },
+      { l: 'Titulo', v: 'Valor' }
+    ],
+    schemImg: 'esquemas/modulo-bobina.svg',
+    schemTitle: 'Esquema del Módulo'
+  },
+
+  "Modulo_de_Sensores-4": {
+    cat: 'Electrónica',
+    name: 'Módulo de Sensores para Bobina',
+    id: 'SENS-01',
+    desc: 'Módulo gemelo al superior, ubicado en la parte inferior del cañón. Trabaja en conjunto con el superior para detectar con precisión el paso del proyectil y sincronizar el disparo de las bobinas.',
+    stats: [
+      { l: 'Material', v: 'PLA' },
+      { l: 'Sensor', v: 'IR LED + Fototransistor' },
+      { l: 'Titulo', v: 'Valor' },
+      { l: 'Titulo', v: 'Valor' }
+    ],
+    schemImg: 'esquemas/modulo-bobina.svg',
+    schemTitle: 'Esquema del Módulo'
   }
+  
     };
 
     // ═══════════════════════════════════════════════════════════════
@@ -815,6 +827,9 @@
     });
 
     document.getElementById('panel').addEventListener('wheel', (e) => e.stopPropagation(), { passive: false });
+    document.getElementById('panel').addEventListener('touchmove', (e) => {
+    e.stopPropagation();
+    }, { passive: true });
     document.getElementById('pz-viewer').addEventListener('wheel', (e) => e.stopPropagation(), { passive: false });
 
     window.addEventListener('resize', () => {

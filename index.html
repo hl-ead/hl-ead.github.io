@@ -882,17 +882,18 @@ document.querySelector('.pi').addEventListener('touchstart', (e) => {
   touchStartY = e.touches[0].clientY;
 }, { passive: true });
 
-document.querySelector('.pi').addEventListener('touchmove', (e) => {
-  const touchCurrentY = e.touches[0].clientY;
-  const dragDistance = touchCurrentY - touchStartY;
+document.querySelector('.pi').addEventListener('touchend', (e) => {
+  const touchEndY = e.changedTouches[0].clientY;
+  const dragDistance = touchEndY - touchStartY;
   const piElement = document.querySelector('.pi');
   const isAtTop = piElement.scrollTop === 0;
   
-  if (isAtTop && dragDistance > 60) {
+  // Solo cierra si está al top, desliza hacia abajo y recorre al menos 50px
+  if (isAtTop && dragDistance > 50 && touchEndY > touchStartY) {
     closePanel();
   }
 }, { passive: true });
-
+  
   </script>
 </body>
 </html>

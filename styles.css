@@ -522,6 +522,7 @@ canvas {
 @media (max-width: 768px) { .drag-bar { display: block; } }
 
 .pi {
+    padding: 20px 30px 26px;
     height: calc(68vh - 50px); 
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;

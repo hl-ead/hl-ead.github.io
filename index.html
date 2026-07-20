@@ -877,23 +877,21 @@
     updateCounter();
   
   let touchStartY = 0;
-let panelScrollPos = 0;
 
-document.getElementById('panel').addEventListener('touchstart', (e) => {
+document.querySelector('.pi').addEventListener('touchstart', (e) => {
   touchStartY = e.touches[0].clientY;
-  panelScrollPos = document.querySelector('.pi').scrollTop;
-});
+}, { passive: true });
 
-document.getElementById('panel').addEventListener('touchmove', (e) => {
+document.querySelector('.pi').addEventListener('touchmove', (e) => {
   const touchCurrentY = e.touches[0].clientY;
   const dragDistance = touchCurrentY - touchStartY;
-  const isAtTop = panelScrollPos === 0;
+  const piElement = document.querySelector('.pi');
+  const isAtTop = piElement.scrollTop === 0;
   
-  if (isAtTop && dragDistance > 80) {  // 80px de swipe hacia abajo
+  if (isAtTop && dragDistance > 60) {
     closePanel();
-    e.preventDefault();
   }
-}, { passive: false });
+}, { passive: true });
 
   </script>
 </body>

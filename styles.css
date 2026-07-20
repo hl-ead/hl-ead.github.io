@@ -575,12 +575,10 @@ canvas {
   }
 }
 .p-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
     margin-top: 14px;
-    position: sticky;
-    bottom: 0;
-    background: rgba(7, 9, 15, 0.95);
-    padding: 10px 0;
-    z-index: 10;
 }
 .sbox {
   background: rgba(0,217,176,0.04);
@@ -1276,7 +1274,10 @@ canvas {
   #mobile-nav { display: flex; }
   
   .p-stats {
-    flex-shrink: 0;
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
   }
   
   .sch-sec {

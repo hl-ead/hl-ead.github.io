@@ -718,23 +718,25 @@
     let panelTouchStartY = 0;
     let panelStartScrollTop = 0;
 
-    const piElement = document.querySelector('.pi');
-    
-    piElement.addEventListener('touchstart', (e) => {
-      panelTouchStartY = e.touches[0].clientY;
-      panelStartScrollTop = piElement.scrollTop;
-    }, { passive: true });
+    document.addEventListener('DOMContentLoaded', () => {
+      const piElement = document.querySelector('.pi');
+      if (piElement) {
+        piElement.addEventListener('touchstart', (e) => {
+          panelTouchStartY = e.touches[0].clientY;
+          panelStartScrollTop = piElement.scrollTop;
+        }, { passive: true });
 
-    piElement.addEventListener('touchmove', (e) => {
-      const touchCurrentY = e.touches[0].clientY;
-      const touchDelta = touchCurrentY - panelTouchStartY;
-      
-      if (panelStartScrollTop === 0 && touchDelta > 60) {
-        closePanel();
-        e.preventDefault();
+        piElement.addEventListener('touchmove', (e) => {
+          const touchCurrentY = e.touches[0].clientY;
+          const touchDelta = touchCurrentY - panelTouchStartY;
+          
+          if (panelStartScrollTop === 0 && touchDelta > 60) {
+            closePanel();
+            e.preventDefault();
+          }
+        }, { passive: false });
       }
-    }, { passive: false });
-
+    });
     // ═══════════════════════════════════════════════════════════════
     // ANIMATION LOOP
     // ═══════════════════════════════════════════════════════════════

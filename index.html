@@ -876,6 +876,65 @@
     // Inicializar contador
     updateCounter();
     
+// ============================================================
+// LÓGICA PARA CERRAR EL PANEL DESLIZANDO HACIA ABAJO (SWIPE TO CLOSE)
+// ============================================================
+const panelEl = document.getElementById('panel');
+const piEl = panelEl.querySelector('.pi');
+let startY = 0;
+let currentY = 0;
+let isDraggingPanel = false;
+
+panelEl.addEventListener('touchstart', (e) => {
+  // Solo activamos el arrastre en pantallas móviles y si el scroll del texto está hasta arriba
+  if (window.innerWidth <= 768 && piEl.scrollTop <= 0) {
+    startY = e.touches[0].clientY;
+    currentY = startY;
+    isDraggingPanel = true;
+    
+    // Quitamos la transición temporalmente para que el panel siga al dedo en tiempo real
+    panelEl.style.transition = 'none'; 
+  }
+}, { passive: true });
+
+panelEl.addEventListener('touchmove', (e) => {
+  if (!isDraggingPanel || window.innerWidth > 768) return;
+  
+  currentY = e.touches[0].clientY;
+  const deltaY = currentY - startY;
+
+  // Solo movemos el panel si el deslizamiento es hacia ABAJO
+  if (deltaY > 0) {
+    // Prevenimos el scroll interno / pull-to-refresh del navegador
+    if (e.cancelable) e.preventDefault(); 
+    // Movemos el panel visualmente
+    panelEl.style.transform = `translateY(${deltaY}px)`;
+  }
+}, { passive: false });
+
+panelEl.addEventListener('touchend', (e) => {
+  if (!isDraggingPanel || window.innerWidth > 768) return;
+  isDraggingPanel = false;
+
+  const deltaY = currentY - startY;
+  
+  // Restauramos la animación CSS original del panel
+  panelEl.style.transition = ''; 
+
+  // Si el usuario deslizó el dedo más de 100px hacia abajo, ejecutamos la función de cerrar
+  if (deltaY > 100) {
+    closePanel();
+    
+    // Limpiamos el estilo en línea después de que termine la animación de cierre (aprox 350ms)
+    setTimeout(() => {
+      panelEl.style.transform = ''; 
+    }, 350); 
+  } else {
+    // Si deslizó muy poco, el panel regresa a su posición original abierta
+    panelEl.style.transform = '';
+  }
+});
+
   </script>
 </body>
 </html>

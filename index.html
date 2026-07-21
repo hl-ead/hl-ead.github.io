@@ -877,7 +877,7 @@
     updateCounter();
     
 // ============================================================
-// LÓGICA PARA CERRAR EL PANEL DESLIZANDO HACIA ABAJO (SWIPE TO CLOSE)
+// LÓGICA PARA CERRAR EL PANEL DESLIZANDO HACIA ABAJO (FLUIDO)
 // ============================================================
 const panelEl = document.getElementById('panel');
 const piEl = panelEl.querySelector('.pi');
@@ -886,13 +886,12 @@ let currentY = 0;
 let isDraggingPanel = false;
 
 panelEl.addEventListener('touchstart', (e) => {
-  // Solo activamos el arrastre en pantallas móviles y si el scroll del texto está hasta arriba
   if (window.innerWidth <= 768 && piEl.scrollTop <= 0) {
     startY = e.touches[0].clientY;
     currentY = startY;
     isDraggingPanel = true;
     
-    // Quitamos la transición temporalmente para que el panel siga al dedo en tiempo real
+    // Quitamos la transición para que el panel siga tu dedo en tiempo real (cero lag)
     panelEl.style.transition = 'none'; 
   }
 }, { passive: true });
@@ -903,11 +902,8 @@ panelEl.addEventListener('touchmove', (e) => {
   currentY = e.touches[0].clientY;
   const deltaY = currentY - startY;
 
-  // Solo movemos el panel si el deslizamiento es hacia ABAJO
   if (deltaY > 0) {
-    // Prevenimos el scroll interno / pull-to-refresh del navegador
     if (e.cancelable) e.preventDefault(); 
-    // Movemos el panel visualmente
     panelEl.style.transform = `translateY(${deltaY}px)`;
   }
 }, { passive: false });
@@ -918,23 +914,26 @@ panelEl.addEventListener('touchend', (e) => {
 
   const deltaY = currentY - startY;
   
-  // Restauramos la animación CSS original del panel
-  panelEl.style.transition = ''; 
+  // 1. Forzamos la misma curva de animación (cubic-bezier) que ya tienes en tu CSS
+  // para que el movimiento sea continuo y suave al soltar.
+  panelEl.style.transition = 'transform 0.44s cubic-bezier(0.16, 1, 0.3, 1)'; 
 
-  // Si el usuario deslizó el dedo más de 100px hacia abajo, ejecutamos la función de cerrar
   if (deltaY > 100) {
-    closePanel();
-    
-    // Limpiamos el estilo en línea después de que termine la animación de cierre (aprox 350ms)
-    setTimeout(() => {
-      panelEl.style.transform = ''; 
-    }, 350); 
+    // 2. Vaciamos el transform inline PRIMERO. Esto le entrega el control al CSS...
+    panelEl.style.transform = ''; 
+    // 3. ...y al llamar a closePanel(), el CSS lleva el panel hasta el fondo de forma fluida.
+    closePanel(); 
   } else {
-    // Si deslizó muy poco, el panel regresa a su posición original abierta
+    // Si se deslizó poco, rebota suavemente a su lugar de origen
     panelEl.style.transform = '';
   }
-});
 
+  // 4. Limpiamos la transición inline una vez que termine la animación visual (440ms)
+  setTimeout(() => {
+    panelEl.style.transition = ''; 
+  }, 440);
+});
+    
   </script>
 </body>
 </html>

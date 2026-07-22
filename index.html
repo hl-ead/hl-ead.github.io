@@ -139,6 +139,7 @@
   <script src="https://unpkg.com/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
 
   <script>
+
     // ═══════════════════════════════════════════════════════════════
     // PARTS DATA
     // ═══════════════════════════════════════════════════════════════
@@ -250,9 +251,54 @@
     ],
     schemImg: 'esquemas/modulo-bobina.svg',
     schemTitle: 'Esquema del Módulo'
-  }
-  
+  },
+
+    "Bobina_Primaria": {
+    cat: 'Electrónica',
+    name: 'Bobina_Primaria ',
+    id: 'COIL-01',
+    desc: 'Primera bobina de disparo, fabricada con alambre de cobre esmaltado de 1.2mm enrollado en 4 capas de 35 vueltas cada una. Es la primera en activarse al detectar el proyectil en posición de carga. Su campo magnético acelera el proyectil hacia el centro de la bobina.',
+    stats: [
+      { l: 'Alambre', v: '1 mm' },
+      { l: 'Vueltas', v: 'Por Determinar' },
+      { l: 'Inductancia', v: 'Por Determinar' },
+      { l: 'Resistencia', v: 'Por Determinar' }
+    ],
+    schemImg: 'esquemas/modulo-bobina.svg',
+    schemTitle: 'Esquema del Módulo'
+  },
+
+    "Bobina_Secundaria": {
+    cat: 'Electrónica',
+    name: 'Bobina_Secundaria ',
+    id: 'COIL-02',
+    desc: 'Segunda bobina de disparo, activada con un retardo de 80-120µs tras la primera. Continúa la aceleración del proyectil que ya tiene velocidad inicial. El uso de dos etapas aumenta la eficiencia energética y la velocidad final del proyectil respecto a un diseño de etapa única.',
+    stats: [
+      { l: 'Alambre', v: '1 mm' },
+      { l: 'Vueltas', v: 'Por Determinar' },
+      { l: 'Inductancia', v: 'Por Determinar' },
+      { l: 'Resistencia', v: 'Por Determinar' }
+    ],
+    schemImg: 'esquemas/modulo-bobina.svg',
+    schemTitle: 'Esquema del Módulo'
+  } 
     };
+
+// ═══════════════════════════════════════════════════════════════
+// MAPEO DE MESHES AGRUPADOS
+// ═══════════════════════════════════════════════════════════════
+const MESH_GROUPS = {
+  "Bobina_Primaria": ["mesh_7", "mesh_7_1", "mesh_7_2", "mesh_7_3", "mesh_7_4", "mesh_7_5", "mesh_7_6", "mesh_7_7", "mesh_7_8"],
+  "Bobina_Secundaria": ["mesh_6", "mesh_6_1", "mesh_6_2", "mesh_6_3", "mesh_6_4", "mesh_6_5", "mesh_6_6", "mesh_6_7", "mesh_6_8"]
+};
+
+// Invertir: de mesh → groupId
+const MESH_TO_GROUP = {};
+Object.entries(MESH_GROUPS).forEach(([groupId, meshes]) => {
+  meshes.forEach(mesh => {
+    MESH_TO_GROUP[mesh] = groupId;
+  });
+});
 
     // ═══════════════════════════════════════════════════════════════
     // THREE.JS SETUP
@@ -343,14 +389,20 @@
     }
 
     function conectarClickables(root) {
-      clickables.length = 0;
-      root.traverse(function(child) {
-        if(child.isMesh && PARTS[child.name]) {
-          child.userData.partId = child.name;
-          clickables.push({ mesh:child, origMat:child.material, id:child.name });
-        }
-      });
+  clickables.length = 0;
+  root.traverse(function(child) {
+    if(child.isMesh && PARTS[child.name]) {
+      child.userData.partId = child.name;
+      clickables.push({ mesh:child, origMat:child.material, id:child.name });
     }
+    else if(child.isMesh && MESH_TO_GROUP[child.name]) {
+      const groupId = MESH_TO_GROUP[child.name];
+      child.userData.partId = groupId;
+      clickables.push({ mesh:child, origMat:child.material, id:groupId });
+    }
+  });
+}
+
 
     let rootLow = null;
     gltfLoader.load(

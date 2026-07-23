@@ -599,7 +599,6 @@ Object.entries(MESH_GROUPS).forEach(([groupId, meshes]) => {
     // ═══════════════════════════════════════════════════════════════
     // TOUCH CONTROLS
     // ═══════════════════════════════════════════════════════════════
-// Declaramos las variables de control con nombres únicos para evitar conflictos de alcance
 let touches = {}, pinchDist = 0, touchDrag = false, touchMoved = false;
 let tpx = 0, tpy = 0, touchTime = 0;
 let touchStartX = 0, touchStartY = 0; 
@@ -607,13 +606,13 @@ let touchStartX = 0, touchStartY = 0;
 window.addEventListener('touchstart', e => {
   if (e.target !== renderer.domElement) return;
   e.preventDefault();
+  
   touchMoved = false; 
-  touchTime = Date.now();
+  touchTime = Date.now(); // Guardamos el momento exacto del toque
   
   if(e.touches.length === 1) {
     tpx = e.touches[0].clientX; 
     tpy = e.touches[0].clientY; 
-    // Guardamos la coordenada inicial usando las nuevas variables
     touchStartX = tpx; 
     touchStartY = tpy; 
     touchDrag = true;
@@ -623,7 +622,7 @@ window.addEventListener('touchstart', e => {
       e.touches[0].clientY - e.touches[1].clientY
     );
   }
-  hideHintOnInteraction();
+  if (typeof hideHintOnInteraction === 'function') hideHintOnInteraction();
 }, {passive: false});
 
 window.addEventListener('touchmove', e => {
@@ -631,10 +630,9 @@ window.addEventListener('touchmove', e => {
   e.preventDefault();
   
   if(e.touches.length === 1 && touchDrag) {
-    // Calculamos la distancia desde el punto inicial táctil (tolerancia de 5px)
+    // Aumentamos ligeramente la tolerancia a 8 píxeles
     const dist = Math.hypot(e.touches[0].clientX - touchStartX, e.touches[0].clientY - touchStartY);
-    
-    if (dist > 5) {
+    if (dist > 8) {
         touchMoved = true;
     }
 
@@ -656,6 +654,30 @@ window.addEventListener('touchmove', e => {
     camera.position.multiplyScalar(pinchDist / d);
     camera.position.clampLength(ZOOM_MIN, ZOOM_MAX);
     pinchDist = d;
+  }
+}, {passive: false});
+
+window.addEventListener('touchend', e => {
+  if (e.target !== renderer.domElement) return;
+  e.preventDefault();
+  touchDrag = false;
+
+  // Calculamos cuánto tiempo estuvo el dedo en la pantalla
+  const elapsedTime = Date.now() - touchTime;
+
+  // SI no se movió más de 8px O SI fue un toque muy rápido (menos de 250ms), es un CLIC
+  if (!touchMoved || elapsedTime < 250) {
+    
+    // CRÍTICO: Usar changedTouches porque en touchend e.touches ya está vacío
+    const touch = e.changedTouches[0];
+    
+    // Aquí calculas las coordenadas para el Raycaster exactamente con la posición final
+    const rect = renderer.domElement.getBoundingClientRect();
+    const x = ((touch.clientX - rect.left) / rect.width) * 2 - 1;
+    const y = -((touch.clientY - rect.top) / rect.height) * 2 + 1;
+
+    // ---> AQUÍ LLAMAS A TU FUNCIÓN DE SELECCIÓN / RAYCASTER PASÁNDOLE (x, y) <---
+    // ejemplo: seleccionarBobina(x, y);
   }
 }, {passive: false});
 

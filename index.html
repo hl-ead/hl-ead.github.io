@@ -516,12 +516,6 @@ Object.entries(MESH_GROUPS).forEach(([groupId, meshes]) => {
     const tip = document.getElementById('tip');
     let currentSchemId = null;
 
-    // Aumenta el área de impacto solo para líneas y puntos (ideal para bobinas)
-raycaster.params.Line.threshold = 0.2; // Puedes subirlo hasta 0.5 si son muy delgadas
-raycaster.params.Points.threshold = 0.2;
-
-const intersects = raycaster.intersectObjects(scene.children, true);
-
     function updateMouse(x, y) {
       mouse.x = (x/innerWidth)*2-1;
       mouse.y = -(y/innerHeight)*2+1;

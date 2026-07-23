@@ -1330,16 +1330,13 @@ canvas {
     @media (max-width: 768px) {
       .container { margin: 80px auto 40px; padding: 0 16px; }
       #topbar-actions { gap: 4px; }
-      #topbar {justify-content: center; padding: 0 16px;}
+      #topbar {display: flex !important;}
       #topbar-left {
+    flex-grow: 1;
     justify-content: center;
   }
   
-  #topbar-left .brand-title {
-    text-align: center;
-  }
-  
-  #topbar-left .brand-sub {
+  #topbar-left .brand {
     text-align: center;
   }
 

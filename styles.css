@@ -1232,21 +1232,9 @@ canvas {
   #counter-text { font-size: 0.75rem !important; }
 }
 
-/* Navegación móvil inferior */
-#mobile-nav {
-  display: none;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  background: rgba(7,9,15,0.98);
-  border-top: 1px solid rgba(0,217,176,0.14);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  padding: 6px 0 calc(6px + env(safe-area-inset-bottom));
-}
-
+/* ==========================================================================
+   ESTILOS DE TARJETAS Y SECCIONES
+   ========================================================================== */
 .sec-card .sec-placeholder {
   color: var(--text) !important;
   opacity: 0.85;
@@ -1270,61 +1258,92 @@ canvas {
   padding: 4px;        
 }
 
-/* Cuadrícula corregida a 5 columnas para alojar los 5 botones en 1 sola fila */
+/* ==========================================================================
+   NAVEGACIÓN MÓVIL INFERIOR (CORREGIDA Y EXPANDIDA)
+   ========================================================================== */
+#mobile-nav {
+  display: none;
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  z-index: 9999 !important;
+  background: rgba(7, 9, 15, 0.98) !important;
+  border-top: 1px solid rgba(0, 217, 176, 0.2) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 6px 0 calc(6px + env(safe-area-inset-bottom)) 0 !important;
+  margin: 0 !important;
+}
+
+/* Ocupa el 100% del ancho dividiendo equitativamente los 5 botones (20% c/u) */
 .mnav-grid {
-  display: grid;
+  display: grid !important;
   grid-template-columns: repeat(5, 1fr) !important;
-  width: 100%;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  align-items: center !important;
+  justify-items: stretch !important;
 }
 
 .mnbtn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  padding: 8px 2px;
-  border: none;
-  background: none;
-  cursor: pointer;
-  color: rgba(0,217,176,0.55);
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 0.58rem;
-  font-weight: 600;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  transition: color .2s;
-  -webkit-tap-highlight-color: transparent;
-  border: 1px solid transparent; 
-  border-radius: 4px;
-  text-decoration: none;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  gap: 3px !important;
+  padding: 6px 2px !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  cursor: pointer !important;
+  color: rgba(0, 217, 176, 0.55) !important;
+  font-family: 'Rajdhani', sans-serif !important;
+  font-size: 0.58rem !important;
+  font-weight: 600 !important;
+  letter-spacing: .08em !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease !important;
+  -webkit-tap-highlight-color: transparent !important;
+  border-radius: 4px !important;
 }
 
 .mnbtn.active {
-  color: #fff !important; 
-  background: rgba(0, 217, 176, 0.15); 
-  border: 1px solid var(--teal) !important; 
-  border-radius: 4px; 
-  box-shadow: var(--glow-t); 
+  color: #ffffff !important; 
+  background: rgba(0, 217, 176, 0.15) !important; 
+  border: 1px solid var(--teal, #00d9b0) !important; 
+  border-radius: 4px !important; 
+  box-shadow: var(--glow-t, 0 0 10px rgba(0,217,176,0.3)) !important; 
 }
 
 .mnbtn:hover {
-  color: var(--teal);
+  color: var(--teal, #00d9b0) !important;
 }
 
 .mnbtn svg {
-  width: 18px;
-  height: 18px;
+  width: 18px !important;
+  height: 18px !important;
+  flex-shrink: 0 !important;
 }
 
-/* Media Query sincronizada a 768px para móvil y tablets */
+/* ==========================================================================
+   MEDIA QUERIES (TABLETS Y DISPOSITIVOS MÓVILES)
+   ========================================================================== */
 @media (max-width: 768px) {
   body {
-    padding-bottom: 75px !important; /* Espacio para que la barra inferior no tape contenido */
+    padding-bottom: 80px !important; /* Espacio necesario para no tapar contenido */
   }
 
   #mobile-nav { 
-    display: flex !important; 
+    display: block !important; 
   }
   
   .p-stats {
@@ -1348,6 +1367,7 @@ canvas {
   #topbar .btn-nav { display: none !important; }
   .btn-nav { padding: 4px 10px; font-size: 0.68rem; }
   
+  /* Ajuste de tablas a bloque para pantallas pequeñas */
   .bom-table, .bom-table thead, .bom-table tbody, .bom-table tr, .bom-table td { display: block; }
   .bom-table thead { display: none; }
   .bom-table tr { margin-bottom: 12px; background: rgba(7, 12, 22, 0.5); border: 1px solid var(--border); border-radius: 6px; padding: 8px 0; }
@@ -1356,7 +1376,7 @@ canvas {
   .bom-table td:before { content: attr(data-label); font-weight: 700; color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; margin-right: 1rem; white-space: nowrap; }
 }
 
-/* Layout principal de dos columnas para datos/esquema */
+/* Layout principal de calculadora */
 .calc-top-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;

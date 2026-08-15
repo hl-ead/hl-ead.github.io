@@ -1285,30 +1285,28 @@ canvas {
   }
 }
 .mnav-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  width: 100%;
+display: grid !important;
+    grid-template-columns: repeat(5, 1fr) !important;
+    align-items: center;
+    justify-items: center;
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }
 .mnbtn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  padding: 8px 4px;
-  border: none;
-  background: none;
-  cursor: pointer;
-  color: rgba(0,217,176,0.55);
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 0.58rem;
-  font-weight: 600;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  transition: color .2s;
-  -webkit-tap-highlight-color: transparent;
-  border: 1px solid transparent; 
-  border-radius: 4px;
+display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--text-dim, #8892b0);
+    font-size: 0.65rem;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    gap: 3px;
+    padding: 6px 0;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .mnbtn.active {
@@ -1324,8 +1322,8 @@ canvas {
 }
 
 .mnbtn svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
 }
     @media (max-width: 768px) {
       .container { margin: 80px auto 40px; padding: 0 16px; }

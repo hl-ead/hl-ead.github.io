@@ -1,10 +1,10 @@
 /* ============================================================
-   1. FUENTES Y VARIABLES GLOBALES (EXTENDIDAS)
+   1.  FUENTES Y VARIABLES GLOBALES
    ============================================================ */
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Black+Ops+One&display=swap');
 
 :root {
-  /* ===== Fondos y estructura ===== */
+  /* --- Fondos y estructura --- */
   --bg: #07090f;
   --panel: rgba(7, 12, 22, 0.96);
   --bg-dark: #030508;
@@ -22,7 +22,7 @@
   --bg-accent-soft: rgba(255, 140, 42, 0.04);
   --bg-accent-mid: rgba(255, 140, 42, 0.08);
 
-  /* ===== Colores principales (naranja) ===== */
+  /* --- Colores principales (naranja) --- */
   --teal: #ff8c2a;
   --teal-dim: rgba(255, 140, 42, 0.18);
   --teal-hover: rgba(255, 140, 42, 0.2);
@@ -36,7 +36,7 @@
   --amber-border: rgba(217, 119, 6, 0.3);
   --amber-border-light: rgba(217, 119, 6, 0.4);
 
-  /* ===== Bordes y sombras ===== */
+  /* --- Bordes y sombras --- */
   --border: rgba(255, 140, 42, 0.28);
   --border-a: rgba(255, 140, 42, 0.28);
   --border-light: rgba(255, 140, 42, 0.12);
@@ -47,7 +47,7 @@
   --chip-shadow: 0 0 10px rgba(217, 119, 6, 0.35);
   --tip-shadow: 0 0 20px rgba(255, 140, 42, 0.2);
 
-  /* ===== Textos ===== */
+  /* --- Textos --- */
   --text: #b4ccd8;
   --text-dim: rgba(180, 204, 216, 0.45);
   --text-light: #e2e8f0;
@@ -58,7 +58,7 @@
   --white: #ffffff;
   --text-accent-dim: rgba(255, 140, 42, 0.6);
 
-  /* ===== Estados y badges ===== */
+  /* --- Estados y badges --- */
   --success: #f59e0b;
   --success-bg: rgba(217, 119, 6, 0.15);
   --warning: #ff8c2a;
@@ -68,7 +68,7 @@
   --danger-bg: rgba(229, 62, 62, 0.15);
   --danger-border: rgba(229, 62, 62, 0.4);
 
-  /* ===== Scrollbar ===== */
+  /* --- Scrollbar --- */
   --scrollbar-track: rgba(15, 12, 10, 0.9);
   --scrollbar-thumb: #d97706;
   --scrollbar-thumb-hover: #f59e0b;
@@ -76,7 +76,7 @@
   --scrollbar-thumb-pi: rgba(255, 140, 42, 0.25);
   --scrollbar-thumb-desc: rgba(255, 140, 42, 0.15);
 
-  /* ===== Componentes específicos ===== */
+  /* --- Componentes específicos --- */
   --btn-nav-bg: rgba(255, 140, 42, 0.05);
   --tab-btn-bg: rgba(255, 140, 42, 0.03);
   --sec-title-bg: rgba(255, 140, 42, 0.04);
@@ -115,7 +115,7 @@
   --sec-placeholder-color: rgba(180, 204, 216, 0.35);
   --sec-placeholder-code-color: rgba(255, 140, 42, 0.35);
 
-  /* ===== Espaciados, tamaños y utilidades ===== */
+  /* --- Espaciados, tamaños y utilidades --- */
   --topbar-height: 56px;
   --container-max: 1200px;
   --border-radius: 4px;
@@ -126,18 +126,18 @@
   --card-shadow: 0 2px 8px var(--shadow-color);
   --card-shadow-lg: 0 10px 30px var(--shadow-lg-color);
 
-  /* ===== Fuentes ===== */
+  /* --- Fuentes --- */
   --font-body: 'Rajdhani', sans-serif;
   --font-heading: 'Black Ops One', serif;
 
-  /* ===== Transiciones ===== */
+  /* --- Transiciones --- */
   --transition-fast: 0.15s;
   --transition-med: 0.25s;
   --transition-slow: 0.44s;
 }
 
 /* ============================================================
-   2. RESET Y ESTILOS BASE
+   2.  RESET Y ESTILOS BASE
    ============================================================ */
 * {
   box-sizing: border-box;
@@ -182,6 +182,7 @@ body {
   padding: 0 24px;
 }
 
+/* Enlaces del logo */
 a.logo-link,
 a.logo-link:visited,
 a.logo-link:hover,
@@ -196,8 +197,35 @@ a.logo-link * {
   text-decoration: none !important;
 }
 
+/* Efecto de iluminación en el logo */
+.logo,
+.brand,
+.navbar-brand,
+.logo-container,
+a.logo,
+#logo {
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+.logo:hover,
+.brand:hover,
+.navbar-brand:hover,
+.logo-container:hover,
+a.logo:hover,
+#logo:hover {
+  filter: brightness(1.25) drop-shadow(0 0 6px rgba(245, 158, 11, 0.4));
+}
+.logo:active,
+.brand:active,
+.navbar-brand:active,
+.logo-container:active,
+a.logo:active,
+#logo:active {
+  filter: brightness(1.45) drop-shadow(0 0 10px rgba(245, 158, 11, 0.7));
+}
+
 /* ============================================================
-   3. ENCABEZADO FIJO (TOP BAR)
+   3.  ENCABEZADO FIJO (TOP BAR)
    ============================================================ */
 #topbar {
   position: fixed;
@@ -258,7 +286,7 @@ a.logo-link * {
 }
 
 /* ============================================================
-   4. BOTONES Y PESTAÑAS (comunes)
+   4.  BOTONES Y PESTAÑAS (comunes)
    ============================================================ */
 .btn-nav {
   display: inline-flex;
@@ -346,7 +374,7 @@ a.logo-link * {
 }
 
 /* ============================================================
-   5. CABECERAS DE SECCIÓN
+   5.  CABECERAS DE SECCIÓN
    ============================================================ */
 .section-header {
   margin-bottom: 35px;
@@ -369,7 +397,7 @@ a.logo-link * {
 }
 
 /* ============================================================
-   6. PESTAÑAS DE NAVEGACIÓN (tabs)
+   6.  PESTAÑAS DE NAVEGACIÓN (tabs)
    ============================================================ */
 .tabs-nav {
   display: flex;
@@ -400,7 +428,7 @@ a.logo-link * {
 }
 
 /* ============================================================
-   7. TARJETAS Y GRID DE ESQUEMAS (sec)
+   7.  TARJETAS Y GRID DE ESQUEMAS (sec)
    ============================================================ */
 .sec-grid {
   display: grid;
@@ -420,6 +448,26 @@ a.logo-link * {
   border-color: var(--teal);
   box-shadow: var(--glow-t);
   transform: translateY(-2px);
+}
+.sec-card .sec-placeholder {
+  color: var(--text) !important;
+  opacity: 0.85;
+  font-size: 0.85rem;
+}
+.sec-card .sec-img-wrap {
+  width: 100%;
+  height: 260px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: var(--bg-highlight);
+}
+.sec-card .sec-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 4px;
 }
 
 .sec-title {
@@ -460,7 +508,7 @@ a.logo-link * {
 }
 
 /* ============================================================
-   8. VISOR DE ESQUEMAS (full preview y modal)
+   8.  VISOR DE ESQUEMAS (full preview y modal)
    ============================================================ */
 .full-schem-wrap {
   background: var(--panel);
@@ -496,7 +544,7 @@ a.logo-link * {
 }
 
 /* ============================================================
-   9. VISOR AVANZADO PAN & ZOOM (modal fijo)
+   9.  VISOR AVANZADO PAN & ZOOM (modal fijo)
    ============================================================ */
 #pz-viewer {
   position: fixed;
@@ -646,7 +694,6 @@ a.logo-link * {
   gap: 6px;
   color: var(--amber-light);
 }
-
 .filter-wrapper.category-block .filter-section-title {
   color: var(--amber);
 }
@@ -1913,40 +1960,14 @@ body.page-index canvas {
 }
 
 /* ============================================================
-   18. AJUSTES ADICIONALES PARA TARJETAS DE ESQUEMAS
+   18. UTILIDADES ADICIONALES
    ============================================================ */
-.sec-card .sec-placeholder {
-  color: var(--text) !important;
-  opacity: 0.85;
-  font-size: 0.85rem;
-}
-.sec-card .sec-img-wrap {
-  width: 100%;
-  height: 260px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  background-color: var(--bg-highlight);
-}
-.sec-card .sec-img-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  padding: 4px;
-}
-
-/* ============================================================
-   19. OCULTAR FLECHAS (SPINNERS) EN INPUTS NUMÉRICOS
-   ============================================================ */
-/* Chrome, Safari, Edge, Opera */
+/* Ocultar flechas (spinners) en inputs numéricos */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-
-/* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
   appearance: textfield;

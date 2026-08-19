@@ -284,6 +284,14 @@
         <div class="bs-l">Resistencia de la Bobina</div>
         <div class="bs-v"><span id="out-r">--</span> <span style="font-size:0.6em; opacity:0.7;">Ω</span></div>
       </div>
+      <div class="bom-stat teal">
+      <div class="bs-l">Inductancia de la Bobina</div>
+      <div class="bs-v"><span id="out-inductancia">--</span> <span style="font-size:0.6em; opacity:0.7;">mH</span></div>
+    </div>
+    <div class="bom-stat">
+      <div class="bs-l">Densidad de Energía Mag.</div>
+      <div class="bs-v"><span id="out-um">--</span> <span style="font-size:0.6em; opacity:0.7;">J/m³</span></div>
+    </div>
     </div>
 
     <!-- SECCIÓN DETALLES CONSTRUCTIVOS -->
@@ -327,6 +335,16 @@
             <td data-label="Valor Estimado" id="out-acable" style="font-family:'Black Ops One'; color:var(--amber); font-size:1.1rem;">--</td>
             <td data-label="Unidad" style="color:var(--text-dim); font-weight:bold;">mm²</td>
           </tr>
+          <tr>
+          <td data-label="Parámetro Calculado">Área transversal del tubo</td>
+          <td data-label="Valor Estimado" id="out-atubo" style="font-family:'Black Ops One'; color:var(--teal); font-size:1.1rem;">--</td>
+          <td data-label="Unidad" style="color:var(--text-dim); font-weight:bold;">mm²</td>
+        </tr>
+        <tr>
+          <td data-label="Parámetro Calculado">Volumen interno del tubo</td>
+          <td data-label="Valor Estimado" id="out-vtubo" style="font-family:'Black Ops One'; color:var(--amber); font-size:1.1rem;">--</td>
+          <td data-label="Unidad" style="color:var(--text-dim); font-weight:bold;">cm³</td>
+        </tr>
         </tbody>
       </table>
     </div>
@@ -336,7 +354,7 @@
   <!-- ============================================================
        JAVASCRIPT – LÓGICA DE LA CALCULADORA
        ============================================================ -->
-  <script>
+<script>
     (function() {
       'use strict';
 
@@ -384,33 +402,51 @@
         const R = rho_Cu * (lcable_m / Acable);
         const Ipico = Vfuente / R;
         const Bpico = mu_0 * (N / L_m) * Ipico;
-        const Vtubo = Math.PI * Math.pow(Dtubo_m / 2, 2) * L_m;
+        
+        // --- FÓRMULAS RESTANTES AÑADIDAS ---
+        const Atubo_m2 = Math.PI * Math.pow(Dtubo_m / 2, 2);
+        const Vtubo_m3 = Atubo_m2 * L_m;
 
         const u_m = Math.pow(Bpico, 2) / (2 * mu_0);
-        const Emag = u_m * Vtubo;
+        const Emag = u_m * Vtubo_m3;
 
         const videal = Math.sqrt((2 * Emag) / m_kg);
         const vreal = Math.sqrt((2 * Emag * eta) / m_kg);
+        
+        // La inductancia se calcula en Henrios y se pasa a miliHenrios (mH)
+        const L_henrios = (mu_0 * Math.pow(N, 2) * Atubo_m2) / L_m;
+        const L_mH = L_henrios * 1000;
 
+        // --- RENDERIZADO DE RESULTADOS ---
         document.getElementById('out-vreal').innerText = vreal.toFixed(2);
         document.getElementById('out-videal').innerText = videal.toFixed(2);
         document.getElementById('out-ipico').innerText = Ipico.toFixed(2);
         document.getElementById('out-bpico').innerText = Bpico.toFixed(4);
         document.getElementById('out-emag').innerText = Emag.toFixed(3);
         document.getElementById('out-r').innerText = R.toFixed(2);
+        
+        document.getElementById('out-inductancia').innerText = L_mH.toFixed(2);
+        document.getElementById('out-um').innerText = u_m.toFixed(1);
 
         document.getElementById('out-lcable').innerText = lcable_m.toFixed(2);
         document.getElementById('out-capas').innerText = capas;
         document.getElementById('out-espesor').innerText = espesor_mm.toFixed(2);
         document.getElementById('out-dmedio').innerText = Dmedio_mm.toFixed(2);
         document.getElementById('out-acable').innerText = Acable.toFixed(4);
+        
+        // Conversiones para una lectura más cómoda en los detalles constructivos
+        const Atubo_mm2 = Atubo_m2 * 1000000;
+        const Vtubo_cm3 = Vtubo_m3 * 1000000;
+        document.getElementById('out-atubo').innerText = Atubo_mm2.toFixed(2);
+        document.getElementById('out-vtubo').innerText = Vtubo_cm3.toFixed(2);
       }
 
       function resetOutputs() {
         const ids = [
           'out-vreal', 'out-videal', 'out-ipico', 'out-bpico',
-          'out-emag', 'out-r', 'out-lcable', 'out-capas',
-          'out-espesor', 'out-dmedio', 'out-acable'
+          'out-emag', 'out-r', 'out-inductancia', 'out-um',
+          'out-lcable', 'out-capas', 'out-espesor', 'out-dmedio', 
+          'out-acable', 'out-atubo', 'out-vtubo'
         ];
         ids.forEach(function(id) {
           document.getElementById(id).innerText = '--';

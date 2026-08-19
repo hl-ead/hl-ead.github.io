@@ -5,7 +5,7 @@
         font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif;
         font-size: 150px;
         font-weight: 700;
-        fill: #e06c75; /* Color coral que combina con tu diseño */
+        fill: #FF8C2A; /* Color coral que combina con tu diseño */
         letter-spacing: 4px;
       }
     </style>

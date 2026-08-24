@@ -322,16 +322,16 @@
         schemTitle: 'Esquema del Módulo'
       },
 
-      "Bobina_Primaria": {
+            "Bobina_Primaria": {
         cat: 'Electrónica',
         name: 'Bobina Primaria ',
         id: 'COIL-01',
         desc: 'Primera bobina de disparo, fabricada con alambre de cobre esmaltado de 1.2mm enrollado en 4 capas de 35 vueltas cada una. Es la primera en activarse al detectar el proyectil en posición de carga. Su campo magnético acelera el proyectil hacia el centro de la bobina.',
         stats: [
-          { l: 'Alambre', v: '0.7 mm' },
-          { l: 'Vueltas', v: '670' },
-          { l: 'Inductancia', v: '0,0079 H' },
-          { l: 'Resistencia', v: '3.27 Ω' }
+          { l: 'Alambre', v: 'Por Determinar' },
+          { l: 'Vueltas', v: 'Por Determinar' },
+          { l: 'Inductancia', v: 'Por Determinar' },
+          { l: 'Resistencia', v: 'Por Determinar' }
         ],
         schemImg: 'esquemas/modulo-bobina.svg',
         schemTitle: 'Esquema del Módulo'
@@ -343,22 +343,22 @@
         id: 'COIL-02',
         desc: 'Segunda bobina de disparo, activada con un retardo de 80-120µs tras la primera. Continúa la aceleración del proyectil que ya tiene velocidad inicial. El uso de dos etapas aumenta la eficiencia energética y la velocidad final del proyectil respecto a un diseño de etapa única.',
         stats: [
-          { l: 'Alambre', v: 'Por Determinar' },
-          { l: 'Vueltas', v: 'Por Determinar' },
-          { l: 'Inductancia', v: 'Por Determinar' },
-          { l: 'Resistencia', v: 'Por Determinar' }
+          { l: 'Alambre', v: '0.7 mm' },
+          { l: 'Vueltas', v: '670' },
+          { l: 'Inductancia', v: '0,0079 H' },
+          { l: 'Resistencia', v: '3.27 Ω' }
         ],
         schemImg: 'esquemas/modulo-bobina.svg',
         schemTitle: 'Esquema del Módulo'
-      }
+      },
     };
 
     // ═══════════════════════════════════════════════════════════════
     // MAPEO DE MESHES AGRUPADOS
     // ═══════════════════════════════════════════════════════════════
     const MESH_GROUPS = {
-      "Bobina_Primaria": ["mesh_7", "mesh_7_1", "mesh_7_2", "mesh_7_3", "mesh_7_4", "mesh_7_5", "mesh_7_6", "mesh_7_7", "mesh_7_8"],
-      "Bobina_Secundaria": ["mesh_6", "mesh_6_1", "mesh_6_2", "mesh_6_3", "mesh_6_4", "mesh_6_5", "mesh_6_6", "mesh_6_7", "mesh_6_8"]
+      "Bobina_Primaria": ["mesh_9", "mesh_9_1", "mesh_9_2", "mesh_9_3", "mesh_9_4", "mesh_9_5", "mesh_9_6", "mesh_9_7", "mesh_9_8"],
+      "Bobina_Secundaria": ["mesh_0", "mesh_0_1", "mesh_0_2", "mesh_0_3", "mesh_0_4", "mesh_0_5", "mesh_0_6", "mesh_0_7", "mesh_0_8"]
     };
 
     // Invertir: de mesh → groupId
@@ -486,7 +486,7 @@
         model.rotation.y = 0.3;
         conectarClickables(rootLow);
         console.log('✅ Modelo liviano cargado.');
-
+        
         gltfLoader.load(
           'gauss_cannon.glb',
           function(gltfHD) {

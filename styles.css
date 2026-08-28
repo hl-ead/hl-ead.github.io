@@ -453,6 +453,7 @@ a.logo:active,
   color: var(--text) !important;
   opacity: 0.85;
   font-size: 0.85rem;
+  padding: 20px;
 }
 .sec-card .sec-img-wrap {
   width: 100%;

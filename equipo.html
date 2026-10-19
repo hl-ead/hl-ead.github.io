@@ -3,28 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>HL-EAD · Equipo</title>
+  <meta name="description" content="Proyecto didáctico HL-EAD: acelerador electromagnético de dos etapas desarrollado en escuela técnica. Equipo, objetivos y documentación técnica.">
+  <title>HL-EAD · Equipo y Proyecto</title>
   <link rel="icon" href="Imagenes/icono.png" type="image/x-icon">
   <link rel="stylesheet" href="styles.css">
 </head>
-<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-1878DQW9YW"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-1878DQW9YW');
 </script>
 <body>
 
-  <!-- ============================================================
-       BARRA SUPERIOR FIJA (HEADER)
-       ============================================================ -->
+  <!-- =================== HEADER =================== -->
   <header id="topbar">
     <a href="index.html" class="logo-link">
       <div id="topbar-left">
-        <img src="Imagenes/ABR-G.svg" alt="Logo" class="logo">
+        <img src="Imagenes/ABR-G.svg" alt="Logo HL-EAD" class="logo">
         <div class="brand">
           <span class="brand-title">⚡ HL-EAD</span>
           <span class="brand-sub">Sistema de dos etapas</span>
@@ -33,200 +30,204 @@
     </a>
     <div id="topbar-actions">
       <a href="index.html" class="btn-nav">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
           <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
           <polyline points="9 22 9 12 15 12 15 22"/>
-        </svg>
-        Home
+        </svg> Home
       </a>
       <a href="esquemas.html" class="btn-nav">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
           <polygon points="12 2 2 7 12 12 22 7 12 2"/>
           <polyline points="2 17 12 22 22 17"/>
           <polyline points="2 12 12 17 22 12"/>
-        </svg>
-        Esquemas
+        </svg> Esquemas
       </a>
       <a href="bom.html" class="btn-nav">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
           <polyline points="14 2 14 8 20 8"/>
           <line x1="16" y1="13" x2="8" y2="13"/>
           <line x1="16" y1="17" x2="8" y2="17"/>
           <polyline points="10 9 9 9 8 9"/>
-        </svg>
-        BOM
+        </svg> BOM
       </a>
-      <a href="equipo.html" class="btn-nav active">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <a href="equipo.html" class="btn-nav active" aria-current="page">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
           <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
           <circle cx="9" cy="7" r="4"/>
           <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
           <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-        </svg>
-        Equipo
+        </svg> Equipo
       </a>
       <a href="calculadora.html" class="btn-nav">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <rect x="3" y="2" width="18" height="20" rx="2.5"/>
           <rect x="6" y="5" width="12" height="4" rx="1" fill="currentColor" fill-opacity="0.25"/>
-          <circle cx="8" cy="12" r="1" fill="currentColor"/>
-          <circle cx="12" cy="12" r="1" fill="currentColor"/>
-          <circle cx="16" cy="12" r="1" fill="currentColor"/>
-          <circle cx="8" cy="16" r="1" fill="currentColor"/>
-          <circle cx="12" cy="16" r="1" fill="currentColor"/>
-          <circle cx="16" cy="16" r="1" fill="currentColor"/>
-          <circle cx="8" cy="19" r="1" fill="currentColor"/>
-          <line x1="12" y1="19" x2="16" y2="19"/>
-        </svg>
-        Calculadora
+          <circle cx="8" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/>
+          <circle cx="16" cy="12" r="1" fill="currentColor"/><circle cx="8" cy="16" r="1" fill="currentColor"/>
+          <circle cx="12" cy="16" r="1" fill="currentColor"/><circle cx="16" cy="16" r="1" fill="currentColor"/>
+          <circle cx="8" cy="19" r="1" fill="currentColor"/><line x1="12" y1="19" x2="16" y2="19"/>
+        </svg> Calculadora
       </a>
     </div>
   </header>
 
-  <!-- ============================================================
-       NAVEGACIÓN MÓVIL INFERIOR
-       ============================================================ -->
+  <!-- =================== NAV MÓVIL =================== -->
   <div id="mobile-nav">
     <a href="index.html" class="mnbtn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
         <polyline points="9 22 9 12 15 12 15 22"/>
-      </svg>
-      <span>Home</span>
+      </svg><span>Home</span>
     </a>
     <a href="esquemas.html" class="mnbtn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
         <polygon points="12 2 2 7 12 12 22 7 12 2"/>
-        <polyline points="2 17 12 22 22 17"/>
-        <polyline points="2 12 12 17 22 12"/>
-      </svg>
-      <span>Esquemas</span>
+        <polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>
+      </svg><span>Esquemas</span>
     </a>
     <a href="bom.html" class="mnbtn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
         <polyline points="14 2 14 8 20 8"/>
-        <line x1="16" y1="13" x2="8" y2="13"/>
-        <line x1="16" y1="17" x2="8" y2="17"/>
+        <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
         <polyline points="10 9 9 9 8 9"/>
-      </svg>
-      <span>BOM</span>
+      </svg><span>BOM</span>
     </a>
-    <a href="equipo.html" class="mnbtn active">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-        <circle cx="9" cy="7" r="4"/>
-        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-      </svg>
-      <span>Equipo</span>
+    <a href="equipo.html" class="mnbtn active" aria-current="page">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg><span>Equipo</span>
     </a>
     <a href="calculadora.html" class="mnbtn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <rect x="4" y="2" width="16" height="20" rx="2.5"/>
         <rect x="7" y="5" width="10" height="4" rx="1" fill="currentColor" fill-opacity="0.2"/>
-        <circle cx="8.5" cy="12" r="0.9" fill="currentColor"/>
-        <circle cx="12" cy="12" r="0.9" fill="currentColor"/>
-        <circle cx="15.5" cy="12" r="0.9" fill="currentColor"/>
-        <circle cx="8.5" cy="16" r="0.9" fill="currentColor"/>
-        <circle cx="12" cy="16" r="0.9" fill="currentColor"/>
-        <line x1="12" y1="19" x2="15.5" y2="19"/>
-      </svg>
-      <span>Calc</span>
+        <circle cx="8.5" cy="12" r="0.9" fill="currentColor"/><circle cx="12" cy="12" r="0.9" fill="currentColor"/>
+        <circle cx="15.5" cy="12" r="0.9" fill="currentColor"/><circle cx="8.5" cy="16" r="0.9" fill="currentColor"/>
+        <circle cx="12" cy="16" r="0.9" fill="currentColor"/><line x1="12" y1="19" x2="15.5" y2="19"/>
+      </svg><span>Calc</span>
     </a>
   </div>
 
-  <!-- ============================================================
-       CONTENIDO PRINCIPAL
-       ============================================================ -->
-  <div class="container">
+  <!-- =================== CONTENIDO =================== -->
+  <main class="container">
 
-    <!-- Cabecera: Sobre el Proyecto -->
-    <div class="section-header">
-      <h1>SOBRE EL PROYECTO</h1>
-      <p>Desarrollo del sistema de dos etapas</p>
-    </div>
+    <!-- Sobre el proyecto -->
+    <section aria-labelledby="proyecto-title">
+      <header class="section-header">
+        <h1 id="proyecto-title">SOBRE EL PROYECTO</h1>
+        <p>Desarrollo del sistema de dos etapas</p>
+      </header>
 
-    <!-- Bloque de información general -->
-    <div class="full-schem-wrap" style="margin-bottom: 50px; padding: 24px;">
-      <p style="font-size: 1rem; line-height: 1.6; color: var(--text); margin-bottom: 24px;">
-      Este proyecto didáctico demuestra de forma práctica los principios del electromagnetismo así como también diseño, armado y análisis de circuitos eléctricos/electrónicos de una complejidad considerable. Las aplicaciones de este circuito son esencialmente académicas y pueden ser puestas en practica por alumnos del ciclo especializado (cuarto a séptimo año) en escuelas técnicas que mantengan una relación con los temas tratados. 
-        El Dispositivo de Aceleración Electromagnético integra conocimientos sobre transistores de todo tipo, resistencias eléctricas, capacitores, bobinas, armado de placas, fuentes de alimentación, cableado de circuitos, sensores, diseño e impresión en 3D, entre otros.<br>
-        Este proyecto tiene principios que son muy similares a los de un acelerador de partículas. Sin embargo, en la mayoría de las configuraciones de aceleradores de partículas, se utiliza un campo eléctrico para generar la mayor parte de la aceleración hacia delante, mientras que los campos magnéticos se utilizan para el confinamiento (o enfoque, en el caso de un haz de electrones). La creación de fuerzas utilizables a partir de campos eléctricos requiere enormes voltajes y aislantes eléctricos especiales para evitar la formación de arcos.
-      </p>
-      
+      <div class="full-schem-wrap info-block">
+        <p>
+          Este proyecto didáctico demuestra de forma práctica los principios del
+          electromagnetismo, así como también el diseño, armado y análisis de circuitos
+          eléctricos/electrónicos de una complejidad considerable. Las aplicaciones de
+          este circuito son esencialmente académicas y pueden ser puestas en práctica
+          por alumnos del ciclo especializado (cuarto a séptimo año) en escuelas técnicas
+          que mantengan relación con los temas tratados. El Dispositivo de Aceleración
+          Electromagnético integra conocimientos sobre transistores de todo tipo,
+          resistencias eléctricas, capacitores, bobinas, armado de placas, fuentes de
+          alimentación, cableado de circuitos, sensores, diseño e impresión 3D, entre otros.
+        </p>
+        <p>
+          Este proyecto tiene principios muy similares a los de un acelerador de partículas.
+          Sin embargo, en la mayoría de las configuraciones de aceleradores de partículas
+          se utiliza un campo eléctrico para generar la mayor parte de la aceleración hacia
+          adelante, mientras que los campos magnéticos se utilizan para el confinamiento
+          (o enfoque, en el caso de un haz de electrones). La creación de fuerzas utilizables
+          a partir de campos eléctricos requiere enormes voltajes y aislantes eléctricos
+          especiales para evitar la formación de arcos.
+        </p>
 
-      <!-- Grid de imágenes del proyecto -->
+        <!-- Galería -->
+        <div class="sec-grid">
+          <figure class="sec-card">
+            <figcaption class="sec-title"><span>Montaje del cañón</span></figcaption>
+            <div class="sec-img-wrap">
+              <img src="Imagenes/proyecto_1.jpg"
+                   alt="Vista del montaje del cañón de Gauss en banco de pruebas"
+                   width="800" height="600"
+                   loading="lazy" decoding="async">
+            </div>
+          </figure>
+
+          <figure class="sec-card">
+            <figcaption class="sec-title"><span>Placa de control</span></figcaption>
+            <div class="sec-img-wrap">
+              <img src="Imagenes/proyecto_2.jpg"
+                   alt="Detalle de la placa de control del sistema de dos etapas"
+                   width="800" height="600"
+                   loading="lazy" decoding="async">
+            </div>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Equipo -->
+    <section aria-labelledby="equipo-title">
+      <header class="section-header">
+        <h1 id="equipo-title">EQUIPO INVOLUCRADO</h1>
+        <p>Personal técnico y desarrolladores</p>
+      </header>
+
       <div class="sec-grid">
-        <div class="sec-card">
-          <div class="sec-title">
-            <span>LOREM IPSUM</span>
-          </div>
-          <div class="sec-img-wrap">
-            <img src="Imagenes/proyecto_1.jpg" alt="Imagen 1">
-          </div>
-        </div>
 
-        <div class="sec-card">
-          <div class="sec-title">
-            <span>LOREM IPSUM</span>
-          </div>
-          <div class="sec-img-wrap">
-            <img src="Imagenes/proyecto_2.jpg" alt="Imagen 2">
-          </div>
-        </div>
+        <article class="sec-card">
+          <header class="sec-title">
+            <h2>Ezequiel Agüero</h2>
+            <span class="sec-title-zoom">Técnico</span>
+          </header>
+          <p class="sec-placeholder">
+            Con una amplia experiencia laboral en el sector de la electrónica y la
+            electricidad, Ezequiel ha podido desarrollar capacidades técnicas que, como
+            equipo, nos abren un amplio abanico de posibilidades. Ha trabajado en las
+            primeras versiones del acelerador electromagnético y ha visto su evolución a
+            lo largo de los años. En esta, la segunda versión del cañón, ha trabajado en
+            el armado y soldadura de las distintas PCBs y sistemas de alimentación.
+          </p>
+        </article>
+
+        <article class="sec-card">
+          <header class="sec-title">
+            <h2>Benjamín Baudon</h2>
+            <span class="sec-title-zoom">Técnico</span>
+          </header>
+          <p class="sec-placeholder">
+            Amante de la física, las ciencias exactas y aficionado a la electrónica,
+            Benjamín planteó la idea de crear un dispositivo que recree las condiciones
+            de trabajo de un acelerador de partículas, demostrando las aplicaciones y
+            virtudes de los campos electromagnéticos. Lo que comenzó como la maqueta de
+            un acelerador circular se convirtió, tomando como base el ya obsoleto LEP
+            (antiguo acelerador de positrones del CERN), en un acelerador electromagnético
+            lineal capaz de acelerar un proyectil en el eje horizontal. Ha estado encargado
+            de gestionar las tareas, los sistemas de prueba y la organización del proyecto.
+          </p>
+        </article>
+
+        <article class="sec-card">
+          <header class="sec-title">
+            <h2>Yago Roberti</h2>
+            <span class="sec-title-zoom">Técnico</span>
+          </header>
+          <p class="sec-placeholder">
+            Diseño de PCBs, manejo y control de circuitos lógicos y discretos, diseño y
+            modelado 3D, resolución de problemas eléctricos y electrónicos, programación,
+            entre otras habilidades técnicas, son las que definen el currículum de Yago
+            Roberti. A partir de 2025 se sumó al proyecto participando en la creación de
+            los modelos 3D que componen el esqueleto del cañón, el diseño de los
+            esquemáticos y circuitos impresos del mismo y su página web interactiva.
+          </p>
+        </article>
+
       </div>
-    </div>
+    </section>
 
-    <!-- Cabecera: Equipo -->
-    <div class="section-header">
-      <h1>EQUIPO INVOLUCRADO</h1>
-      <p>Personal técnico y desarrolladores</p>
-    </div>
-
-    <!-- Grid de integrantes -->
-    <div class="sec-grid">
-
-      <!-- Integrante 1 -->
-      <div class="sec-card">
-        <div class="sec-title">
-          <span>Ezequiel Aguero</span>
-          <span class="sec-title-zoom">Técnico</span>
-        </div>
-        <div class="sec-placeholder" style="text-align: left; color: var(--text); opacity: 0.85; font-size: 0.85rem;">
-          Con una amplia experiencia laboral en el sector de la electrónica y electricidad, Ezequiel ha podido desarrollar capacidades técnicas que, como equipo, nos abren un amplio abanico de posibilidades.
-          Ha trabajado en las primeras versiones del acelerador electromagnético y ha visto su evolución a lo largo de los años. En esta, la segunda versión del Cañón, ha trabajado en el armado y soldadura de las distintas PCBs y sistemas de alimentación.        
-        </div>
-      </div>
-
-      <!-- Integrante 2 -->
-      <div class="sec-card">
-        <div class="sec-title">
-          <span>Benjamin Baudon</span>
-          <span class="sec-title-zoom">Técnico</span>
-        </div>
-        <div class="sec-placeholder" style="text-align: left; color: var(--text); opacity: 0.85; font-size: 0.85rem;">
-          Amante de la fisica, las ciencias exactas y aficionado a la electronica, Benjamín planteo la idea de crear un dispositivo que recree las condiciones de trabajo de un acelerador de particulas, demostrando las aplicaciones y virtudes de los campos electromagneticos. Lo que comenzó como la maqueta de un acelerador circular se convirtió, tomando como base el ya obsoleto LEP, antiguo acelerador de positrones del CERN, en un acelerador electromagnético lineal capaz de acelerar un proyectil en el eje horizontal.
-          Ha estado encargado de gestionar las tareas, los sistemas de prueba y la organización del proyecto.        
-      </div>
-      </div>
-
-      <!-- Integrante 3 -->
-      <div class="sec-card">
-        <div class="sec-title">
-          <span>Yago Roberti</span>
-          <span class="sec-title-zoom">Técnico</span>
-        </div>
-        <div class="sec-placeholder" style="text-align: left; color: var(--text); opacity: 0.85; font-size: 0.85rem;">
-          Diseño de PCBs, manejo y control de circuitos lógicos y discretos, diseño y modelado 3D, resolución de problemas eléctricos y electrónicos, programación, entre otras habilidades técnicas son las que definen el curriculum de Yago Roberti. 
-          A partir de 2025 se sumó al proyecto participando en la creación de los modelos 3D que componen el esqueleto del Cañón, el diseño de los esquemáticos y circuitos impresos del mismo y su página web interactiva.
-        </div>
-      </div>
-
-    </div>
-
-  </div>
+  </main>
 
 </body>
 </html>

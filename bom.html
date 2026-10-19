@@ -3,28 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>HL‑EAD · Lista de Materiales</title>
+  <meta name="description" content="Lista de materiales (BOM) del cañón de Gauss HL-EAD: componentes por proyecto y categoría técnica.">
+  <title>HL-EAD · Lista de Materiales</title>
   <link rel="icon" href="Imagenes/icono.png" type="image/x-icon">
   <link rel="stylesheet" href="styles.css">
 </head>
-<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-1878DQW9YW"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-1878DQW9YW');
 </script>
 <body>
 
-  <!-- ============================================================
-       BARRA SUPERIOR FIJA (HEADER)
-       ============================================================ -->
+  <!-- =================== HEADER =================== -->
   <header id="topbar">
     <a href="index.html" class="logo-link">
       <div id="topbar-left">
-        <img src="Imagenes/ABR-G.svg" alt="Logo" class="logo">
+        <img src="Imagenes/ABR-G.svg" alt="Logo HL-EAD" class="logo">
         <div class="brand">
           <span class="brand-title">⚡ HL-EAD</span>
           <span class="brand-sub">Sistema de dos etapas</span>
@@ -33,150 +30,128 @@
     </a>
     <div id="topbar-actions">
       <a href="index.html" class="btn-nav">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
           <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
           <polyline points="9 22 9 12 15 12 15 22"/>
-        </svg>
-        Home
+        </svg> Home
       </a>
       <a href="esquemas.html" class="btn-nav">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
           <polygon points="12 2 2 7 12 12 22 7 12 2"/>
           <polyline points="2 17 12 22 22 17"/>
           <polyline points="2 12 12 17 22 12"/>
-        </svg>
-        Esquemas
+        </svg> Esquemas
       </a>
-      <a href="bom.html" class="btn-nav active">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <a href="bom.html" class="btn-nav active" aria-current="page">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
           <polyline points="14 2 14 8 20 8"/>
           <line x1="16" y1="13" x2="8" y2="13"/>
           <line x1="16" y1="17" x2="8" y2="17"/>
           <polyline points="10 9 9 9 8 9"/>
-        </svg>
-        BOM
+        </svg> BOM
       </a>
       <a href="equipo.html" class="btn-nav">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
           <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
           <circle cx="9" cy="7" r="4"/>
           <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
           <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-        </svg>
-        Equipo
+        </svg> Equipo
       </a>
       <a href="calculadora.html" class="btn-nav">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <rect x="3" y="2" width="18" height="20" rx="2.5"/>
           <rect x="6" y="5" width="12" height="4" rx="1" fill="currentColor" fill-opacity="0.25"/>
-          <circle cx="8" cy="12" r="1" fill="currentColor"/>
-          <circle cx="12" cy="12" r="1" fill="currentColor"/>
-          <circle cx="16" cy="12" r="1" fill="currentColor"/>
-          <circle cx="8" cy="16" r="1" fill="currentColor"/>
-          <circle cx="12" cy="16" r="1" fill="currentColor"/>
-          <circle cx="16" cy="16" r="1" fill="currentColor"/>
-          <circle cx="8" cy="19" r="1" fill="currentColor"/>
-          <line x1="12" y1="19" x2="16" y2="19"/>
-        </svg>
-        Calculadora
+          <circle cx="8" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/>
+          <circle cx="16" cy="12" r="1" fill="currentColor"/><circle cx="8" cy="16" r="1" fill="currentColor"/>
+          <circle cx="12" cy="16" r="1" fill="currentColor"/><circle cx="16" cy="16" r="1" fill="currentColor"/>
+          <circle cx="8" cy="19" r="1" fill="currentColor"/><line x1="12" y1="19" x2="16" y2="19"/>
+        </svg> Calculadora
       </a>
     </div>
   </header>
 
-  <!-- ============================================================
-       NAVEGACIÓN MÓVIL INFERIOR
-       ============================================================ -->
+  <!-- =================== NAV MÓVIL =================== -->
   <div id="mobile-nav">
     <a href="index.html" class="mnbtn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
         <polyline points="9 22 9 12 15 12 15 22"/>
-      </svg>
-      <span>Home</span>
+      </svg><span>Home</span>
     </a>
     <a href="esquemas.html" class="mnbtn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
         <polygon points="12 2 2 7 12 12 22 7 12 2"/>
-        <polyline points="2 17 12 22 22 17"/>
-        <polyline points="2 12 12 17 22 12"/>
-      </svg>
-      <span>Esquemas</span>
+        <polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>
+      </svg><span>Esquemas</span>
     </a>
-    <a href="bom.html" class="mnbtn active">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <a href="bom.html" class="mnbtn active" aria-current="page">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
         <polyline points="14 2 14 8 20 8"/>
-        <line x1="16" y1="13" x2="8" y2="13"/>
-        <line x1="16" y1="17" x2="8" y2="17"/>
+        <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
         <polyline points="10 9 9 9 8 9"/>
-      </svg>
-      <span>BOM</span>
+      </svg><span>BOM</span>
     </a>
     <a href="equipo.html" class="mnbtn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-        <circle cx="9" cy="7" r="4"/>
-        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-      </svg>
-      <span>Equipo</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg><span>Equipo</span>
     </a>
     <a href="calculadora.html" class="mnbtn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <rect x="4" y="2" width="16" height="20" rx="2.5"/>
         <rect x="7" y="5" width="10" height="4" rx="1" fill="currentColor" fill-opacity="0.2"/>
-        <circle cx="8.5" cy="12" r="0.9" fill="currentColor"/>
-        <circle cx="12" cy="12" r="0.9" fill="currentColor"/>
-        <circle cx="15.5" cy="12" r="0.9" fill="currentColor"/>
-        <circle cx="8.5" cy="16" r="0.9" fill="currentColor"/>
-        <circle cx="12" cy="16" r="0.9" fill="currentColor"/>
-        <line x1="12" y1="19" x2="15.5" y2="19"/>
-      </svg>
-      <span>Calc</span>
+        <circle cx="8.5" cy="12" r="0.9" fill="currentColor"/><circle cx="12" cy="12" r="0.9" fill="currentColor"/>
+        <circle cx="15.5" cy="12" r="0.9" fill="currentColor"/><circle cx="8.5" cy="16" r="0.9" fill="currentColor"/>
+        <circle cx="12" cy="16" r="0.9" fill="currentColor"/><line x1="12" y1="19" x2="15.5" y2="19"/>
+      </svg><span>Calc</span>
     </a>
   </div>
 
-  <!-- ============================================================
-       CONTENIDO PRINCIPAL
-       ============================================================ -->
-  <div class="container">
+  <!-- =================== CONTENIDO =================== -->
+  <main class="container">
 
-    <!-- Cabecera de sección -->
-    <div class="section-header">
+    <header class="section-header">
       <h1>Lista de Materiales (BOM)</h1>
       <p>Inventario y organización de componentes por proyecto</p>
-    </div>
+    </header>
 
-    <!-- Aplicación BOM -->
     <div id="bom-app">
 
-      <!-- Filtro por proyecto -->
       <div class="filter-wrapper project-block">
         <div class="filter-section-title">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true">
             <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
           </svg>
           Seleccionar Proyecto Activo:
         </div>
-        <div id="bom-project-filter"></div>
+        <div id="bom-project-filter" role="group" aria-label="Filtrar por proyecto"></div>
       </div>
 
-      <!-- Filtro por categoría -->
       <div class="filter-wrapper category-block">
         <div class="filter-section-title">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true">
             <polygon points="12 2 2 7 12 12 22 7 12 2"/>
             <polyline points="2 17 12 22 22 17"/>
           </svg>
           Filtrar por Categoría Técnica:
         </div>
-        <div id="bom-filter-bar"></div>
+        <div id="bom-filter-bar" role="group" aria-label="Filtrar por categoría"></div>
       </div>
 
-      <!-- Resumen y tabla -->
       <div id="bom-scroll">
-        <div id="bom-summary"></div>
+        <div id="bom-summary" aria-live="polite" aria-atomic="true">
+          <div class="bom-stat"><div class="bs-l">Líneas</div><div class="bs-v" id="bom-lines">0</div></div>
+          <div class="bom-stat"><div class="bs-l">Unidades</div><div class="bs-v" id="bom-units">0</div></div>
+          <div class="bom-stat">
+            <div class="bs-l">Filtro Activo</div>
+            <div class="bs-v" id="bom-filter-desc"
+                 style="font-size:.75rem;font-family:'Rajdhani';font-weight:700;text-transform:uppercase;">Todos</div>
+          </div>
+        </div>
         <div id="bom-table-wrap">
           <table class="bom-table" id="bom-table">
             <thead id="bom-thead"></thead>
@@ -185,22 +160,20 @@
         </div>
       </div>
 
-    </div><!-- /bom-app -->
+    </div>
 
-  </div><!-- /container -->
+  </main>
 
-  <!-- ============================================================
-       JAVASCRIPT – LÓGICA DE LA BOM
-       ============================================================ -->
+  <!-- =================== SCRIPT =================== -->
   <script>
     (function() {
       'use strict';
 
-      // ============================================================
-      // DATOS DE LA BOM (BILL OF MATERIALS)
-      // ============================================================
+      // ────────────────────────────────────────────────────────────
+      // DATOS
+      // ────────────────────────────────────────────────────────────
       const BOM_DATA_RAW = [
-        // --- Proyecto: Cañón Gauss ---
+        // --- Cañón Gauss ---
         { ref: 'C1-C3', qty: 3, value: '4700μF/63V', desc: 'Capacitor polarizado (Electrolítico)', cat: 'Almacenamiento', proyecto: 'Cañón Gauss' },
         { ref: 'C4', qty: 1, value: '47nF', desc: 'Capacitor no polarizado', cat: 'Pasivos', proyecto: 'Cañón Gauss' },
         { ref: 'C5,C6', qty: 2, value: '100nF', desc: 'Capacitor no polarizado', cat: 'Pasivos', proyecto: 'Cañón Gauss' },
@@ -224,7 +197,7 @@
         { ref: 'R8-R10,R18-R20', qty: 6, value: '10Ω', desc: 'Resistencia', cat: 'Pasivos', proyecto: 'Cañón Gauss' },
         { ref: 'TP1-TP4', qty: 4, value: 'TestPoint', desc: 'Punto de prueba (Test point) para medición en placa', cat: 'Interfaz', proyecto: 'Cañón Gauss' },
 
-        // --- Proyecto: Placa de control ---
+        // --- Placa de control ---
         { ref: 'C7,C10', qty: 2, value: '100nF', desc: 'Capacitor no polarizado', cat: 'Pasivos', proyecto: 'Placa de control' },
         { ref: 'C8', qty: 1, value: '10nF', desc: 'Capacitor no polarizado', cat: 'Pasivos', proyecto: 'Placa de control' },
         { ref: 'C9', qty: 1, value: '68nF', desc: 'Capacitor no polarizado', cat: 'Pasivos', proyecto: 'Placa de control' },
@@ -241,158 +214,181 @@
         { ref: 'U2-U6', qty: 5, value: 'CD4017', desc: 'Circuito integrado Contador Johnson (10 salidas)', cat: 'Semiconductores', proyecto: 'Placa de control' }
       ];
 
-      // Ordenar por referencia
-      BOM_DATA_RAW.sort((a, b) => a.ref.localeCompare(b.ref));
+      BOM_DATA_RAW.sort((a, b) => a.ref.localeCompare(b.ref, 'es'));
 
-      // ============================================================
-      // ESTADO DE FILTROS
-      // ============================================================
-      let activeProject = 'Todos';
+      const PROJECTS   = ['Todos', 'Cañón Gauss', 'Placa de control'];
+      const CATEGORIES = ['Todos', ...new Set(BOM_DATA_RAW.map(r => r.cat))];
+
+      // ────────────────────────────────────────────────────────────
+      // Estado
+      // ────────────────────────────────────────────────────────────
+      let activeProject  = 'Todos';
       let activeCategory = 'Todos';
 
-      // ============================================================
-      // FUNCIONES AUXILIARES
-      // ============================================================
-      function escHtml(s) {
-        return String(s)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;');
-      }
-
-      // ============================================================
-      // APLICAR FILTROS Y ACTUALIZAR VISTA
-      // ============================================================
-      function applyFilters() {
-        const rows = document.querySelectorAll('#bom-tbody tr');
-        rows.forEach(tr => {
-          const proyecto = tr.dataset.proyecto;
-          const cat = tr.dataset.cat;
-          let show = true;
-          if (activeProject !== 'Todos' && proyecto !== activeProject) show = false;
-          if (activeCategory !== 'Todos' && cat !== activeCategory) show = false;
-          tr.style.display = show ? '' : 'none';
-        });
-
-        // Calcular estadísticas
-        const filteredData = BOM_DATA_RAW.filter(r => {
-          if (activeProject !== 'Todos' && r.proyecto !== activeProject) return false;
-          if (activeCategory !== 'Todos' && r.cat !== activeCategory) return false;
-          return true;
-        });
-        const totalQty = filteredData.reduce((s, r) => s + parseInt(r.qty || 0, 10), 0);
-
-        // Actualizar resumen
-        const summary = document.getElementById('bom-summary');
-        summary.innerHTML = `
-          <div class="bom-stat"><div class="bs-l">Líneas</div><div class="bs-v">${filteredData.length}</div></div>
-          <div class="bom-stat"><div class="bs-l">Unidades</div><div class="bs-v">${totalQty}</div></div>
-          <div class="bom-stat"><div class="bs-l">Filtro Activo</div><div class="bs-v" style="font-size:0.75rem; font-family:'Rajdhani'; font-weight:700; text-transform:uppercase;">${activeProject !== 'Todos' ? 'P: ' + activeProject : ''} ${activeCategory !== 'Todos' ? ' | C: ' + activeCategory : 'Todos'}</div></div>
-        `;
-      }
-
-      // ============================================================
-      // CONSTRUCCIÓN DE CHIPS DE PROYECTO
-      // ============================================================
-      window.setProject = function(p) {
-        activeProject = p;
-        buildProjectChips();
-        applyFilters();
+      // Cacheo de referencias
+      const el = {
+        projectFilter: document.getElementById('bom-project-filter'),
+        categoryFilter: document.getElementById('bom-filter-bar'),
+        thead: document.getElementById('bom-thead'),
+        tbody: document.getElementById('bom-tbody'),
+        lines: document.getElementById('bom-lines'),
+        units: document.getElementById('bom-units'),
+        filterDesc: document.getElementById('bom-filter-desc')
       };
+
+      // Cacheo de filas (data index → <tr>) para filtrar sin tocar DOM.
+      // Refleja el orden de BOM_DATA_RAW porque renderTable() usa el mismo orden.
+      let rowRefs = [];
+
+      // ────────────────────────────────────────────────────────────
+      // Helpers
+      // ────────────────────────────────────────────────────────────
+      function esc(s) {
+        return String(s).replace(/[&<>"']/g, c => ({
+          '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        })[c]);
+      }
+
+      // ────────────────────────────────────────────────────────────
+      // Chips: se construyen UNA vez y solo se togglea la clase .on
+      // ────────────────────────────────────────────────────────────
+      const ICON_CANNON = `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="10" y="15" width="4" height="1.5" rx="0.5" fill="currentColor" opacity="0.5"/><rect x="3" y="10.5" width="17" height="3" rx="0.75" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="7.5" y="9.5" width="1.8" height="5" rx="0.4" fill="currentColor"/><rect x="11.1" y="9.5" width="1.8" height="5" rx="0.4" fill="currentColor"/><rect x="14.7" y="9.5" width="1.8" height="5" rx="0.4" fill="currentColor"/><rect x="1.5" y="10" width="2" height="4" rx="0.5" fill="currentColor"/><rect x="20.5" y="10.5" width="2" height="3" rx="0.5" fill="currentColor"/></svg>`;
+      const ICON_PCB    = `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="4.5" cy="6.5" r="0.8" fill="currentColor" opacity="0.5"/><circle cx="19.5" cy="6.5" r="0.8" fill="currentColor" opacity="0.5"/><circle cx="4.5" cy="17.5" r="0.8" fill="currentColor" opacity="0.5"/><circle cx="19.5" cy="17.5" r="0.8" fill="currentColor" opacity="0.5"/><rect x="9" y="9" width="6" height="6" rx="0.5" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="9" y1="10.5" x2="7" y2="10.5" stroke="currentColor" stroke-width="1"/><line x1="9" y1="12" x2="7" y2="12" stroke="currentColor" stroke-width="1"/><line x1="9" y1="13.5" x2="7" y2="13.5" stroke="currentColor" stroke-width="1"/><line x1="15" y1="10.5" x2="17" y2="10.5" stroke="currentColor" stroke-width="1"/><line x1="15" y1="12" x2="17" y2="12" stroke="currentColor" stroke-width="1"/><line x1="15" y1="13.5" x2="17" y2="13.5" stroke="currentColor" stroke-width="1"/></svg>`;
+
+      const CATEGORY_ICONS = {
+        Potencia:        `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>`,
+        Almacenamiento:  `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="8" width="16" height="12" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 8V5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v3" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>`,
+        Pasivos:         `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="5" width="10" height="14" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M12 5v14" stroke="currentColor" stroke-width="1.5"/></svg>`,
+        Semiconductores: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3" fill="currentColor"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>`,
+        Interfaz:        `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 8h8M8 12h8M8 16h4" stroke="currentColor" stroke-width="1.5"/></svg>`,
+        Conectores:      `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M7 7l4 4M17 7l-4 4M7 17l4-4M17 17l-4-4" stroke="currentColor" stroke-width="1.5"/></svg>`
+      };
+
+      function projectIcon(p) {
+        if (p === 'Cañón Gauss') return ICON_CANNON;
+        if (p === 'Placa de control') return ICON_PCB;
+        return '';
+      }
 
       function buildProjectChips() {
-        const container = document.getElementById('bom-project-filter');
-        const projects = ['Todos', 'Cañón Gauss', 'Placa de control'];
-        container.innerHTML = projects.map(p => {
-          let icon = '';
-          if (p === 'Cañón Gauss') {
-            icon = `<svg viewBox="0 0 24 24"><rect x="10" y="15" width="4" height="1.5" rx="0.5" fill="currentColor" opacity="0.5"/><rect x="3" y="10.5" width="17" height="3" rx="0.75" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="7.5" y="9.5" width="1.8" height="5" rx="0.4" fill="currentColor"/><rect x="11.1" y="9.5" width="1.8" height="5" rx="0.4" fill="currentColor"/><rect x="14.7" y="9.5" width="1.8" height="5" rx="0.4" fill="currentColor"/><rect x="1.5" y="10" width="2" height="4" rx="0.5" fill="currentColor"/><rect x="20.5" y="10.5" width="2" height="3" rx="0.5" fill="currentColor"/></svg>`;
-          } else if (p === 'Placa de control') {
-            icon = `<svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="4.5" cy="6.5" r="0.8" fill="currentColor" opacity="0.5"/><circle cx="19.5" cy="6.5" r="0.8" fill="currentColor" opacity="0.5"/><circle cx="4.5" cy="17.5" r="0.8" fill="currentColor" opacity="0.5"/><circle cx="19.5" cy="17.5" r="0.8" fill="currentColor" opacity="0.5"/><rect x="9" y="9" width="6" height="6" rx="0.5" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="9" y1="10.5" x2="7" y2="10.5" stroke="currentColor" stroke-width="1"/><line x1="9" y1="12" x2="7" y2="12" stroke="currentColor" stroke-width="1"/><line x1="9" y1="13.5" x2="7" y2="13.5" stroke="currentColor" stroke-width="1"/><line x1="15" y1="10.5" x2="17" y2="10.5" stroke="currentColor" stroke-width="1"/><line x1="15" y1="12" x2="17" y2="12" stroke="currentColor" stroke-width="1"/><line x1="15" y1="13.5" x2="17" y2="13.5" stroke="currentColor" stroke-width="1"/></svg>`;
-          }
-          const activeClass = p === activeProject ? ' on' : '';
-          return `<button class="bom-project-chip${activeClass}" onclick="setProject('${p}')">${icon}${p}</button>`;
-        }).join('');
+        el.projectFilter.innerHTML = PROJECTS.map(p =>
+          `<button type="button" class="bom-project-chip" data-project="${esc(p)}">${projectIcon(p)}${esc(p)}</button>`
+        ).join('');
       }
-
-      // ============================================================
-      // CONSTRUCCIÓN DE CHIPS DE CATEGORÍA
-      // ============================================================
-      window.setCategory = function(c) {
-        activeCategory = c;
-        buildCategoryChips();
-        applyFilters();
-      };
 
       function buildCategoryChips() {
-        const container = document.getElementById('bom-filter-bar');
-        const tags = [...new Set(BOM_DATA_RAW.map(r => r.cat))];
-        container.innerHTML = ['Todos', ...tags].map(c => {
-          let icon = '';
-          switch (c) {
-            case 'Control': icon = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="1.5"/></svg>'; break;
-            case 'Potencia': icon = '<svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>'; break;
-            case 'Almacenamiento': icon = '<svg viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="12" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 8V5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v3" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>'; break;
-            case 'Pasivos': icon = '<svg viewBox="0 0 24 24"><rect x="7" y="5" width="10" height="14" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M12 5v14" stroke="currentColor" stroke-width="1.5"/></svg>'; break;
-            case 'Semiconductores': icon = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="currentColor"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>'; break;
-            case 'Interfaz': icon = '<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 8h8M8 12h8M8 16h4" stroke="currentColor" stroke-width="1.5"/></svg>'; break;
-            case 'Conectores': icon = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M7 7l4 4M17 7l-4 4M7 17l4-4M17 17l-4-4" stroke="currentColor" stroke-width="1.5"/></svg>'; break;
-            default: icon = '';
-          }
-          const activeClass = c === activeCategory ? ' on' : '';
-          return `<button class="bom-filter-chip${activeClass}" onclick="setCategory('${c}')">${icon}${c}</button>`;
-        }).join('');
+        el.categoryFilter.innerHTML = CATEGORIES.map(c =>
+          `<button type="button" class="bom-filter-chip" data-category="${esc(c)}">${CATEGORY_ICONS[c] || ''}${esc(c)}</button>`
+        ).join('');
       }
 
-      // ============================================================
-      // RENDERIZAR TABLA
-      // ============================================================
-      function renderTable() {
-        const thead = document.getElementById('bom-thead');
-        const tbody = document.getElementById('bom-tbody');
+      function updateChipStates() {
+        el.projectFilter.querySelectorAll('.bom-project-chip').forEach(btn => {
+          btn.classList.toggle('on', btn.dataset.project === activeProject);
+        });
+        el.categoryFilter.querySelectorAll('.bom-filter-chip').forEach(btn => {
+          btn.classList.toggle('on', btn.dataset.category === activeCategory);
+        });
+      }
 
-        thead.innerHTML = `
+      // ────────────────────────────────────────────────────────────
+      // Filtros: un solo pase sobre los datos, un solo pase sobre las filas.
+      // ────────────────────────────────────────────────────────────
+      function applyFilters() {
+        const filtered = BOM_DATA_RAW.filter(r =>
+          (activeProject  === 'Todos' || r.proyecto === activeProject) &&
+          (activeCategory === 'Todos' || r.cat      === activeCategory)
+        );
+
+        // Actualizar visibilidad usando el cache de filas (sin querySelectorAll)
+        const visible = new Set(filtered.map(r => r.ref));
+        for (let i = 0; i < rowRefs.length; i++) {
+          rowRefs[i].style.display = visible.has(BOM_DATA_RAW[i].ref) ? '' : 'none';
+        }
+
+        // Stats
+        const totalQty = filtered.reduce((s, r) => s + (Number(r.qty) || 0), 0);
+        el.lines.textContent = filtered.length;
+        el.units.textContent = totalQty;
+
+        // Filtro activo (sin el bug "P: X Todos")
+        const parts = [];
+        if (activeProject  !== 'Todos') parts.push('P: ' + activeProject);
+        if (activeCategory !== 'Todos') parts.push('C: ' + activeCategory);
+        el.filterDesc.textContent = parts.length ? parts.join(' · ') : 'Todos';
+      }
+
+      // ────────────────────────────────────────────────────────────
+      // Tabla: construir una vez, cachear filas
+      // ────────────────────────────────────────────────────────────
+      function renderTable() {
+        el.thead.innerHTML = `
           <tr>
-            <th>Referencia</th>
-            <th>Cant.</th>
-            <th>Valor / Componente</th>
-            <th>Descripción</th>
-            <th>Clasificación y Proyecto</th>
+            <th scope="col">Referencia</th>
+            <th scope="col">Cant.</th>
+            <th scope="col">Valor / Componente</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Clasificación y Proyecto</th>
           </tr>
         `;
 
-        const fragment = document.createDocumentFragment();
+        // Limpieza defensiva por si se llama dos veces
+        el.tbody.innerHTML = '';
+        rowRefs = [];
+
+        const frag = document.createDocumentFragment();
         BOM_DATA_RAW.forEach(r => {
           const tr = document.createElement('tr');
           tr.dataset.cat = r.cat;
           tr.dataset.proyecto = r.proyecto;
           tr.innerHTML = `
-            <td data-label="Referencia" style="font-family:'Black Ops One',serif;font-size:.78rem;color:var(--teal)">${escHtml(r.ref)}</td>
-            <td data-label="Cant."><span class="bom-badge ok">${escHtml(String(r.qty))}</span></td>
-            <td data-label="Valor" style="color:#fff;font-weight:600">${escHtml(r.value)}</td>
-            <td data-label="Descripción">${escHtml(r.desc || '')}</td>
+            <td data-label="Referencia" style="font-family:'Black Ops One',serif;font-size:.78rem;color:var(--teal)">${esc(r.ref)}</td>
+            <td data-label="Cant."><span class="bom-badge ok">${esc(String(r.qty))}</span></td>
+            <td data-label="Valor" style="color:#fff;font-weight:600">${esc(r.value)}</td>
+            <td data-label="Descripción">${esc(r.desc || '')}</td>
             <td data-label="Clasificación">
-              <span class="bom-badge warn" style="font-size:.58rem; margin-bottom: 4px; display: inline-block;">${escHtml(r.cat)}</span>
-              <span class="bom-badge ok" style="font-size:.58rem; display: inline-block;">${escHtml(r.proyecto)}</span>
+              <span class="bom-badge warn" style="font-size:.58rem;margin-bottom:4px;display:inline-block;">${esc(r.cat)}</span>
+              <span class="bom-badge ok" style="font-size:.58rem;display:inline-block;">${esc(r.proyecto)}</span>
             </td>
           `;
-          fragment.appendChild(tr);
+          frag.appendChild(tr);
+          rowRefs.push(tr);
         });
-        tbody.appendChild(fragment);
+        el.tbody.appendChild(frag);
       }
 
-      // ============================================================
-      // INICIALIZACIÓN
-      // ============================================================
+      // ────────────────────────────────────────────────────────────
+      // Event delegation: un listener por contenedor, no por chip
+      // ────────────────────────────────────────────────────────────
+      el.projectFilter.addEventListener('click', e => {
+        const btn = e.target.closest('.bom-project-chip');
+        if (!btn || btn.dataset.project === activeProject) return;
+        activeProject = btn.dataset.project;
+        updateChipStates();
+        applyFilters();
+      });
+
+      el.categoryFilter.addEventListener('click', e => {
+        const btn = e.target.closest('.bom-filter-chip');
+        if (!btn || btn.dataset.category === activeCategory) return;
+        activeCategory = btn.dataset.category;
+        updateChipStates();
+        applyFilters();
+      });
+
+      // ────────────────────────────────────────────────────────────
+      // Init
+      // ────────────────────────────────────────────────────────────
       function init() {
         renderTable();
         buildProjectChips();
         buildCategoryChips();
+        updateChipStates();
         applyFilters();
       }
 
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
+        document.addEventListener('DOMContentLoaded', init, { once: true });
       } else {
         init();
       }

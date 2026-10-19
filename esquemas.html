@@ -7,20 +7,16 @@
   <link rel="icon" href="Imagenes/icono.png" type="image/x-icon">
   <link rel="stylesheet" href="styles.css">
 </head>
-<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-1878DQW9YW"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-1878DQW9YW');
 </script>
 <body>
 
-  <!-- ============================================================
-       BARRA SUPERIOR FIJA (HEADER)
-       ============================================================ -->
+  <!-- =================== HEADER =================== -->
   <header id="topbar">
     <a href="index.html" class="logo-link">
       <div id="topbar-left">
@@ -36,16 +32,14 @@
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
           <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
           <polyline points="9 22 9 12 15 12 15 22"/>
-        </svg>
-        Home
+        </svg> Home
       </a>
       <a href="esquemas.html" class="btn-nav active">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
           <polygon points="12 2 2 7 12 12 22 7 12 2"/>
           <polyline points="2 17 12 22 22 17"/>
           <polyline points="2 12 12 17 22 12"/>
-        </svg>
-        Esquemas
+        </svg> Esquemas
       </a>
       <a href="bom.html" class="btn-nav">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -54,8 +48,7 @@
           <line x1="16" y1="13" x2="8" y2="13"/>
           <line x1="16" y1="17" x2="8" y2="17"/>
           <polyline points="10 9 9 9 8 9"/>
-        </svg>
-        BOM
+        </svg> BOM
       </a>
       <a href="equipo.html" class="btn-nav">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -63,108 +56,84 @@
           <circle cx="9" cy="7" r="4"/>
           <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
           <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-        </svg>
-        Equipo
+        </svg> Equipo
       </a>
       <a href="calculadora.html" class="btn-nav">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="2" width="18" height="20" rx="2.5"/>
           <rect x="6" y="5" width="12" height="4" rx="1" fill="currentColor" fill-opacity="0.25"/>
-          <circle cx="8" cy="12" r="1" fill="currentColor"/>
-          <circle cx="12" cy="12" r="1" fill="currentColor"/>
-          <circle cx="16" cy="12" r="1" fill="currentColor"/>
-          <circle cx="8" cy="16" r="1" fill="currentColor"/>
-          <circle cx="12" cy="16" r="1" fill="currentColor"/>
-          <circle cx="16" cy="16" r="1" fill="currentColor"/>
-          <circle cx="8" cy="19" r="1" fill="currentColor"/>
-          <line x1="12" y1="19" x2="16" y2="19"/>
-        </svg>
-        Calculadora
+          <circle cx="8" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/>
+          <circle cx="16" cy="12" r="1" fill="currentColor"/><circle cx="8" cy="16" r="1" fill="currentColor"/>
+          <circle cx="12" cy="16" r="1" fill="currentColor"/><circle cx="16" cy="16" r="1" fill="currentColor"/>
+          <circle cx="8" cy="19" r="1" fill="currentColor"/><line x1="12" y1="19" x2="16" y2="19"/>
+        </svg> Calculadora
       </a>
     </div>
   </header>
 
-  <!-- ============================================================
-       NAVEGACIÓN MÓVIL INFERIOR
-       ============================================================ -->
+  <!-- =================== NAV MÓVIL =================== -->
   <div id="mobile-nav">
     <a href="index.html" class="mnbtn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
         <polyline points="9 22 9 12 15 12 15 22"/>
-      </svg>
-      <span>Home</span>
+      </svg><span>Home</span>
     </a>
     <a href="esquemas.html" class="mnbtn active">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <polygon points="12 2 2 7 12 12 22 7 12 2"/>
-        <polyline points="2 17 12 22 22 17"/>
-        <polyline points="2 12 12 17 22 12"/>
-      </svg>
-      <span>Esquemas</span>
+        <polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>
+      </svg><span>Esquemas</span>
     </a>
     <a href="bom.html" class="mnbtn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
         <polyline points="14 2 14 8 20 8"/>
-        <line x1="16" y1="13" x2="8" y2="13"/>
-        <line x1="16" y1="17" x2="8" y2="17"/>
+        <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
         <polyline points="10 9 9 9 8 9"/>
-      </svg>
-      <span>BOM</span>
+      </svg><span>BOM</span>
     </a>
     <a href="equipo.html" class="mnbtn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-        <circle cx="9" cy="7" r="4"/>
-        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-      </svg>
-      <span>Equipo</span>
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg><span>Equipo</span>
     </a>
     <a href="calculadora.html" class="mnbtn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="4" y="2" width="16" height="20" rx="2.5"/>
         <rect x="7" y="5" width="10" height="4" rx="1" fill="currentColor" fill-opacity="0.2"/>
-        <circle cx="8.5" cy="12" r="0.9" fill="currentColor"/>
-        <circle cx="12" cy="12" r="0.9" fill="currentColor"/>
-        <circle cx="15.5" cy="12" r="0.9" fill="currentColor"/>
-        <circle cx="8.5" cy="16" r="0.9" fill="currentColor"/>
-        <circle cx="12" cy="16" r="0.9" fill="currentColor"/>
-        <line x1="12" y1="19" x2="15.5" y2="19"/>
-      </svg>
-      <span>Calc</span>
+        <circle cx="8.5" cy="12" r="0.9" fill="currentColor"/><circle cx="12" cy="12" r="0.9" fill="currentColor"/>
+        <circle cx="15.5" cy="12" r="0.9" fill="currentColor"/><circle cx="8.5" cy="16" r="0.9" fill="currentColor"/>
+        <circle cx="12" cy="16" r="0.9" fill="currentColor"/><line x1="12" y1="19" x2="15.5" y2="19"/>
+      </svg><span>Calc</span>
     </a>
   </div>
 
-  <!-- ============================================================
-       CONTENIDO PRINCIPAL
-       ============================================================ -->
+  <!-- =================== CONTENIDO =================== -->
   <div class="container">
 
-    <!-- Cabecera -->
     <div class="section-header">
       <h1>Planos del Sistema</h1>
       <p>Documentación técnica y diagramas de flujo del Cañón de Gauss</p>
     </div>
 
-    <!-- Pestañas de navegación -->
     <div class="tabs-nav">
-      <button class="tab-btn active" onclick="switchTab('full')">Esquema Completo</button>
-      <button class="tab-btn" onclick="switchTab('sections')">Planos Seccionales</button>
+      <!-- FIX: pasar `this` explícitamente en lugar de depender de `event.currentTarget` -->
+      <button type="button" class="tab-btn active" onclick="switchTab('full', this)">Esquema Completo</button>
+      <button type="button" class="tab-btn" onclick="switchTab('sections', this)">Planos Seccionales</button>
     </div>
 
-    <!-- Pestaña: Esquema Completo -->
     <div id="tab-full" class="tab-content active">
       <div class="full-schem-wrap">
         <div class="full-preview-box" onclick="openPZ('Esquema Completo', 'esquemas/esquema-completo.svg')">
-          <img src="esquemas/esquema-completo.svg" alt="Esquema General HL-EAD">
+          <img src="esquemas/esquema-completo.svg" alt="Esquema General HL-EAD"
+               draggable="false" decoding="async">
         </div>
-        <div class="action-bar"></div>
+        <!-- (eliminado div.action-bar vacío) -->
       </div>
     </div>
 
-    <!-- Pestaña: Planos Seccionales -->
     <div id="tab-sections" class="tab-content">
       <div class="sec-grid">
 
@@ -174,7 +143,8 @@
             <span class="sec-title-zoom">Click para Zoom</span>
           </div>
           <div class="sec-img-wrap">
-            <img src="esquemas/placa-de-filtrado.svg" alt="Etapa 1">
+            <img src="esquemas/placa-de-filtrado.svg" alt="Placa de filtrado"
+                 loading="lazy" decoding="async" draggable="false">
           </div>
         </div>
 
@@ -184,7 +154,8 @@
             <span class="sec-title-zoom">Click para Zoom</span>
           </div>
           <div class="sec-img-wrap">
-            <img src="esquemas/fuente-de-alimentacion.svg" alt="Etapa 2">
+            <img src="esquemas/fuente-de-alimentacion.svg" alt="Fuente de alimentación"
+                 loading="lazy" decoding="async" draggable="false">
           </div>
         </div>
 
@@ -194,7 +165,8 @@
             <span class="sec-title-zoom">Click para Zoom</span>
           </div>
           <div class="sec-img-wrap">
-            <img src="esquemas/modulo-bobina.svg" alt="Módulo Control">
+            <img src="esquemas/modulo-bobina.svg" alt="Módulo de control"
+                 loading="lazy" decoding="async" draggable="false">
           </div>
         </div>
 
@@ -204,7 +176,8 @@
             <span class="sec-title-zoom">Click para Zoom</span>
           </div>
           <div class="sec-img-wrap">
-            <img src="esquemas/placa-para-leds.svg" alt="Banco de Capacitores">
+            <img src="esquemas/placa-para-leds.svg" alt="Placa de LEDs"
+                 loading="lazy" decoding="async" draggable="false">
           </div>
         </div>
 
@@ -213,23 +186,22 @@
 
   </div>
 
-  <!-- ============================================================
-       VISOR MODAL PAN & ZOOM
-       ============================================================ -->
-  <div id="pz-viewer">
+  <!-- =================== VISOR MODAL =================== -->
+  <div id="pz-viewer" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Visor de esquemas">
     <div id="pz-topbar">
       <div id="pz-title">ESQUEMA TÉCNICO</div>
       <div id="pz-controls">
-        <button class="pz-btn" onclick="zoomOut()" title="Alejar">−</button>
-        <button class="pz-btn" onclick="zoomIn()" title="Acercar">+</button>
-        <button class="pz-btn" onclick="resetZoom()" title="100%">1:1</button>
-        <button class="pz-btn pz-close-btn" onclick="closePZ()" title="Cerrar">✕</button>
+        <button type="button" class="pz-btn" onclick="zoomOut()" title="Alejar" aria-label="Alejar">−</button>
+        <button type="button" class="pz-btn" onclick="zoomIn()" title="Acercar" aria-label="Acercar">+</button>
+        <button type="button" class="pz-btn" onclick="resetZoom()" title="Ajustar a pantalla">1:1</button>
+        <button type="button" class="pz-btn pz-close-btn" onclick="closePZ()" title="Cerrar" aria-label="Cerrar">✕</button>
       </div>
     </div>
 
     <div id="pz-stage">
       <div id="pz-content">
-        <img id="pz-img" src="esquemas/esquema-completo.svg" alt="esquema Ampliado">
+        <!-- FIX: draggable=false evita el drag nativo que rompía el pan -->
+        <img id="pz-img" src="esquemas/esquema-completo.svg" alt="Esquema ampliado" draggable="false">
       </div>
     </div>
 
@@ -238,235 +210,270 @@
     </div>
   </div>
 
-  <!-- ============================================================
-       JAVASCRIPT – LÓGICA DE PESTAÑAS Y VISOR
-       ============================================================ -->
   <script>
     // ==========================================================
-    // 1. CAMBIO DE PESTAÑAS
+    // 1. PESTAÑAS — sin depender de `event.currentTarget`
     // ==========================================================
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab-content').forEach(function(c) {
-        c.classList.remove('active');
-      });
-      document.querySelectorAll('.tab-btn').forEach(function(b) {
-        b.classList.remove('active');
-      });
-
-      document.getElementById('tab-' + tabId).classList.add('active');
-      event.currentTarget.classList.add('active');
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      const tab = document.getElementById('tab-' + tabId);
+      if (tab) tab.classList.add('active');
+      if (btn) btn.classList.add('active');
     }
+    window.switchTab = switchTab;
 
     // ==========================================================
-    // 2. VISOR INTERACTIVO PAN & ZOOM
+    // 2. VISOR PAN & ZOOM
     // ==========================================================
+    const pz       = document.getElementById('pz-viewer');
+    const pzTitle  = document.getElementById('pz-title');
+    const pzImg    = document.getElementById('pz-img');
+    const zVal     = document.getElementById('pz-zoom-val');
+    const pzStage  = document.getElementById('pz-stage');
 
-    // Referencias DOM
-    var pz = document.getElementById('pz-viewer');
-    var pzTitle = document.getElementById('pz-title');
-    var pzImg = document.getElementById('pz-img');
-    var zVal = document.getElementById('pz-zoom-val');
-    var pzStage = document.getElementById('pz-stage');
+    // FIX #2: evitar drag nativo de la imagen (rompía el pan)
+    pzImg.draggable = false;
+    pzImg.addEventListener('dragstart', e => e.preventDefault());
 
-    // Estado
-    var scale = 1;
-    var minScale = 1;
-    var pX = 0,
-      pY = 0;
-    var isDrag = false;
-    var sX = 0,
-      sY = 0;
-    var touchStartX = 0,
-      touchStartY = 0;
+    // FIX #17: desactivar gestos del navegador en el stage
+    pzStage.style.touchAction = 'none';
 
-    // Abrir visor
+    // Estado del visor
+    let scale = 1, minScale = 1;
+    let pX = 0, pY = 0;
+    let imgW = 0, imgH = 0;            // cacheado (optimización #12)
+    let isDrag = false, sX = 0, sY = 0;
+
+    // ---------- Abrir / cerrar ----------
     function openPZ(title, src) {
-      pzTitle.innerText = title.toUpperCase();
-      pzImg.src = src;
+      if (!title || !src) return;
+      pzTitle.textContent = String(title).toUpperCase();
       pz.style.display = 'flex';
+      pz.setAttribute('aria-hidden', 'false');
 
-      if (pzImg.complete) {
-        initViewer();
-      } else {
-        pzImg.onload = initViewer;
+      const ready = () => {
+        if (pz.style.display !== 'flex') return;
+        imgW = pzImg.naturalWidth  || 800;
+        imgH = pzImg.naturalHeight || 600;
+        calculateMinScale();
+        resetZoom();
+      };
+
+      // FIX #8: reutilizar carga si es la misma imagen
+      if (pzImg.dataset.loaded === '1' && pzImg.getAttribute('src') === src
+          && pzImg.naturalWidth > 0) {
+        ready();
+        return;
+      }
+      pzImg.dataset.loaded = '0';
+      pzImg.onload  = () => { pzImg.dataset.loaded = '1'; ready(); };
+      pzImg.onerror = () => console.warn('No se pudo cargar la imagen:', src);
+      pzImg.src = src;
+
+      // FIX #7: por si estaba en caché y `onload` no vuelve a dispararse
+      if (pzImg.complete && pzImg.naturalWidth > 0) {
+        pzImg.dataset.loaded = '1';
+        ready();
       }
     }
 
-    // Cerrar visor
     function closePZ() {
       pz.style.display = 'none';
+      pz.setAttribute('aria-hidden', 'true');
+      isDrag = false;
     }
+    window.openPZ  = openPZ;
+    window.closePZ = closePZ;
 
-    // Calcular escala mínima (ajuste perfecto)
+    // ---------- Cálculos ----------
     function calculateMinScale() {
-      var stageW = pzStage.clientWidth;
-      var stageH = pzStage.clientHeight;
-      var imgW = pzImg.naturalWidth || pzImg.clientWidth || 800;
-      var imgH = pzImg.naturalHeight || pzImg.clientHeight || 600;
-
-      var scaleX = (stageW * 0.9) / imgW;
-      var scaleY = (stageH * 0.75) / imgH;
-      minScale = Math.min(scaleX, scaleY);
+      const sw = pzStage.clientWidth;
+      const sh = pzStage.clientHeight;
+      minScale = Math.min((sw * 0.92) / imgW, (sh * 0.80) / imgH);
+      if (!isFinite(minScale) || minScale <= 0) minScale = 1;  // FIX #6
     }
 
-    function initViewer() {
-      calculateMinScale();
-      resetZoom();
-    }
-
-    // Restringir panning
     function clampPan() {
-      var stageW = pzStage.clientWidth;
-      var stageH = pzStage.clientHeight;
-      var imgW = pzImg.naturalWidth || pzImg.clientWidth || 800;
-      var imgH = pzImg.naturalHeight || pzImg.clientHeight || 600;
-
-      var scaledW = imgW * scale;
-      var scaledH = imgH * scale;
-
-      if (scaledW > stageW) {
-        var maxPX = (scaledW - stageW) / 2;
-        pX = Math.max(-maxPX, Math.min(maxPX, pX));
-      } else {
-        pX = 0;
-      }
-
-      if (scaledH > stageH) {
-        var maxPY = (scaledH - stageH) / 2;
-        pY = Math.max(-maxPY, Math.min(maxPY, pY));
-      } else {
-        pY = 0;
-      }
+      const sw = pzStage.clientWidth;
+      const sh = pzStage.clientHeight;
+      const sW = imgW * scale;
+      const sH = imgH * scale;
+      if (sW > sw) {
+        const max = (sW - sw) / 2;
+        pX = Math.max(-max, Math.min(max, pX));
+      } else pX = 0;
+      if (sH > sh) {
+        const max = (sH - sh) / 2;
+        pY = Math.max(-max, Math.min(max, pY));
+      } else pY = 0;
     }
 
-    // Aplicar transformación
+    // Optimización #11: no reescribir el texto si no cambió
+    let _lastPct = '';
     function updateTrsf(smooth) {
       clampPan();
+      pzImg.style.transition = smooth
+        ? 'transform 0.22s cubic-bezier(0.25, 1, 0.5, 1)'
+        : 'none';
+      // Optimización #14: translate3d → compositor GPU
+      pzImg.style.transform = `translate3d(${pX}px, ${pY}px, 0) scale(${scale})`;
 
-      if (smooth) {
-        pzImg.style.transition = "transform 0.25s cubic-bezier(0.25, 1, 0.5, 1)";
-      } else {
-        pzImg.style.transition = "none";
+      const pct = Math.round((scale / minScale) * 100) + '%';
+      if (pct !== _lastPct) {
+        _lastPct = pct;
+        zVal.textContent = pct;
       }
-
-      pzImg.style.transform = "translate(" + pX + "px, " + pY + "px) scale(" + scale + ")";
-      zVal.innerText = Math.round((scale / minScale) * 100) + '%';
     }
 
-    // Controles de zoom
     function resetZoom() {
       scale = minScale;
-      pX = 0;
-      pY = 0;
+      pX = 0; pY = 0;
       updateTrsf(true);
     }
+    window.resetZoom = resetZoom;
 
-    function zoomIn() {
-      scale = Math.min(scale * 1.30, minScale * 8);
-      updateTrsf(true);
+    // Zoom a un punto arbitrario del stage (mx,my = relativo al centro del stage)
+    function applyZoomAt(factor, mx, my, smooth) {
+      const newScale = Math.max(minScale, Math.min(scale * factor, minScale * 8));
+      const k = newScale / scale;
+      if (k === 1) return;
+      pX = mx - k * (mx - pX);
+      pY = my - k * (my - pY);
+      scale = newScale;
+      updateTrsf(smooth);
     }
 
-    function zoomOut() {
-      scale = Math.max(scale / 1.30, minScale);
-      updateTrsf(true);
-    }
+    // Botones +/− → zoom al centro del stage
+    function zoomIn()  { applyZoomAt(1.30, 0, 0, true); }
+    function zoomOut() { applyZoomAt(1 / 1.30, 0, 0, true); }
+    window.zoomIn  = zoomIn;
+    window.zoomOut = zoomOut;
 
-    // ==========================================================
-    // 3. EVENTOS DEL VISOR
-    // ==========================================================
-
-    // Arrastre con mouse
-    pz.addEventListener('mousedown', function(e) {
-      if (e.target.closest('#pz-topbar') || e.target.closest('#pz-controls')) return;
-
+    // ---------- Mouse: pan ----------
+    pzStage.addEventListener('mousedown', e => {
+      if (e.button !== 0) return;
+      e.preventDefault();
       isDrag = true;
       sX = e.clientX - pX;
       sY = e.clientY - pY;
       pzStage.classList.add('dragging');
     });
 
-    window.addEventListener('mousemove', function(e) {
+    window.addEventListener('mousemove', e => {
       if (!isDrag) return;
       pX = e.clientX - sX;
       pY = e.clientY - sY;
       updateTrsf(false);
-      sX = e.clientX - pX;
-      sY = e.clientY - pY;
     });
 
-    window.addEventListener('mouseup', function() {
+    window.addEventListener('mouseup', () => {
+      if (!isDrag) return;
       isDrag = false;
       pzStage.classList.remove('dragging');
     });
 
-    // Rueda del mouse (zoom)
-    pz.addEventListener('wheel', function(e) {
+    // ---------- Rueda: zoom en el cursor (optimización #13) ----------
+    let _wheelRAF = 0, _wheelDelta = 0, _wheelCX = 0, _wheelCY = 0;
+    pz.addEventListener('wheel', e => {
+      // FIX #3: no interferir con la topbar
+      if (e.target.closest('#pz-topbar')) return;
       e.preventDefault();
-      if (e.deltaY < 0) {
-        zoomIn();
-      } else {
-        zoomOut();
-      }
+
+      _wheelDelta += e.deltaY;
+      _wheelCX = e.clientX;
+      _wheelCY = e.clientY;
+
+      if (_wheelRAF) return;
+      _wheelRAF = requestAnimationFrame(() => {
+        _wheelRAF = 0;
+        if (!_wheelDelta) return;
+        // Rueda exponencial (más suave en trackpads)
+        const factor = Math.exp(-_wheelDelta * 0.0015);
+        _wheelDelta = 0;
+
+        const r = pzStage.getBoundingClientRect();
+        const mx = _wheelCX - r.left - r.width  / 2;
+        const my = _wheelCY - r.top  - r.height / 2;
+        applyZoomAt(factor, mx, my, true);
+      });
     }, { passive: false });
 
-    // Soporte táctil (pinch y pan)
-    var lastTouchDistance = 0;
+    // ---------- Touch: pan + pinch centrado (FIX #4) ----------
+    let lastDist = 0, lastMidX = 0, lastMidY = 0;
 
-    function getTouchDistance(touch1, touch2) {
-      var dx = touch1.clientX - touch2.clientX;
-      var dy = touch1.clientY - touch2.clientY;
-      return Math.sqrt(dx * dx + dy * dy);
-    }
+    const touchDist = (a, b) =>
+      Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
 
-    pz.addEventListener('touchstart', function(e) {
+    pzStage.addEventListener('touchstart', e => {
       if (e.touches.length === 2) {
         e.preventDefault();
-        lastTouchDistance = getTouchDistance(e.touches[0], e.touches[1]);
+        lastDist = touchDist(e.touches[0], e.touches[1]);
+        lastMidX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+        lastMidY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
         isDrag = false;
       } else if (e.touches.length === 1) {
         isDrag = true;
-        touchStartX = e.touches[0].clientX - pX;
-        touchStartY = e.touches[0].clientY - pY;
+        sX = e.touches[0].clientX - pX;
+        sY = e.touches[0].clientY - pY;
       }
     }, { passive: false });
 
-    pz.addEventListener('touchmove', function(e) {
+    pzStage.addEventListener('touchmove', e => {
       if (e.touches.length === 2) {
         e.preventDefault();
-        var currentDistance = getTouchDistance(e.touches[0], e.touches[1]);
-        var scaleFactor = currentDistance / lastTouchDistance;
+        const d = touchDist(e.touches[0], e.touches[1]);
+        if (lastDist > 0) {
+          const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+          const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+          const r = pzStage.getBoundingClientRect();
+          const mx0 = lastMidX - r.left - r.width  / 2;
+          const my0 = lastMidY - r.top  - r.height / 2;
+          const mx1 = midX     - r.left - r.width  / 2;
+          const my1 = midY     - r.top  - r.height / 2;
 
-        scale *= scaleFactor;
-        scale = Math.max(minScale, Math.min(scale, minScale * 8));
+          let k = d / lastDist;
+          const newScale = Math.max(minScale, Math.min(scale * k, minScale * 8));
+          k = newScale / scale;
 
-        updateTrsf(false);
-        lastTouchDistance = currentDistance;
+          // Fórmula correcta: preserva el punto de la imagen bajo el pinch
+          pX = mx1 - k * (mx0 - pX);
+          pY = my1 - k * (my0 - pY);
+          scale = newScale;
+          updateTrsf(false);
+
+          lastMidX = midX;
+          lastMidY = midY;
+        }
+        lastDist = d;
       } else if (e.touches.length === 1 && isDrag) {
-        pX = e.touches[0].clientX - touchStartX;
-        pY = e.touches[0].clientY - touchStartY;
+        pX = e.touches[0].clientX - sX;
+        pY = e.touches[0].clientY - sY;
         updateTrsf(false);
-
-        touchStartX = e.touches[0].clientX - pX;
-        touchStartY = e.touches[0].clientY - pY;
       }
     }, { passive: false });
 
-    pz.addEventListener('touchend', function() {
-      isDrag = false;
-      lastTouchDistance = 0;
+    pzStage.addEventListener('touchend', e => {
+      if (e.touches.length < 2) lastDist = 0;
+      if (e.touches.length === 0) isDrag = false;
     });
 
-    // Teclado: ESC para cerrar
-    window.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') closePZ();
+    // ---------- Teclado ----------
+    window.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && pz.style.display === 'flex') closePZ();
     });
 
-    // Recalcular al redimensionar
-    window.addEventListener('resize', function() {
-      if (pz.style.display === 'flex') {
+    // ---------- Resize (optimización #15) ----------
+    let _resizeRAF = 0;
+    window.addEventListener('resize', () => {
+      if (pz.style.display !== 'flex') return;
+      if (_resizeRAF) return;
+      _resizeRAF = requestAnimationFrame(() => {
+        _resizeRAF = 0;
         calculateMinScale();
+        if (scale < minScale) scale = minScale;
         updateTrsf(true);
-      }
+      });
     });
   </script>
 

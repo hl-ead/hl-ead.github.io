@@ -6,16 +6,19 @@
   <title>HL-EAD · Cañón de Gauss</title>
   <link rel="icon" href="Imagenes/icono.png" type="image/x-icon">
   <link rel="stylesheet" href="styles.css">
+
+  <!-- Google Analytics corregido y en el head -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ESQB0M5W6R"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ESQB0M5W6R');
+  </script>
 </head>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-1878DQW9YW"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-1878DQW9YW');
-</script>
 <body class="page-index">
 
+  <!-- =================== HEADER =================== -->
   <header id="topbar">
     <a href="index.html" class="logo-link">
       <div id="topbar-left">
@@ -70,6 +73,7 @@
     </div>
   </header>
 
+  <!-- =================== NAV MÓVIL =================== -->
   <div id="mobile-nav">
     <a href="index.html" class="mnbtn active">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -108,6 +112,7 @@
     </a>
   </div>
 
+  <!-- =================== UI FLOTANTE =================== -->
   <div id="hint">
     <div id="hint-inner">
       <div class="hdot"></div>
@@ -126,6 +131,7 @@
 
   <div id="tip"></div>
 
+  <!-- =================== PANEL LATERAL =================== -->
   <div id="panel">
     <div class="drag-bar"></div>
     <button id="close-panel" onclick="closePanel()">✕</button>
@@ -146,6 +152,7 @@
     </div>
   </div>
 
+  <!-- =================== VISOR PAN & ZOOM =================== -->
   <div id="pz-viewer">
     <div id="pz-topbar">
       <div id="pz-title">Esquemático</div>
@@ -168,6 +175,9 @@
     </div>
   </div>
 
+  <!-- ============================================================
+       LIBRERÍAS 3D Y SCRIPT DE RENDERIZADO
+       ============================================================ -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://unpkg.com/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
   <script src="https://unpkg.com/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
@@ -338,11 +348,8 @@
     const model = new THREE.Group();
     scene.add(model);
     const clickables = [];
-    // Map id → array de clickables (lookup O(1) en setHighlight)
     const clickablesById = {};
 
-    // Fallback de createImageBitmap: algunos dispositivos no pueden decodificar
-    // ciertos formatos dentro del GLB. Esto evita que la carga falle por completo.
     const _origCreateImageBitmap = window.createImageBitmap;
     window.createImageBitmap = function(source) {
       return _origCreateImageBitmap(source).catch(() => {
@@ -361,8 +368,6 @@
     gltfLoader.setDRACOLoader(dracoLoader);
 
     function prepararModelo(root) {
-      // Cache de materiales: si dos meshes comparten material original,
-      // reutilizamos el mismo MeshStandardMaterial en vez de crear uno por mesh.
       const matCache = new Map();
       root.traverse(child => {
         if (!child.isMesh) return;
@@ -410,7 +415,6 @@
       }, null, onError);
     }
 
-    // Carga progresiva: low-poly primero, luego HD lo reemplaza
     loadModel('gauss_cannon_low.glb', lowRoot => {
       model.add(lowRoot);
       model.rotation.y = 0.3;
@@ -426,7 +430,6 @@
     // ═══════════════════════════════════════════════════════════════
     // HIGHLIGHT / INTERACTION
     // ═══════════════════════════════════════════════════════════════
-    // Materiales de highlight compartidos — se evita clonar en cada hover.
     const HIGHLIGHT_ORANGE = new THREE.MeshStandardMaterial({
       color: 0xff8c2a, roughness: .25, metalness: .5,
       emissive: 0xff8c2a, emissiveIntensity: .35
@@ -435,7 +438,6 @@
       color: 0x00d9b0, roughness: .25, metalness: .5,
       emissive: 0x00d9b0, emissiveIntensity: .35
     });
-    // Piezas cuya material se anima → requieren material único
     const ANIMATED_PARTS = { 'Bobina_Primaria': true, 'Bobina_Secundaria': true };
 
     let selectedId = null;
@@ -445,7 +447,6 @@
     function setHighlight(id, on) {
       const list = clickablesById[id];
       if (!list) return;
-      // Teal reservado para futuras piezas electrónicas con id "pcb*"
       const baseMat = id.startsWith('pcb') ? HIGHLIGHT_TEAL : HIGHLIGHT_ORANGE;
       const unique = ANIMATED_PARTS[id];
       list.forEach(c => {
@@ -666,13 +667,13 @@
     });
 
     // ═══════════════════════════════════════════════════════════════
-    // PAN-ZOOM VIEWER (soporta SVG + imágenes raster)
+    // PAN-ZOOM VIEWER
     // ═══════════════════════════════════════════════════════════════
     let pzSvgEl = null;
     let pzOrigW = 0, pzOrigH = 0;
     let pzVbX = 0, pzVbY = 0, pzVbW = 0, pzVbH = 0;
     const PZ_ZOOM_F = 0.14;
-    const SVG_CACHE = new Map(); // cache de strings SVG
+    const SVG_CACHE = new Map();
 
     function fetchSVG(src) {
       if (SVG_CACHE.has(src)) return Promise.resolve(SVG_CACHE.get(src));
@@ -739,8 +740,6 @@
           })
           .catch(() => showPZError(content, src));
       } else {
-        // Imágenes raster: se envuelven en un <svg> para compartir la
-        // misma lógica de viewBox / zoom / pan que los SVG.
         const img = new Image();
         img.onload = () => {
           const NS = 'http://www.w3.org/2000/svg';
@@ -808,7 +807,6 @@
     }
     window.pzZoomBtn = pzZoomBtn;
 
-    // Eventos del visor
     const pzStage = document.getElementById('pz-stage');
     let pzDrag = false, pzDSX = 0, pzDSY = 0, pzDVBX = 0, pzDVBY = 0;
 
@@ -841,7 +839,6 @@
     });
     pzStage.addEventListener('dblclick', pzFit);
 
-    // Touch del visor
     let pzLastTap = 0, pzTDrag = false;
     let pzTSX = 0, pzTSY = 0, pzTVBX = 0, pzTVBY = 0;
     let pzPD0 = 0, pzPVBX0 = 0, pzPVBY0 = 0, pzPVBW0 = 0, pzPVBH0 = 0;
@@ -940,7 +937,6 @@
     document.getElementById('panel').addEventListener('touchmove', e => e.stopPropagation(), { passive: true });
     document.getElementById('pz-viewer').addEventListener('wheel', e => e.stopPropagation(), { passive: false });
 
-    // Resize con throttle por rAF (evita reasignar buffers WebGL en ráfaga)
     let _resizeQueued = false;
     window.addEventListener('resize', () => {
       if (_resizeQueued) return;
@@ -964,7 +960,6 @@
 
       if (!drag && !touchDrag) model.rotation.y += .0012;
 
-      // Corrección: usar IDs reales de las bobinas
       if (ANIMATED_PARTS[selectedId]) {
         const p = (.5 + .5 * Math.sin(t * 8)) * .4;
         const list = clickablesById[selectedId] || [];
@@ -982,14 +977,10 @@
     }
     animate();
 
-    // Refrescar lista de meshes para raycast cuando cambia el modelo
     const _origConectar = conectarClickables;
-    // (la lista se reconstruye en el próximo hover si es necesario)
-    // Simple: refrescar en cada raycast si quedó vacío
     function ensureMeshList() {
       if (_meshList.length === 0 && clickables.length > 0) refreshMeshList();
     }
-    // Llamar antes del raycast
     const _origRaycast = doRaycast;
     doRaycast = function() {
       ensureMeshList();

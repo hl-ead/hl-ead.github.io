@@ -7,15 +7,17 @@
   <title>HL-EAD · Lista de Materiales</title>
   <link rel="icon" href="Imagenes/icono.png" type="image/x-icon">
   <link rel="stylesheet" href="styles.css">
+
+  <!-- Analytics reubicado correctamente en el Head -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ESQB0M5W6R"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ESQB0M5W6R');
+  </script>
 </head>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-1878DQW9YW"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-1878DQW9YW');
-</script>
-<body>
+<body class="page-bom">
 
   <!-- =================== HEADER =================== -->
   <header id="topbar">
@@ -164,7 +166,7 @@
 
   </main>
 
-  <!-- =================== SCRIPT =================== -->
+  <!-- =================== SCRIPT INCORPORADO (Seguridad CORS local) =================== -->
   <script>
     (function() {
       'use strict';
@@ -254,8 +256,7 @@
         filterDesc: document.getElementById('bom-filter-desc')
       };
 
-      // Cacheo de filas (data index → <tr>) para filtrar sin tocar DOM.
-      // Refleja el orden de BOM_DATA_RAW porque renderTable() usa el mismo orden.
+      // Cacheo de filas
       let rowRefs = [];
 
       // ────────────────────────────────────────────────────────────
@@ -268,7 +269,7 @@
       }
 
       // ────────────────────────────────────────────────────────────
-      // Chips: se construyen UNA vez y solo se togglea la clase .on
+      // Chips
       // ────────────────────────────────────────────────────────────
       const ICON_CANNON = `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="10" y="15" width="4" height="1.5" rx="0.5" fill="currentColor" opacity="0.5"/><rect x="3" y="10.5" width="17" height="3" rx="0.75" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="7.5" y="9.5" width="1.8" height="5" rx="0.4" fill="currentColor"/><rect x="11.1" y="9.5" width="1.8" height="5" rx="0.4" fill="currentColor"/><rect x="14.7" y="9.5" width="1.8" height="5" rx="0.4" fill="currentColor"/><rect x="1.5" y="10" width="2" height="4" rx="0.5" fill="currentColor"/><rect x="20.5" y="10.5" width="2" height="3" rx="0.5" fill="currentColor"/></svg>`;
       const ICON_PCB    = `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="4.5" cy="6.5" r="0.8" fill="currentColor" opacity="0.5"/><circle cx="19.5" cy="6.5" r="0.8" fill="currentColor" opacity="0.5"/><circle cx="4.5" cy="17.5" r="0.8" fill="currentColor" opacity="0.5"/><circle cx="19.5" cy="17.5" r="0.8" fill="currentColor" opacity="0.5"/><rect x="9" y="9" width="6" height="6" rx="0.5" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="9" y1="10.5" x2="7" y2="10.5" stroke="currentColor" stroke-width="1"/><line x1="9" y1="12" x2="7" y2="12" stroke="currentColor" stroke-width="1"/><line x1="9" y1="13.5" x2="7" y2="13.5" stroke="currentColor" stroke-width="1"/><line x1="15" y1="10.5" x2="17" y2="10.5" stroke="currentColor" stroke-width="1"/><line x1="15" y1="12" x2="17" y2="12" stroke="currentColor" stroke-width="1"/><line x1="15" y1="13.5" x2="17" y2="13.5" stroke="currentColor" stroke-width="1"/></svg>`;
@@ -310,7 +311,7 @@
       }
 
       // ────────────────────────────────────────────────────────────
-      // Filtros: un solo pase sobre los datos, un solo pase sobre las filas.
+      // Filtros
       // ────────────────────────────────────────────────────────────
       function applyFilters() {
         const filtered = BOM_DATA_RAW.filter(r =>
@@ -318,18 +319,15 @@
           (activeCategory === 'Todos' || r.cat      === activeCategory)
         );
 
-        // Actualizar visibilidad usando el cache de filas (sin querySelectorAll)
         const visible = new Set(filtered.map(r => r.ref));
         for (let i = 0; i < rowRefs.length; i++) {
           rowRefs[i].style.display = visible.has(BOM_DATA_RAW[i].ref) ? '' : 'none';
         }
 
-        // Stats
         const totalQty = filtered.reduce((s, r) => s + (Number(r.qty) || 0), 0);
         el.lines.textContent = filtered.length;
         el.units.textContent = totalQty;
 
-        // Filtro activo (sin el bug "P: X Todos")
         const parts = [];
         if (activeProject  !== 'Todos') parts.push('P: ' + activeProject);
         if (activeCategory !== 'Todos') parts.push('C: ' + activeCategory);
@@ -337,7 +335,7 @@
       }
 
       // ────────────────────────────────────────────────────────────
-      // Tabla: construir una vez, cachear filas
+      // Tabla
       // ────────────────────────────────────────────────────────────
       function renderTable() {
         el.thead.innerHTML = `
@@ -350,7 +348,6 @@
           </tr>
         `;
 
-        // Limpieza defensiva por si se llama dos veces
         el.tbody.innerHTML = '';
         rowRefs = [];
 
@@ -376,7 +373,7 @@
       }
 
       // ────────────────────────────────────────────────────────────
-      // Event delegation: un listener por contenedor, no por chip
+      // Event delegation
       // ────────────────────────────────────────────────────────────
       el.projectFilter.addEventListener('click', e => {
         const btn = e.target.closest('.bom-project-chip');

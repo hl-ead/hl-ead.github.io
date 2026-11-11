@@ -6,15 +6,17 @@
   <title>HL-EAD · Esquemas</title>
   <link rel="icon" href="Imagenes/icono.png" type="image/x-icon">
   <link rel="stylesheet" href="styles.css">
+  
+  <!-- Analytics reubicado correctamente en el Head -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ESQB0M5W6R"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ESQB0M5W6R');
+  </script>
 </head>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-1878DQW9YW"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-1878DQW9YW');
-</script>
-<body>
+<body class="page-esquemas">
 
   <!-- =================== HEADER =================== -->
   <header id="topbar">
@@ -118,66 +120,60 @@
       <p>Documentación técnica y diagramas de flujo del Cañón de Gauss</p>
     </div>
 
+    <!-- PESTAÑAS (Modificado a Data-Attributes limpios) -->
     <div class="tabs-nav">
-      <!-- FIX: pasar `this` explícitamente en lugar de depender de `event.currentTarget` -->
-      <button type="button" class="tab-btn active" onclick="switchTab('full', this)">Esquema Completo</button>
-      <button type="button" class="tab-btn" onclick="switchTab('sections', this)">Planos Seccionales</button>
+      <button type="button" class="tab-btn active" data-tab-target="full">Esquema Completo</button>
+      <button type="button" class="tab-btn" data-tab-target="sections">Planos Seccionales</button>
     </div>
 
     <div id="tab-full" class="tab-content active">
       <div class="full-schem-wrap">
-        <div class="full-preview-box" onclick="openPZ('Esquema Completo', 'esquemas/esquema-completo.svg')">
-          <img src="esquemas/esquema-completo.svg" alt="Esquema General HL-EAD"
-               draggable="false" decoding="async">
+        <div class="full-preview-box pz-trigger" data-title="Esquema Completo" data-src="esquemas/esquema-completo.svg">
+          <img src="esquemas/esquema-completo.svg" alt="Esquema General HL-EAD" draggable="false" decoding="async">
         </div>
-        <!-- (eliminado div.action-bar vacío) -->
       </div>
     </div>
 
     <div id="tab-sections" class="tab-content">
       <div class="sec-grid">
 
-        <div class="sec-card" onclick="openPZ('Placa de filtrado', 'esquemas/placa-de-filtrado.svg')">
+        <div class="sec-card pz-trigger" data-title="Placa de filtrado" data-src="esquemas/placa-de-filtrado.svg">
           <div class="sec-title">
             <span>Placa de filtrado</span>
             <span class="sec-title-zoom">Click para Zoom</span>
           </div>
           <div class="sec-img-wrap">
-            <img src="esquemas/placa-de-filtrado.svg" alt="Placa de filtrado"
-                 loading="lazy" decoding="async" draggable="false">
+            <img src="esquemas/placa-de-filtrado.svg" alt="Placa de filtrado" loading="lazy" decoding="async" draggable="false">
           </div>
         </div>
 
-        <div class="sec-card" onclick="openPZ('Fuente de alimentacion', 'esquemas/fuente-de-alimentacion.svg')">
+        <div class="sec-card pz-trigger" data-title="Fuente de alimentacion" data-src="esquemas/fuente-de-alimentacion.svg">
           <div class="sec-title">
             <span>Fuente de alimentacion</span>
             <span class="sec-title-zoom">Click para Zoom</span>
           </div>
           <div class="sec-img-wrap">
-            <img src="esquemas/fuente-de-alimentacion.svg" alt="Fuente de alimentación"
-                 loading="lazy" decoding="async" draggable="false">
+            <img src="esquemas/fuente-de-alimentacion.svg" alt="Fuente de alimentación" loading="lazy" decoding="async" draggable="false">
           </div>
         </div>
 
-        <div class="sec-card" onclick="openPZ('Módulo de aceleración de bobina', 'esquemas/modulo-bobina.svg')">
+        <div class="sec-card pz-trigger" data-title="Módulo de aceleración de bobina" data-src="esquemas/modulo-bobina.svg">
           <div class="sec-title">
             <span>Módulo de aceleración de bobina</span>
             <span class="sec-title-zoom">Click para Zoom</span>
           </div>
           <div class="sec-img-wrap">
-            <img src="esquemas/modulo-bobina.svg" alt="Módulo de control"
-                 loading="lazy" decoding="async" draggable="false">
+            <img src="esquemas/modulo-bobina.svg" alt="Módulo de control" loading="lazy" decoding="async" draggable="false">
           </div>
         </div>
 
-        <div class="sec-card" onclick="openPZ('Placa de control LEDs', 'esquemas/placa-para-leds.svg')">
+        <div class="sec-card pz-trigger" data-title="Placa de control LEDs" data-src="esquemas/placa-para-leds.svg">
           <div class="sec-title">
             <span>Placa de control LEDs</span>
             <span class="sec-title-zoom">Click para Zoom</span>
           </div>
           <div class="sec-img-wrap">
-            <img src="esquemas/placa-para-leds.svg" alt="Placa de LEDs"
-                 loading="lazy" decoding="async" draggable="false">
+            <img src="esquemas/placa-para-leds.svg" alt="Placa de LEDs" loading="lazy" decoding="async" draggable="false">
           </div>
         </div>
 
@@ -191,16 +187,15 @@
     <div id="pz-topbar">
       <div id="pz-title">ESQUEMA TÉCNICO</div>
       <div id="pz-controls">
-        <button type="button" class="pz-btn" onclick="zoomOut()" title="Alejar" aria-label="Alejar">−</button>
-        <button type="button" class="pz-btn" onclick="zoomIn()" title="Acercar" aria-label="Acercar">+</button>
-        <button type="button" class="pz-btn" onclick="resetZoom()" title="Ajustar a pantalla">1:1</button>
-        <button type="button" class="pz-btn pz-close-btn" onclick="closePZ()" title="Cerrar" aria-label="Cerrar">✕</button>
+        <button type="button" class="pz-btn" id="btn-zoom-out" title="Alejar" aria-label="Alejar">−</button>
+        <button type="button" class="pz-btn" id="btn-zoom-in" title="Acercar" aria-label="Acercar">+</button>
+        <button type="button" class="pz-btn" id="btn-zoom-reset" title="Ajustar a pantalla">1:1</button>
+        <button type="button" class="pz-btn pz-close-btn" id="btn-close-pz" title="Cerrar" aria-label="Cerrar">✕</button>
       </div>
     </div>
 
     <div id="pz-stage">
       <div id="pz-content">
-        <!-- FIX: draggable=false evita el drag nativo que rompía el pan -->
         <img id="pz-img" src="esquemas/esquema-completo.svg" alt="Esquema ampliado" draggable="false">
       </div>
     </div>
@@ -210,271 +205,265 @@
     </div>
   </div>
 
+  <!-- ============================================================
+       SCRIPT DE CONTROL DE PESTAÑAS Y VISOR PAN & ZOOM
+       ============================================================ -->
   <script>
-    // ==========================================================
-    // 1. PESTAÑAS — sin depender de `event.currentTarget`
-    // ==========================================================
-    function switchTab(tabId, btn) {
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      const tab = document.getElementById('tab-' + tabId);
-      if (tab) tab.classList.add('active');
-      if (btn) btn.classList.add('active');
-    }
-    window.switchTab = switchTab;
+    (function() {
+      'use strict';
 
-    // ==========================================================
-    // 2. VISOR PAN & ZOOM
-    // ==========================================================
-    const pz       = document.getElementById('pz-viewer');
-    const pzTitle  = document.getElementById('pz-title');
-    const pzImg    = document.getElementById('pz-img');
-    const zVal     = document.getElementById('pz-zoom-val');
-    const pzStage  = document.getElementById('pz-stage');
+      // ==========================================================
+      // 1. SISTEMA DE PESTAÑAS LÍMPIO
+      // ==========================================================
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      const tabContents = document.querySelectorAll('.tab-content');
 
-    // FIX #2: evitar drag nativo de la imagen (rompía el pan)
-    pzImg.draggable = false;
-    pzImg.addEventListener('dragstart', e => e.preventDefault());
-
-    // FIX #17: desactivar gestos del navegador en el stage
-    pzStage.style.touchAction = 'none';
-
-    // Estado del visor
-    let scale = 1, minScale = 1;
-    let pX = 0, pY = 0;
-    let imgW = 0, imgH = 0;            // cacheado (optimización #12)
-    let isDrag = false, sX = 0, sY = 0;
-
-    // ---------- Abrir / cerrar ----------
-    function openPZ(title, src) {
-      if (!title || !src) return;
-      pzTitle.textContent = String(title).toUpperCase();
-      pz.style.display = 'flex';
-      pz.setAttribute('aria-hidden', 'false');
-
-      const ready = () => {
-        if (pz.style.display !== 'flex') return;
-        imgW = pzImg.naturalWidth  || 800;
-        imgH = pzImg.naturalHeight || 600;
-        calculateMinScale();
-        resetZoom();
-      };
-
-      // FIX #8: reutilizar carga si es la misma imagen
-      if (pzImg.dataset.loaded === '1' && pzImg.getAttribute('src') === src
-          && pzImg.naturalWidth > 0) {
-        ready();
-        return;
-      }
-      pzImg.dataset.loaded = '0';
-      pzImg.onload  = () => { pzImg.dataset.loaded = '1'; ready(); };
-      pzImg.onerror = () => console.warn('No se pudo cargar la imagen:', src);
-      pzImg.src = src;
-
-      // FIX #7: por si estaba en caché y `onload` no vuelve a dispararse
-      if (pzImg.complete && pzImg.naturalWidth > 0) {
-        pzImg.dataset.loaded = '1';
-        ready();
-      }
-    }
-
-    function closePZ() {
-      pz.style.display = 'none';
-      pz.setAttribute('aria-hidden', 'true');
-      isDrag = false;
-    }
-    window.openPZ  = openPZ;
-    window.closePZ = closePZ;
-
-    // ---------- Cálculos ----------
-    function calculateMinScale() {
-      const sw = pzStage.clientWidth;
-      const sh = pzStage.clientHeight;
-      minScale = Math.min((sw * 0.92) / imgW, (sh * 0.80) / imgH);
-      if (!isFinite(minScale) || minScale <= 0) minScale = 1;  // FIX #6
-    }
-
-    function clampPan() {
-      const sw = pzStage.clientWidth;
-      const sh = pzStage.clientHeight;
-      const sW = imgW * scale;
-      const sH = imgH * scale;
-      if (sW > sw) {
-        const max = (sW - sw) / 2;
-        pX = Math.max(-max, Math.min(max, pX));
-      } else pX = 0;
-      if (sH > sh) {
-        const max = (sH - sh) / 2;
-        pY = Math.max(-max, Math.min(max, pY));
-      } else pY = 0;
-    }
-
-    // Optimización #11: no reescribir el texto si no cambió
-    let _lastPct = '';
-    function updateTrsf(smooth) {
-      clampPan();
-      pzImg.style.transition = smooth
-        ? 'transform 0.22s cubic-bezier(0.25, 1, 0.5, 1)'
-        : 'none';
-      // Optimización #14: translate3d → compositor GPU
-      pzImg.style.transform = `translate3d(${pX}px, ${pY}px, 0) scale(${scale})`;
-
-      const pct = Math.round((scale / minScale) * 100) + '%';
-      if (pct !== _lastPct) {
-        _lastPct = pct;
-        zVal.textContent = pct;
-      }
-    }
-
-    function resetZoom() {
-      scale = minScale;
-      pX = 0; pY = 0;
-      updateTrsf(true);
-    }
-    window.resetZoom = resetZoom;
-
-    // Zoom a un punto arbitrario del stage (mx,my = relativo al centro del stage)
-    function applyZoomAt(factor, mx, my, smooth) {
-      const newScale = Math.max(minScale, Math.min(scale * factor, minScale * 8));
-      const k = newScale / scale;
-      if (k === 1) return;
-      pX = mx - k * (mx - pX);
-      pY = my - k * (my - pY);
-      scale = newScale;
-      updateTrsf(smooth);
-    }
-
-    // Botones +/− → zoom al centro del stage
-    function zoomIn()  { applyZoomAt(1.30, 0, 0, true); }
-    function zoomOut() { applyZoomAt(1 / 1.30, 0, 0, true); }
-    window.zoomIn  = zoomIn;
-    window.zoomOut = zoomOut;
-
-    // ---------- Mouse: pan ----------
-    pzStage.addEventListener('mousedown', e => {
-      if (e.button !== 0) return;
-      e.preventDefault();
-      isDrag = true;
-      sX = e.clientX - pX;
-      sY = e.clientY - pY;
-      pzStage.classList.add('dragging');
-    });
-
-    window.addEventListener('mousemove', e => {
-      if (!isDrag) return;
-      pX = e.clientX - sX;
-      pY = e.clientY - sY;
-      updateTrsf(false);
-    });
-
-    window.addEventListener('mouseup', () => {
-      if (!isDrag) return;
-      isDrag = false;
-      pzStage.classList.remove('dragging');
-    });
-
-    // ---------- Rueda: zoom en el cursor (optimización #13) ----------
-    let _wheelRAF = 0, _wheelDelta = 0, _wheelCX = 0, _wheelCY = 0;
-    pz.addEventListener('wheel', e => {
-      // FIX #3: no interferir con la topbar
-      if (e.target.closest('#pz-topbar')) return;
-      e.preventDefault();
-
-      _wheelDelta += e.deltaY;
-      _wheelCX = e.clientX;
-      _wheelCY = e.clientY;
-
-      if (_wheelRAF) return;
-      _wheelRAF = requestAnimationFrame(() => {
-        _wheelRAF = 0;
-        if (!_wheelDelta) return;
-        // Rueda exponencial (más suave en trackpads)
-        const factor = Math.exp(-_wheelDelta * 0.0015);
-        _wheelDelta = 0;
-
-        const r = pzStage.getBoundingClientRect();
-        const mx = _wheelCX - r.left - r.width  / 2;
-        const my = _wheelCY - r.top  - r.height / 2;
-        applyZoomAt(factor, mx, my, true);
+      tabButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const targetId = btn.dataset.tabTarget;
+          
+          tabContents.forEach(c => c.classList.remove('active'));
+          tabButtons.forEach(b => b.classList.remove('active'));
+          
+          const targetTab = document.getElementById(`tab-${targetId}`);
+          if (targetTab) {
+            targetTab.classList.add('active');
+            btn.classList.add('active');
+          }
+        });
       });
-    }, { passive: false });
 
-    // ---------- Touch: pan + pinch centrado (FIX #4) ----------
-    let lastDist = 0, lastMidX = 0, lastMidY = 0;
+      // ==========================================================
+      // 2. VISOR PAN & ZOOM (Arquitectura Segura y sin Inline)
+      // ==========================================================
+      const pz       = document.getElementById('pz-viewer');
+      const pzTitle  = document.getElementById('pz-title');
+      const pzImg    = document.getElementById('pz-img');
+      const zVal     = document.getElementById('pz-zoom-val');
+      const pzStage  = document.getElementById('pz-stage');
 
-    const touchDist = (a, b) =>
-      Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+      pzImg.draggable = false;
+      pzImg.addEventListener('dragstart', e => e.preventDefault());
+      pzStage.style.touchAction = 'none';
 
-    pzStage.addEventListener('touchstart', e => {
-      if (e.touches.length === 2) {
-        e.preventDefault();
-        lastDist = touchDist(e.touches[0], e.touches[1]);
-        lastMidX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-        lastMidY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-        isDrag = false;
-      } else if (e.touches.length === 1) {
-        isDrag = true;
-        sX = e.touches[0].clientX - pX;
-        sY = e.touches[0].clientY - pY;
-      }
-    }, { passive: false });
+      let scale = 1, minScale = 1;
+      let pX = 0, pY = 0;
+      let imgW = 0, imgH = 0;
+      let isDrag = false, sX = 0, sY = 0;
 
-    pzStage.addEventListener('touchmove', e => {
-      if (e.touches.length === 2) {
-        e.preventDefault();
-        const d = touchDist(e.touches[0], e.touches[1]);
-        if (lastDist > 0) {
-          const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-          const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-          const r = pzStage.getBoundingClientRect();
-          const mx0 = lastMidX - r.left - r.width  / 2;
-          const my0 = lastMidY - r.top  - r.height / 2;
-          const mx1 = midX     - r.left - r.width  / 2;
-          const my1 = midY     - r.top  - r.height / 2;
+      // Eventos de Apertura en las tarjetas
+      document.querySelectorAll('.pz-trigger').forEach(trigger => {
+        trigger.addEventListener('click', () => {
+          openPZ(trigger.dataset.title, trigger.dataset.src);
+        });
+      });
 
-          let k = d / lastDist;
-          const newScale = Math.max(minScale, Math.min(scale * k, minScale * 8));
-          k = newScale / scale;
+      function openPZ(title, src) {
+        if (!title || !src) return;
+        pzTitle.textContent = String(title).toUpperCase();
+        pz.style.display = 'flex';
+        pz.setAttribute('aria-hidden', 'false');
 
-          // Fórmula correcta: preserva el punto de la imagen bajo el pinch
-          pX = mx1 - k * (mx0 - pX);
-          pY = my1 - k * (my0 - pY);
-          scale = newScale;
-          updateTrsf(false);
+        const ready = () => {
+          if (pz.style.display !== 'flex') return;
+          imgW = pzImg.naturalWidth  || 800;
+          imgH = pzImg.naturalHeight || 600;
+          calculateMinScale();
+          resetZoom();
+        };
 
-          lastMidX = midX;
-          lastMidY = midY;
+        if (pzImg.dataset.loaded === '1' && pzImg.getAttribute('src') === src && pzImg.naturalWidth > 0) {
+          ready();
+          return;
         }
-        lastDist = d;
-      } else if (e.touches.length === 1 && isDrag) {
-        pX = e.touches[0].clientX - sX;
-        pY = e.touches[0].clientY - sY;
-        updateTrsf(false);
+        pzImg.dataset.loaded = '0';
+        pzImg.onload  = () => { pzImg.dataset.loaded = '1'; ready(); };
+        pzImg.onerror = () => console.warn('No se pudo cargar la imagen:', src);
+        pzImg.src = src;
+
+        if (pzImg.complete && pzImg.naturalWidth > 0) {
+          pzImg.dataset.loaded = '1';
+          ready();
+        }
       }
-    }, { passive: false });
 
-    pzStage.addEventListener('touchend', e => {
-      if (e.touches.length < 2) lastDist = 0;
-      if (e.touches.length === 0) isDrag = false;
-    });
+      function closePZ() {
+        pz.style.display = 'none';
+        pz.setAttribute('aria-hidden', 'true');
+        isDrag = false;
+      }
+      document.getElementById('btn-close-pz').addEventListener('click', closePZ);
 
-    // ---------- Teclado ----------
-    window.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && pz.style.display === 'flex') closePZ();
-    });
+      function calculateMinScale() {
+        const sw = pzStage.clientWidth;
+        const sh = pzStage.clientHeight;
+        minScale = Math.min((sw * 0.92) / imgW, (sh * 0.80) / imgH);
+        if (!isFinite(minScale) || minScale <= 0) minScale = 1;
+      }
 
-    // ---------- Resize (optimización #15) ----------
-    let _resizeRAF = 0;
-    window.addEventListener('resize', () => {
-      if (pz.style.display !== 'flex') return;
-      if (_resizeRAF) return;
-      _resizeRAF = requestAnimationFrame(() => {
-        _resizeRAF = 0;
-        calculateMinScale();
-        if (scale < minScale) scale = minScale;
+      function clampPan() {
+        const sw = pzStage.clientWidth;
+        const sh = pzStage.clientHeight;
+        const sW = imgW * scale;
+        const sH = imgH * scale;
+        if (sW > sw) {
+          const max = (sW - sw) / 2;
+          pX = Math.max(-max, Math.min(max, pX));
+        } else pX = 0;
+        if (sH > sh) {
+          const max = (sH - sh) / 2;
+          pY = Math.max(-max, Math.min(max, pY));
+        } else pY = 0;
+      }
+
+      let _lastPct = '';
+      function updateTrsf(smooth) {
+        clampPan();
+        pzImg.style.transition = smooth ? 'transform 0.22s cubic-bezier(0.25, 1, 0.5, 1)' : 'none';
+        pzImg.style.transform = `translate3d(${pX}px, ${pY}px, 0) scale(${scale})`;
+
+        const pct = Math.round((scale / minScale) * 100) + '%';
+        if (pct !== _lastPct) {
+          _lastPct = pct;
+          zVal.textContent = pct;
+        }
+      }
+
+      function resetZoom() {
+        scale = minScale;
+        pX = 0; pY = 0;
         updateTrsf(true);
+      }
+      document.getElementById('btn-zoom-reset').addEventListener('click', resetZoom);
+
+      function applyZoomAt(factor, mx, my, smooth) {
+        const newScale = Math.max(minScale, Math.min(scale * factor, minScale * 8));
+        const k = newScale / scale;
+        if (k === 1) return;
+        pX = mx - k * (mx - pX);
+        pY = my - k * (my - pY);
+        scale = newScale;
+        updateTrsf(smooth);
+      }
+
+      document.getElementById('btn-zoom-in').addEventListener('click', () => applyZoomAt(1.30, 0, 0, true));
+      document.getElementById('btn-zoom-out').addEventListener('click', () => applyZoomAt(1 / 1.30, 0, 0, true));
+
+      pzStage.addEventListener('mousedown', e => {
+        if (e.button !== 0) return;
+        e.preventDefault();
+        isDrag = true;
+        sX = e.clientX - pX;
+        sY = e.clientY - pY;
+        pzStage.classList.add('dragging');
       });
-    });
+
+      window.addEventListener('mousemove', e => {
+        if (!isDrag) return;
+        pX = e.clientX - sX;
+        pY = e.clientY - sY;
+        updateTrsf(false);
+      });
+
+      window.addEventListener('mouseup', () => {
+        if (!isDrag) return;
+        isDrag = false;
+        pzStage.classList.remove('dragging');
+      });
+
+      let _wheelRAF = 0, _wheelDelta = 0, _wheelCX = 0, _wheelCY = 0;
+      pz.addEventListener('wheel', e => {
+        if (e.target.closest('#pz-topbar')) return;
+        e.preventDefault();
+        _wheelDelta += e.deltaY;
+        _wheelCX = e.clientX;
+        _wheelCY = e.clientY;
+
+        if (_wheelRAF) return;
+        _wheelRAF = requestAnimationFrame(() => {
+          _wheelRAF = 0;
+          if (!_wheelDelta) return;
+          const factor = Math.exp(-_wheelDelta * 0.0015);
+          _wheelDelta = 0;
+          const r = pzStage.getBoundingClientRect();
+          const mx = _wheelCX - r.left - r.width  / 2;
+          const my = _wheelCY - r.top  - r.height / 2;
+          applyZoomAt(factor, mx, my, true);
+        });
+      }, { passive: false });
+
+      let lastDist = 0, lastMidX = 0, lastMidY = 0;
+      const touchDist = (a, b) => Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+
+      pzStage.addEventListener('touchstart', e => {
+        if (e.touches.length === 2) {
+          e.preventDefault();
+          lastDist = touchDist(e.touches[0], e.touches[1]);
+          lastMidX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+          lastMidY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+          isDrag = false;
+        } else if (e.touches.length === 1) {
+          isDrag = true;
+          sX = e.touches[0].clientX - pX;
+          sY = e.touches[0].clientY - pY;
+        }
+      }, { passive: false });
+
+      pzStage.addEventListener('touchmove', e => {
+        if (e.touches.length === 2) {
+          e.preventDefault();
+          const d = touchDist(e.touches[0], e.touches[1]);
+          if (lastDist > 0) {
+            const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+            const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+            const r = pzStage.getBoundingClientRect();
+            const mx0 = lastMidX - r.left - r.width  / 2;
+            const my0 = lastMidY - r.top  - r.height / 2;
+            const mx1 = midX     - r.left - r.width  / 2;
+            const my1 = midY     - r.top  - r.height / 2;
+
+            let k = d / lastDist;
+            const newScale = Math.max(minScale, Math.min(scale * k, minScale * 8));
+            k = newScale / scale;
+
+            pX = mx1 - k * (mx0 - pX);
+            pY = my1 - k * (my0 - pY);
+            scale = newScale;
+            updateTrsf(false);
+
+            lastMidX = midX;
+            lastMidY = midY;
+          }
+          lastDist = d;
+        } else if (e.touches.length === 1 && isDrag) {
+          pX = e.touches[0].clientX - sX;
+          pY = e.touches[0].clientY - sY;
+          updateTrsf(false);
+        }
+      }, { passive: false });
+
+      pzStage.addEventListener('touchend', e => {
+        if (e.touches.length < 2) lastDist = 0;
+        if (e.touches.length === 0) isDrag = false;
+      });
+
+      window.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && pz.style.display === 'flex') closePZ();
+      });
+
+      let _resizeRAF = 0;
+      window.addEventListener('resize', () => {
+        if (pz.style.display !== 'flex') return;
+        if (_resizeRAF) return;
+        _resizeRAF = requestAnimationFrame(() => {
+          _resizeRAF = 0;
+          calculateMinScale();
+          if (scale < minScale) scale = minScale;
+          updateTrsf(true);
+        });
+      });
+
+    })();
   </script>
 
 </body>
